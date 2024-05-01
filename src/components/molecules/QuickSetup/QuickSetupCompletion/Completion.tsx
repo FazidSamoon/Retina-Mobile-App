@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useRef, useState } from "react";
+import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useRef, useState, CSSProperties, useEffect } from "react";
 import { QuickSetupTypes } from "../../../../screens/RootScreens/QuickSetupScreen/quickSetupTypes";
 import BackwardArrow from "../../../../assets/BackwardArrow";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
@@ -7,24 +7,50 @@ import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
 import RPInputField from "../../../atoms/RPInputField/RPInputField";
 import { RPSInputFieldStyle } from "../../../atoms/RPInputField/inputFieldTypes";
 import PhoneInput from "react-native-phone-number-input";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CompletionIcon from "../../../../assets/CompletionIcon";
+import { Circle } from "react-native-animated-spinkit";
+import { useNavigation } from "@react-navigation/native";
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 const Completion = ({
   setQuickSetupState,
 }: {
   setQuickSetupState: React.Dispatch<React.SetStateAction<QuickSetupTypes>>;
 }) => {
+  const navigation = useNavigation<any>();
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  let [loading, setLoading] = useState(true);
+  let [color, setColor] = useState("#ffffff");
   const phoneInput = useRef<PhoneInput>(null);
   const onBackButtonPressed = () => {
     setQuickSetupState(QuickSetupTypes.CREATE_ACCOUNT);
   };
 
   const onNextButtonPressed = () => {
+    if (showModal) {
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
     // setQuickSetupState(QuickSetupTypes.QUISTIONAIRE);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (showModal) navigation.navigate("Login");
+    }, 5000);
+  }, [showModal])
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View
         style={{
           flexDirection: "row",
@@ -53,24 +79,6 @@ const Completion = ({
             width: 46,
           }}
         ></View>
-      </View>
-
-      <View style={{
-        display: "flex",
-        flexDirection: "column",
-        alignContent: "center",
-        justifyContent: "center",
-        height: 135,
-        width: "100%"
-      }}>
-        {/* <Image
-          source={require("../../../../assets/QuickSetup/Completion.png")}
-          style={{
-            width: 135,
-            height: 135,
-            alignSelf: "center",
-          }}
-        /> */}
       </View>
 
       <View
@@ -127,9 +135,11 @@ const Completion = ({
             }}
           />
 
-          <View style={{
-            gap: 5,
-          }}>
+          <View
+            style={{
+              gap: 5,
+            }}
+          >
             <Text
               style={{
                 color: BASIC_COLORS.FONT_PRIMARY,
@@ -157,9 +167,9 @@ const Completion = ({
                 height: 40,
                 width: "100%",
               }}
-              codeTextStyle={{ color: "black" }}
+              codeTextStyle={{ color: "#9B9B9B" }}
               textInputStyle={{
-                color: "black",
+                color: "#9B9B9B",
                 padding: 0,
                 margin: 0,
                 height: 40,
@@ -194,7 +204,7 @@ const Completion = ({
 
         <View>
           <RPPrimaryButton
-            buttonTitle={"Next"}
+            buttonTitle={"Complete Profile"}
             //   disabled={!selected}
             onPress={onNextButtonPressed}
             buttonStyle={{
@@ -204,7 +214,65 @@ const Completion = ({
           />
         </View>
       </View>
-    </View>
+
+      <Modal animationType="slide" transparent={true} visible={showModal}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 20,
+              borderRadius: 10,
+              width: "80%",
+              height: "60%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CompletionIcon />
+            <View style={{
+              marginTop: 20,
+              gap: 10,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 20,
+            }}>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                Congratulations!
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 14.5,
+                  fontWeight: "medium",
+                  alignContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                Your account is ready to use. You will be redirected to the Home
+                page in a few seconds.
+              </Text>
+            </View>
+
+            <Circle size={90} color="#109BE7" />
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 };
 

@@ -7,13 +7,12 @@ import LoginScreen from "../../screens/RootScreens/LoginScreen/LoginScreen";
 import QuickSetupScreen from "../../screens/RootScreens/QuickSetupScreen/QuickSetupScreen";
 import SplashScreen from "../../screens/RootScreens/SplashScreen/SplashScreen";
 import OnboardingScreen from "../../screens/RootScreens/OnboardingScreen/OnboardingScreen";
-import { RootScreensParamsList } from "./types";
 
 // const StackNav = createStackNavigator<RootScreensParamsList>();
 const StackNav = createStackNavigator();
 
 const index = () => {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   return (
     <>
       <StatusBar

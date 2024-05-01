@@ -17,12 +17,14 @@ import ForgotPassword from "../../../components/molecules/ForgotPassword/ForgotP
 import OTPVerification from "../../../components/molecules/OTPVerification/OTPVerification";
 import ResetPassword from "../../../components/molecules/ResetPassword/ResetPassword";
 import DatePicker from "react-native-date-picker";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [bottomSheetType, setBottomSheetType] =
     useState<LoginScreenBottomSheetTypes>(LoginScreenBottomSheetTypes.NONE);
 
+    const navigation = useNavigation<any>();
   const onForgotPasswordModalButtonPress = () => {
     setBottomSheetVisible(true);
     setBottomSheetType(
@@ -41,8 +43,6 @@ const LoginScreen = () => {
     setBottomSheetVisible(false);
     setBottomSheetType(LoginScreenBottomSheetTypes.NONE);
   };
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(true)
 
   return (
     <View>
@@ -89,19 +89,6 @@ const LoginScreen = () => {
               backgroundColor: "#F4F6F9",
             }}
           />
-                  <DatePicker
-        modal
-        open={open}
-        date={date}
-        onConfirm={(date) => {
-          setOpen(false)
-          setDate(date)
-        }}
-        onCancel={() => {
-          setOpen(false)
-        }}
-        
-      />
           <View>
             <Text
               onPress={() => {
@@ -126,7 +113,9 @@ const LoginScreen = () => {
           }}
         >
           <RPPrimaryButton
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("HomeScreen");
+            }}
             buttonTitle={"Sign In"}
             buttonStyle={{ borderRadius: 30 }}
           />
@@ -142,10 +131,7 @@ const LoginScreen = () => {
             Don’t have an account?{" "}
             <Text
               onPress={() => {
-                setBottomSheetVisible(true);
-                setBottomSheetType(
-                  LoginScreenBottomSheetTypes.FORGOT_PASSWORD_EMAIL
-                );
+                navigation.navigate("QuickSetup");
               }}
               style={{
                 color: BASIC_COLORS.PRIMARY,
