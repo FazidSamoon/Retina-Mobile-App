@@ -18,6 +18,12 @@ export const getDateMonthAndYear = (
   return { dayOfTheWeek, month, year };
 };
 
+export const getCurrentWeek = () => {
+  const dateTime = getLuxonDateTime(new Date().toISOString());
+  const week = dateTime.weekNumber;
+  return week;
+}
+
 export const getDayStringOfTheWeek = (date: Date) => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return days[date.getDay()];

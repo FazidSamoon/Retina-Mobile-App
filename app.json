@@ -22,10 +22,27 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.RetinaMobileApp"
+      "package": "com.anonymous.RetinaMobileApp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Allow Retina mobile app to access your microphone",
+          "speechRecognitionPermission": "Allow Retina mobile app to access your speech recognition"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "68bd6181-bdfa-40ca-b273-6ca5682822cc"
+      }
     }
   }
 }

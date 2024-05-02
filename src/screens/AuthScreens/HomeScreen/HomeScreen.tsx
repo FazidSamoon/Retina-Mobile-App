@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Header from "../../../components/molecules/Header/Header";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -13,8 +13,10 @@ const HomeScreen = () => {
         <View style={styles.container}>
           <Header />
           <Greetings />
-          <ChallengesCardContainer />
-          <CategoriesContainer />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <ChallengesCardContainer />
+            <CategoriesContainer />
+          </ScrollView>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

@@ -1,4 +1,10 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import MenuIcon from "../../../assets/MenuIcon";
 import {
@@ -6,18 +12,27 @@ import {
   getDayStringOfTheWeek,
 } from "../../../utils/common/commonUtil";
 import NotificationIcon from "../../../assets/NotificationIcon";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = () => {
   const date = new Date();
   const day = date.getDate();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.menuContainer}>
+      <TouchableOpacity
+        style={styles.menuContainer}
+        onPress={() => {
+          navigation.openDrawer();
+        }}
+      >
         <MenuIcon />
       </TouchableOpacity>
       <View>
-        <Text style={styles.dateText}>{`${getDayStringOfTheWeek(date)}, ${day}`}</Text>
+        <Text style={styles.dateText}>{`${getDayStringOfTheWeek(
+          date
+        )}, ${day}`}</Text>
       </View>
       <TouchableOpacity style={styles.menuContainer}>
         <NotificationIcon />
@@ -50,5 +65,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: "#002055",
-  }
+  },
 });

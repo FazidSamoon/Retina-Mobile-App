@@ -46,6 +46,7 @@ const CategoriesContainer = () => {
         }}
       >
         <ScrollView
+          
         // showsVerticalScrollIndicator={true}
         // scrollEnabled
         // alwaysBounceVertical
