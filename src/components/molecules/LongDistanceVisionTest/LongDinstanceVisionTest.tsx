@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View, Image, Modal } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import * as Brightness from "expo-brightness";
 import { getCurrentWeek } from "../../../utils/common/commonUtil";
@@ -10,8 +10,22 @@ import {
 import { VisionTestLetters } from "../../../utils/types/data";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import Voice from "@react-native-voice/voice";
+import SoundWave from "../../atoms/SoundWave/SoundWave";
+import { identifiyLetters } from "../../../utils/common/speechIdentification";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { BASIC_COLORS } from "../../../utils/constants/styles";
+import {
+  VisionTestFlows,
+  VisionTestFlowsActions,
+} from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 
-const LongDinstanceVisionTest = () => {
+const LongDinstanceVisionTest = ({
+  selectedFlow,
+  setSteps,
+}: {
+  selectedFlow: VisionTestFlowsActions;
+  setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+}) => {
   const [startedListning, setStartedListning] = useState<boolean>(false);
   const [letterRecognitionResult, setLetterRecognitionResult] = useState([]);
   const [visionTestStates, setVisionTestStates] = useState<VisionTestStateType>(
@@ -62,6 +76,7 @@ const LongDinstanceVisionTest = () => {
 
   const [showStepChangeModal, setShowStepChangeModal] =
     useState<boolean>(false);
+  const [showEyeChangeModal, setShowEyeChangeModal] = useState<boolean>(false);
   const [showStepChangeModalSize, setShowStepChangeModalSize] =
     useState<number>(0);
   const [status, setStatus] = useState<ResultStatus>(ResultStatus.NULL);
@@ -69,9 +84,12 @@ const LongDinstanceVisionTest = () => {
   const [currentEye, setCurrentEye] = useState<"leftEye" | "rightEye">(
     "leftEye"
   );
+  const [timer, setTimer] = useState<number>(15);
+  const [listning, setListning] = useState<boolean>(false);
+  const [identified, setIdentified] = useState<boolean>(false);
   const [successfullyIdentified, setSuccessfullyIdentified] =
     useState<number>(0);
-  // const [letterInView, setLetterInView] = useState<string>("E");
+  const [startTimer, setStartTimer] = useState<boolean>(false);
   const letterInView = useRef<string>("E");
 
   const getNextTextSize = (curr: number) => {
@@ -139,190 +157,76 @@ const LongDinstanceVisionTest = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (currentStepIndex / 6 === 0 && showStepChangeModal) {
-  //     setTimeout(() => {
-  //       setCurrentTextSize(getNextTextSize(currentTextSize));
-  //       setLongDistanceVisionTestStep(currentStep);
-  //       setShowStepChangeModal(false);
-  //     }, 3000);
-  //   }
-  // }, [showStepChangeModal]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Brightness.requestPermissionsAsync();
-  //     if (status === "granted") {
-  //       const currentBrightness = Brightness.getBrightnessAsync().then(
-  //         (res) => {
-  //           // console.log("current brightness", res);
-  //         }
-  //       );
-  //       // console.log("current brightness", currentBrightness);
-  //       Brightness.setSystemBrightnessAsync(1);
-  //     }
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (
-  //     currentStepIndex === 6 ||
-  //     currentStepIndex === 11 ||
-  //     currentStepIndex === 16 ||
-  //     currentStepIndex === 21 ||
-  //     currentStepIndex === 26 ||
-  //     currentStepIndex === 31 ||
-  //     currentStepIndex === 36 ||
-  //     currentStepIndex === 41 ||
-  //     currentStepIndex === 46 ||
-  //     currentStepIndex === 51
-  //   ) {
-  //     setVisionTestStates({
-  //       ...visionTestStates,
-  //       testResults: {
-  //         ...visionTestStates.testResults,
-  //         [currentEye]: {
-  //           result: {
-  //             ...visionTestStates.testResults[currentEye].result,
-  //             [currentTextSize]: successfullyIdentified,
-  //           },
-  //           status: "Normal",
-  //         },
-  //       },
-  //     });
-  //     setShowStepChangeModal(true);
-  //     setShowStepChangeModalSize(currentStepIndex);
-  //     setLongDistanceVisionTestStep(currentStep);
-  //     if (currentStepIndex < 51)
-  //       setCurrentTextSize(getNextTextSize(currentTextSize));
-  //     // cleaning states
-  //     setSuccessfullyIdentified(0);
-  //   }
-  // }, [currentStepIndex]);
-
-  // useEffect(() => {
-  //   // startSpeechToText();
-
-  //   const onSpeechResults = (e: any) => {
-  //     console.log("onSpeechResults", e);
-  //     // setLetterRecognitionResult(e.value);
-  //     // if (e.value === letterInView.current) {
-  //     //   setSuccessfullyIdentified(successfullyIdentified + 1);
-  //     // }
-  //   };
-
-  //   Voice.onSpeechResults = onSpeechResults;
-
-  //   Voice.onSpeechStart = (e) => {
-  //     console.log("onSpeechStart", e);
-  //   }
-
-  //   Voice.onSpeechRecognized = (e) => {
-  //     console.log("onSpeechRecognized", e);
-  //   }
-
-  //   Voice.onSpeechEnd = (e) => {
-  //     console.log("onSpeechEnd", e);
-  //     destroyRecognizer();
-  //     stopSpeechToText();
-  //   }
-
-  //   Voice.onSpeechVolumeChanged = (e) => {
-  //     console.log("onSpeechVolumeChanged", e);
-  //   }
-
-  //   Voice.onSpeechPartialResults = (e) => {
-  //     console.log("onSpeechPartialResults", e);
-  //   }
-
-  //   // Voice.onSpeechError = (e) => {
-  //   //   console.log("onSpeechError", e);
-  //   //   destroyRecognizer();
-  //   //   stopSpeechToText();
-  //   // };
-
-  //   // setTimeout(() => {
-  //   //   stopSpeechToText();
-  //   // }, 10000);
-
-  //   return () => {
-  //     stopSpeechToText();
-  //     Voice.destroy().then(Voice.removeAllListeners);
-  //   };
-  // }, []);
-
-  const destroyRecognizer = async () => {
-    //Destroys the current SpeechRecognizer instance
-    try {
-      await Voice.destroy();
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    stopSpeechToText();
-  }, []);
-  // useEffect(() => {
-  //   startSpeechToText();
-
-  // }, [letterInView.current, currentStepIndex]);
-
-  // useEffect(() => {
-  //   startSpeechToText();
-  // }, [letterInView.current, currentStepIndex]);
-
   const getRandomLetter = () => {
     const randomIndex = Math.floor(Math.random() * VisionTestLetters.length);
     letterInView.current = VisionTestLetters[randomIndex];
     return VisionTestLetters[randomIndex];
   };
 
-  // const startSpeechToText = async () => {
-  //   await Voice.stop();
-  //   await Voice.cancel();
-  //   await Voice.destroy();
-  //   await Voice.start("en-NZ", {
-  //     showPartial: true,
+  useEffect(() => {
+    let interval;
 
-  //   });
+    const startTimer = () => {
+      clearInterval(interval);
+      setTimeout(() => {
+        setTimer(15);
+        interval = setInterval(() => {
+          setTimer((prevTimer) => {
+            if (prevTimer === 0) {
+              clearInterval(interval);
+              startTimer();
+              return 0;
+            }
+            return prevTimer - 1;
+          });
+        }, 1000);
+      }, 3000);
+    };
 
-  //   console.log("Voice", Voice);
-  //   Voice.isAvailable().then((isAvailable) => {
-  //     console.log("isAvailable", isAvailable);
-  //   });
+    interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 0) {
+          clearInterval(interval);
+          if (status === ResultStatus.NULL) {
+            startTimer();
+          }
 
-  //   Voice.isRecognizing().then((isRecognizing) => {
-  //     console.log("isRecognizing", isRecognizing);
-  //   });
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
 
-  //    Voice.onSpeechRecognized = (e) => {
-  //     console.log("onSpeechRecognized", e);
-  //   }
+    return () => clearInterval(interval);
+  }, []);
 
-  //   Voice.onSpeechResults = (e) => {
-  //     console.log("onSpeechResults", e);
-  //   };
+  useEffect(() => {
+    if (timer === 0) {
+      stopSpeechToText();
+      if (currentStepIndex < 51 && status === ResultStatus.NULL)
+        setCurrentStepIndex((prev) => prev + 1);
+      setLetterRecognitionResult([]);
+      setIdentified(false);
+      setListning(false);
+    }
+    if (timer === 15) {
+      if (currentStepIndex < 51 && status === ResultStatus.NULL)
+        letterInView.current = getRandomLetter();
+      setIdentified(false);
+      startSpeechToText();
+      setListning(true);
+    }
+  }, [timer]);
 
-  //   Voice.onSpeechError = (e) => {
-  //     console.log("onSpeechErrorsssssss", e);
-  //   };
-  //   setStartedListning(true);
-  // };
-
-  // const stopSpeechToText = async () => {
-  //   await Voice.stop();
-  //   await Voice.destroy();
-  //   Voice.removeAllListeners();
-  //   setStartedListning(false);
-  // };
+  useEffect(() => {
+    handleTextSizeStepChange();
+  }, [currentStepIndex]);
 
   useEffect(() => {
     Voice.onSpeechResults = onSpeechResults;
 
     Voice.onSpeechStart = (e) => {
-      console.log("onSpeechStart", e);
+      if (!listning) setListning(true);
     };
 
     Voice.onSpeechRecognized = (e) => {
@@ -338,35 +242,222 @@ const LongDinstanceVisionTest = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (status !== ResultStatus.NULL || currentStepIndex === 51) {
+      setListning(false);
+      setStartedListning(false);
+      stopSpeechToText();
+    }
+  }, [status, currentStepIndex]);
+
+  useEffect(() => {
+    if (status === ResultStatus.FAILED || currentStepIndex === 51) {
+      stopSpeechToText();
+      endTest();
+    } else if (status === ResultStatus.PASSED) {
+      setVisionTestStates({
+        ...visionTestStates,
+        testResults: {
+          ...visionTestStates.testResults,
+          [currentEye]: {
+            result: {
+              ...visionTestStates.testResults[currentEye].result,
+              [currentTextSize]: successfullyIdentified,
+            },
+            status: "Normal",
+          },
+        },
+      });
+      setLongDistanceVisionTestStep(currentStep);
+      if (currentStepIndex < 51)
+        setCurrentTextSize(getNextTextSize(currentTextSize));
+      setSuccessfullyIdentified(0);
+    }
+  }, [status, currentStepIndex]);
+
+  useEffect(() => {
+    let timeout;
+    if (showEyeChangeModal) {
+      timeout = setTimeout(() => {
+        setShowEyeChangeModal(false);
+        setSuccessfullyIdentified(0);
+        setTimer(15);
+        setListning(true);
+        startSpeechToText();
+      }, 10000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [showEyeChangeModal]);
+
+  const handleTextSizeStepChange = () => {
+    console.log("currentStepIndex", currentStepIndex);
+    if (
+      currentStepIndex === 6 ||
+      currentStepIndex === 11 ||
+      currentStepIndex === 16 ||
+      currentStepIndex === 21 ||
+      currentStepIndex === 26 ||
+      currentStepIndex === 31 ||
+      currentStepIndex === 36 ||
+      currentStepIndex === 41 ||
+      currentStepIndex === 46 ||
+      currentStepIndex === 51
+    ) {
+      console.log("currentStepIndex hello world");
+      setVisionTestStates({
+        ...visionTestStates,
+        testResults: {
+          ...visionTestStates.testResults,
+          [currentEye]: {
+            result: {
+              ...visionTestStates.testResults[currentEye].result,
+              [currentTextSize]: successfullyIdentified,
+            },
+            status: "Normal",
+          },
+        },
+      });
+      setLongDistanceVisionTestStep(currentStep);
+      if (currentStepIndex < 51)
+        setCurrentTextSize(getNextTextSize(currentTextSize));
+
+      if (successfullyIdentified < 4) {
+        stopSpeechToText();
+        setStatus(ResultStatus.FAILED);
+        alert("You have failed the test at level ");
+        setListning(false);
+      }
+      setSuccessfullyIdentified(0);
+    }
+  };
+
   const onSpeechResults = (event) => {
-    console.log("onSpeechResults", event);
     setLetterRecognitionResult(event.value);
-    if (event.value === letterInView.current) {
+    console.log("onSpeechResults", event.value);
+    const recognitionState: boolean = identifiyLetters(
+      event.value,
+      letterInView.current
+    );
+
+    if (recognitionState) {
+      stopSpeechToText();
+      if (currentStepIndex < 51 && status === ResultStatus.NULL)
+        setCurrentStepIndex((prev) => prev + 1);
+      setListning(false);
+      setIdentified(true);
       setSuccessfullyIdentified(successfullyIdentified + 1);
+      setLetterRecognitionResult([]);
+
+      if (timer > 5) {
+        setTimeout(() => {
+          setIdentified(false);
+          setTimer(15);
+          startSpeechToText();
+        }, 3000);
+      }
+    } else {
+      startSpeechToText();
     }
   };
 
   const startSpeechToText = async () => {
     try {
-      await Voice.start("en-US");
+      if (status === ResultStatus.NULL) {
+        await Voice.start("en-US");
+      }
     } catch (error) {
       console.error(error);
-      // Retry recognition after a delay if the service is busy
-      setTimeout(startSpeechToText, 1000);
     }
   };
 
   const stopSpeechToText = async () => {
     try {
       await Voice.stop();
+      await Voice.destroy();
     } catch (error) {
       console.error(error);
     }
   };
-  console.log("letterInView", letterInView.current);
-  console.log("letterRecognitionResult", letterRecognitionResult);
+
+  const endTest = () => {
+    if (
+      (currentEye === "leftEye" && status === ResultStatus.FAILED) ||
+      (currentEye === "leftEye" && status === ResultStatus.PASSED) ||
+      (currentEye === "rightEye" && currentStepIndex === 51)
+    ) {
+      setCurrentEye("rightEye");
+      setStatus(ResultStatus.NULL);
+      setShowEyeChangeModal(true);
+      setCurrentStepIndex(1);
+    }
+
+    if (
+      (currentEye === "rightEye" && status === ResultStatus.FAILED) ||
+      (currentEye === "rightEye" && ResultStatus.PASSED) ||
+      (currentEye === "rightEye" && currentStepIndex === 51)
+    ) {
+      stopSpeechToText();
+      setVisionTestStates({
+        ...visionTestStates,
+        testCompleted: true,
+      });
+
+      setTimer(0);
+      setStatus(ResultStatus.PASSED);
+      setSteps(VisionTestFlows.TEST_RESULT);
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {currentStepIndex} / 50
+          </Text>
+        </View>
+
+        {status === ResultStatus.NULL ? (
+          <AnimatedCircularProgress
+            size={30}
+            width={3}
+            fill={(timer * 100) / 15}
+            tintColor={
+              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
+            }
+            backgroundColor="#3d5875"
+          >
+            {(fill) => <Text>{timer}</Text>}
+          </AnimatedCircularProgress>
+        ) : (
+          <AnimatedCircularProgress
+            size={30}
+            width={3}
+            fill={15 / 15}
+            tintColor={
+              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
+            }
+            backgroundColor="#3d5875"
+          >
+            {(fill) => <Text>15</Text>}
+          </AnimatedCircularProgress>
+        )}
+      </View>
+
       <View style={styles.textContainerView}>
         <Text
           style={{
@@ -390,23 +481,72 @@ const LongDinstanceVisionTest = () => {
           width: "100%",
         }}
       >
-        <RPPrimaryButton
-          buttonTitle={"Next"}
-          onPress={() => {
-            startSpeechToText();
-            // setCurrentStepIndex(currentStepIndex + 1);
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          buttonStyle={{ borderRadius: 30 }}
-        />
-        <RPPrimaryButton
-          buttonTitle={"cancel"}
-          onPress={async () => {
-            await stopSpeechToText();
-            // setCurrentStepIndex(currentStepIndex + 1);
-          }}
-          buttonStyle={{ borderRadius: 30 }}
-        />
+        >
+          {identified && (
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Identified
+            </Text>
+          )}
+          {listning && !identified && (
+            <Image source={require("../../../assets/SoundWave.gif")} />
+          )}
+        </View>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showEyeChangeModal}
+        onRequestClose={() => {
+          setShowEyeChangeModal(false);
+        }}
+      >
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              height: 200,
+              width: 300,
+              backgroundColor: "white",
+              borderRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text>Change Eye</Text>
+            <RPPrimaryButton
+              buttonTitle="Change Eye"
+              onPress={() => {
+                setShowEyeChangeModal(false);
+                setSuccessfullyIdentified(0);
+                setTimer(15);
+                setListning(true);
+                startSpeechToText();
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

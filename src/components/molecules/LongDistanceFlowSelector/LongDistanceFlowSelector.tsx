@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
 import React from "react";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
-    width: "70%",
-    height: "70%",
+    width: Dimensions.get("window").width * 0.5,
+    height: Dimensions.get("window").width * 0.5,
 
-    borderRadius: 200,
+    borderRadius: 500,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

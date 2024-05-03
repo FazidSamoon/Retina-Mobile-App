@@ -51,7 +51,10 @@ const LongDistanceVisionTestContainer = () => {
           setSteps={setSteps}
         />
       ) : steps === VisionTestFlows.TEST_SCREEN ? (
-        <LongDinstanceVisionTest />
+        <LongDinstanceVisionTest 
+          selectedFlow={selectedFlow}
+          setSteps={setSteps}
+        />
       ) : (
         <TestResults />
       )}
