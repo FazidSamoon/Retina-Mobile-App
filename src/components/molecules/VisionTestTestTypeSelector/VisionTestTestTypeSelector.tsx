@@ -1,27 +1,35 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
-import React from "react";
-import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Dimensions,
+} from "react-native";
+import React from "react";
+import {
+  TestTypes,
   VisionTestFlows,
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import { BASIC_COLORS } from "../../../utils/constants/styles";
+import LetterA from "../../../assets/LetterA";
+import Number1 from "../../../assets/Number1";
 
-const LongDistanceFlowSelector = ({
+const VisionTestTestTypeSelector = ({
   setSelectedFlow,
   setSteps,
+  setTestType,
 }: {
   setSelectedFlow: React.Dispatch<React.SetStateAction<VisionTestFlowsActions>>;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+  setTestType: React.Dispatch<React.SetStateAction<TestTypes>>;
 }) => {
   const [selected, setSelected] = React.useState<number>(-1);
   const onPress = (index: number) => {
     setSelected(index);
-    setSelectedFlow(
-      index === 0
-        ? VisionTestFlowsActions.PERFORM_BY_MYSELF
-        : VisionTestFlowsActions.PERFORM_WITH_HELP
-    );
-    setSteps(VisionTestFlows.TEST_TYPE_SELECTOR);
+    setTestType(index === 0 ? TestTypes.LETTERS : TestTypes.NUMBERS);
+    setSteps(VisionTestFlows.TEST_INSTRUCTIONS);
   };
   return (
     <View style={styles.container}>
@@ -33,7 +41,7 @@ const LongDistanceFlowSelector = ({
           ]}
           onPress={() => onPress(0)}
         >
-          <Image source={require("../../../assets/Distance_Test.png")} />
+          <LetterA />
         </TouchableOpacity>
         <Text
           style={[
@@ -43,7 +51,7 @@ const LongDistanceFlowSelector = ({
             },
           ]}
         >
-          Perform by Myself
+          Letters
         </Text>
       </View>
 
@@ -55,7 +63,7 @@ const LongDistanceFlowSelector = ({
           ]}
           onPress={() => onPress(1)}
         >
-          <Image source={require("../../../assets/Distance_Test.png")} />
+          <Number1 />
         </TouchableOpacity>
         <Text
           style={[
@@ -65,15 +73,14 @@ const LongDistanceFlowSelector = ({
             },
           ]}
         >
-          Perform with Someonces Guidence
+          Numbers
         </Text>
       </View>
     </View>
   );
 };
-///Users/fazidsamoon/Developer/Personal/Uni/RESEARCH/Retina-Mobile-App/src/assets/Distance_Test.png
 
-export default LongDistanceFlowSelector;
+export default VisionTestTestTypeSelector;
 
 const styles = StyleSheet.create({
   container: {

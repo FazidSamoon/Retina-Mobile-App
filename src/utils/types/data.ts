@@ -37,7 +37,6 @@ export const VisionTestLetters = [
   "N",
   "R",
   "S",
-  "U",
   "V",
   "Y",
   "A",
@@ -46,4 +45,17 @@ export const VisionTestLetters = [
   "Q",
   "W",
   "X",
+];
+
+export const VisionTestNumbers = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "0",
 ];

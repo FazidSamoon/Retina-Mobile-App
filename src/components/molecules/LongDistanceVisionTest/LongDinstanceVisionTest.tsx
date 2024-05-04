@@ -7,24 +7,35 @@ import {
   ResultStatus,
   VisionTestStateType,
 } from "./LongDistanceVIsionTestTypes";
-import { VisionTestLetters } from "../../../utils/types/data";
+import {
+  VisionTestLetters,
+  VisionTestNumbers,
+} from "../../../utils/types/data";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import Voice from "@react-native-voice/voice";
-import SoundWave from "../../atoms/SoundWave/SoundWave";
-import { identifiyLetters } from "../../../utils/common/speechIdentification";
+import {
+  identifiyLetters,
+  identifyNumbers,
+} from "../../../utils/common/speechIdentification";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
+  TestTypes,
   VisionTestFlows,
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import ForwardArrowHead from "../../../assets/ForwardArrowHead";
 
 const LongDinstanceVisionTest = ({
   selectedFlow,
   setSteps,
+  setResults,
+  testType,
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+  setResults: React.Dispatch<React.SetStateAction<VisionTestStateType>>;
+  testType: TestTypes;
 }) => {
   const [startedListning, setStartedListning] = useState<boolean>(false);
   const [letterRecognitionResult, setLetterRecognitionResult] = useState([]);
@@ -163,6 +174,12 @@ const LongDinstanceVisionTest = ({
     return VisionTestLetters[randomIndex];
   };
 
+  const getRandomNumber = () => {
+    const randomIndex = Math.floor(Math.random() * 10);
+    letterInView.current = VisionTestNumbers[randomIndex];
+    return VisionTestNumbers[randomIndex];
+  };
+
   useEffect(() => {
     let interval;
 
@@ -203,6 +220,7 @@ const LongDinstanceVisionTest = ({
   useEffect(() => {
     if (timer === 0) {
       stopSpeechToText();
+      letterInView.current = null;
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
         setCurrentStepIndex((prev) => prev + 1);
       setLetterRecognitionResult([]);
@@ -211,7 +229,10 @@ const LongDinstanceVisionTest = ({
     }
     if (timer === 15) {
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
-        letterInView.current = getRandomLetter();
+        letterInView.current =
+          testType === TestTypes.LETTERS
+            ? getRandomLetter()
+            : getRandomNumber();
       setIdentified(false);
       startSpeechToText();
       setListning(true);
@@ -234,7 +255,7 @@ const LongDinstanceVisionTest = ({
     };
 
     Voice.onSpeechError = (e) => {
-      console.log("onSpeechErrorsssssss", e);
+      stopSpeechToText();
       setTimeout(startSpeechToText, 1000);
     };
     return () => {
@@ -291,7 +312,6 @@ const LongDinstanceVisionTest = ({
   }, [showEyeChangeModal]);
 
   const handleTextSizeStepChange = () => {
-    console.log("currentStepIndex", currentStepIndex);
     if (
       currentStepIndex === 6 ||
       currentStepIndex === 11 ||
@@ -304,7 +324,6 @@ const LongDinstanceVisionTest = ({
       currentStepIndex === 46 ||
       currentStepIndex === 51
     ) {
-      console.log("currentStepIndex hello world");
       setVisionTestStates({
         ...visionTestStates,
         testResults: {
@@ -322,10 +341,9 @@ const LongDinstanceVisionTest = ({
       if (currentStepIndex < 51)
         setCurrentTextSize(getNextTextSize(currentTextSize));
 
-      if (successfullyIdentified < 4) {
+      if (successfullyIdentified < 3) {
         stopSpeechToText();
         setStatus(ResultStatus.FAILED);
-        alert("You have failed the test at level ");
         setListning(false);
       }
       setSuccessfullyIdentified(0);
@@ -335,10 +353,10 @@ const LongDinstanceVisionTest = ({
   const onSpeechResults = (event) => {
     setLetterRecognitionResult(event.value);
     console.log("onSpeechResults", event.value);
-    const recognitionState: boolean = identifiyLetters(
-      event.value,
-      letterInView.current
-    );
+    const recognitionState: boolean =
+      testType === TestTypes.LETTERS
+        ? identifiyLetters(event.value, letterInView.current)
+        : identifyNumbers(event.value, parseInt(letterInView.current));
 
     if (recognitionState) {
       stopSpeechToText();
@@ -346,7 +364,7 @@ const LongDinstanceVisionTest = ({
         setCurrentStepIndex((prev) => prev + 1);
       setListning(false);
       setIdentified(true);
-      setSuccessfullyIdentified(successfullyIdentified + 1);
+      setSuccessfullyIdentified((prev) => prev + 1);
       setLetterRecognitionResult([]);
 
       if (timer > 5) {
@@ -386,10 +404,12 @@ const LongDinstanceVisionTest = ({
       (currentEye === "leftEye" && status === ResultStatus.PASSED) ||
       (currentEye === "rightEye" && currentStepIndex === 51)
     ) {
+      console.log("End Test Left Eye ", visionTestStates);
       setCurrentEye("rightEye");
       setStatus(ResultStatus.NULL);
       setShowEyeChangeModal(true);
       setCurrentStepIndex(1);
+      setCurrentTextSize(202.6);
     }
 
     if (
@@ -397,6 +417,7 @@ const LongDinstanceVisionTest = ({
       (currentEye === "rightEye" && ResultStatus.PASSED) ||
       (currentEye === "rightEye" && currentStepIndex === 51)
     ) {
+      console.log("End Test Right Eye ", visionTestStates);
       stopSpeechToText();
       setVisionTestStates({
         ...visionTestStates,
@@ -405,6 +426,7 @@ const LongDinstanceVisionTest = ({
 
       setTimer(0);
       setStatus(ResultStatus.PASSED);
+      setResults(visionTestStates);
       setSteps(VisionTestFlows.TEST_RESULT);
     }
   };
@@ -430,7 +452,7 @@ const LongDinstanceVisionTest = ({
             {currentStepIndex} / 50
           </Text>
         </View>
-
+{/* 
         {status === ResultStatus.NULL ? (
           <AnimatedCircularProgress
             size={30}
@@ -455,29 +477,83 @@ const LongDinstanceVisionTest = ({
           >
             {(fill) => <Text>15</Text>}
           </AnimatedCircularProgress>
-        )}
+        )} */}
       </View>
 
       <View style={styles.textContainerView}>
-        <Text
-          style={{
-            fontSize: currentTextSize,
-            fontWeight: "bold",
-          }}
-        >
-          {letterInView.current}
-        </Text>
-      </View>
-
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: "500" }}>
-          Current screening {currentStep + 1}
-        </Text>
+        {letterInView.current === null ? (
+          (<>
+            <View style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: 200,
+              height: 200,
+              borderRadius: 100,
+              backgroundColor: "white",
+              borderColor: "#E9F1FF",
+              borderWidth: 5,
+            }}>
+              <ForwardArrowHead height={60} width={60}/>
+            </View>
+          </>)
+        ) : (
+          <Text
+            style={{
+              fontSize: currentTextSize,
+              fontWeight: "bold",
+            }}
+          >
+            {letterInView.current}
+          </Text>
+        )}
       </View>
 
       <View
         style={{
           marginTop: 30,
+        }}
+      >
+        {status === ResultStatus.NULL ? (
+          <AnimatedCircularProgress
+            size={100}
+            width={7}
+            fill={(timer * 100) / 15}
+            tintColor={
+              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
+            }
+            backgroundColor="#3d5875"
+          >
+            {(fill) => (
+              <Text
+                style={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                }}
+              >
+                {timer}
+              </Text>
+            )}
+          </AnimatedCircularProgress>
+        ) : (
+          <AnimatedCircularProgress
+            size={30}
+            width={3}
+            fill={15 / 15}
+            tintColor={
+              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
+            }
+            backgroundColor="#3d5875"
+          >
+            {(fill) => <Text>15</Text>}
+          </AnimatedCircularProgress>
+        )}
+      </View>
+
+      <View
+        style={{
+          marginTop: 10,
           width: "100%",
         }}
       >
@@ -499,7 +575,7 @@ const LongDinstanceVisionTest = ({
               Identified
             </Text>
           )}
-          {listning && !identified && (
+          {listning && !identified && !showEyeChangeModal && (
             <Image source={require("../../../assets/SoundWave.gif")} />
           )}
         </View>
@@ -524,7 +600,7 @@ const LongDinstanceVisionTest = ({
         >
           <View
             style={{
-              height: 200,
+              height: Dimensions.get("window").height * 0.7,
               width: 300,
               backgroundColor: "white",
               borderRadius: 20,
@@ -533,17 +609,17 @@ const LongDinstanceVisionTest = ({
               alignItems: "center",
             }}
           >
-            <Text>Change Eye</Text>
-            <RPPrimaryButton
-              buttonTitle="Change Eye"
-              onPress={() => {
-                setShowEyeChangeModal(false);
-                setSuccessfullyIdentified(0);
-                setTimer(15);
-                setListning(true);
-                startSpeechToText();
-              }}
-            />
+            <Text style={{
+              fontSize: 30,
+              fontWeight: "bold",
+              marginBottom: 20,
+            textAlign: "center"
+            }}>Please close your LEFT eye</Text>
+            <Image source={require("../../../assets/CloseLeftEye.png")} style={{
+              width: Dimensions.get("window").width * 0.6,
+              height: Dimensions.get("window").height * 0.4,
+            
+            }}/>
           </View>
         </View>
       </Modal>
