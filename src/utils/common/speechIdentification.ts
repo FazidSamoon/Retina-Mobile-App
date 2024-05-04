@@ -6,7 +6,7 @@ export const identifiyLetters = (
 ): boolean => {
   const result = text?.some(
     (letter: string) =>
-      letter?.split(" ")[1]?.toLowerCase() === letterInView.toLowerCase()
+      letter?.split(" ")?.[1]?.toLowerCase() === letterInView.toLowerCase()
   );
   return result;
 };

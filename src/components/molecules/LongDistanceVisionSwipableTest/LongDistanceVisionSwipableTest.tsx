@@ -221,8 +221,14 @@ const LongDistanceVisionSwipableTest = ({
       }
     } else {
       letterInView.current = null;
-      setIdentified(false);
-      setTimer(15);
+      if (currentStepIndex < 51 && status === ResultStatus.NULL)
+        setCurrentStepIndex((prev) => prev + 1);
+      if (timer > 5) {
+        setTimeout(() => {
+          setIdentified(false);
+          setTimer(15);
+        }, 3000);
+      }
     }
   };
 
