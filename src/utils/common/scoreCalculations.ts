@@ -69,25 +69,25 @@ export const VisionTestIdentificationBaseScoreValueForEachLetterSize = {
 
 export const getLogmarValueForSize = (size: string) => {
   switch (size) {
-    case "SIZE_202_6":
+    case "202_6":
       return 1.0;
-    case "SIZE_173_3":
+    case "173_3":
       return 0.9;
-    case "SIZE_144":
+    case "144":
       return 0.8;
-    case "SIZE_116":
+    case "116":
       return 0.7;
-    case "SIZE_86_6":
+    case "86.6":
       return 0.6;
-    case "SIZE_57_3":
+    case "57.3":
       return 0.5;
-    case "SIZE_44":
+    case "44":
       return 0.4;
-    case "SIZE_28":
+    case "28":
       return 0.3;
-    case "SIZE_20":
+    case "20":
       return 0.2;
-    case "SIZE_12":
+    case "12":
       return 0.1;
     default:
   }
