@@ -1,3 +1,5 @@
+import { LongDIstanceVisionTestSteps } from "../../components/molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+
 export const identifiyLetters = (
   text: string[],
   letterInView: string
@@ -119,4 +121,71 @@ export const identifyNumbers = (
   }
 
   return result;
+};
+
+export const getNextTextSize = (curr: number) => {
+  console.log("curr", curr);
+  switch (curr) {
+    case 202.6:
+      return 173.3;
+    case 173.3:
+      return 144;
+    case 144:
+      return 116;
+    case 116:
+      return 86.6;
+    case 86.6:
+      return 57.3;
+    case 57.3:
+      return 44;
+    case 44:
+      return 28;
+    case 28:
+      return 20;
+    case 20:
+      return 12;
+    case 12:
+      return 0;
+    default:
+      return 0;
+  }
+};
+
+
+export const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps, setCurrentStep: React.Dispatch<React.SetStateAction<LongDIstanceVisionTestSteps>>) => {
+  switch (step) {
+    case LongDIstanceVisionTestSteps.SIZE_202_6:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_173_3);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_173_3:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_144);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_144:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_116);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_116:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_86_6);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_86_6:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_57_3);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_57_3:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_44);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_44:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_28);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_28:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_20);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_20:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_12);
+      break;
+    case LongDIstanceVisionTestSteps.SIZE_12:
+      setCurrentStep(LongDIstanceVisionTestSteps.PASSED);
+      break;
+    default:
+      setCurrentStep(LongDIstanceVisionTestSteps.SIZE_202_6);
+      break;
+  }
 };

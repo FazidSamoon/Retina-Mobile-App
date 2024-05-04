@@ -9,17 +9,25 @@ import {
 import React from "react";
 import ForwardArrowHead from "../../../assets/ForwardArrowHead";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
-import { LongDistanceTestGuidenceSteps } from "../../../utils/types/data";
-import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import {
+  TestTypes,
+  VisionTestFlows,
+  VisionTestFlowsActions,
+} from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import { LongDistanceTestGuidenceStepsType } from "./LongDistanceStepTypes";
 
 const LongDistanceTestGuidence = ({
   steps,
   setGuidenceSteps,
   setSelectedFlow,
+  flow,
+  testType,
 }: {
   steps: number;
   setGuidenceSteps: React.Dispatch<React.SetStateAction<number>>;
   setSelectedFlow: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+  flow: VisionTestFlowsActions;
+  testType: TestTypes;
 }) => {
   const handleNextStep = () => {
     if (steps < LongDistanceTestGuidenceSteps.length - 1) {
@@ -27,9 +35,38 @@ const LongDistanceTestGuidence = ({
     }
 
     if (steps === LongDistanceTestGuidenceSteps.length - 1) {
-      setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+      if (flow === VisionTestFlowsActions.PERFORM_BY_MYSELF) {
+        setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+      } else {
+        setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+      }
     }
   };
+
+  const LongDistanceTestGuidenceSteps: LongDistanceTestGuidenceStepsType[] = [
+    {
+      step: 1,
+      title: "Step 1",
+      description:
+        "If you are wearing glasses wear then before performing the test",
+      image: require("../../../assets/step1.png"),
+    },
+    {
+      step: 2,
+      title: "Step 2",
+      description: "Stand at least 2m away from the screen",
+      image: require("../../../assets/step2.png"),
+    },
+    {
+      step: 3,
+      title: "Step 3",
+      description:
+        flow === VisionTestFlowsActions.PERFORM_BY_MYSELF
+          ? "Once you identified the letter pronounce the letter loud and clear before clocks ticks out"
+          : "Once you identified the letter ask for helper to swipe to the direction letter is pointing",
+      image: flow === VisionTestFlowsActions.PERFORM_BY_MYSELF ?require("../../../assets/voicepng.png") : require("../../../assets/4.png"),
+    },
+  ];
   return (
     <View style={styles.container}>
       <View
@@ -71,6 +108,27 @@ const LongDistanceTestGuidence = ({
           >
             {LongDistanceTestGuidenceSteps[steps].description}
           </Text>
+          {steps === 2 && flow === VisionTestFlowsActions.PERFORM_BY_MYSELF ? (
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                maxWidth: 350,
+                fontWeight: "400",
+                color: "red",
+              }}
+            >
+              Note: Prononce the letter followed by word{" "}
+              <Text
+                style={{
+                  fontWeight: "900",
+                  fontSize: 25,
+                }}
+              >
+                {testType === TestTypes.LETTERS ? "Letter" : "Number"}
+              </Text>
+            </Text>
+          ) : null}
         </View>
       </View>
 
@@ -100,12 +158,12 @@ export default LongDistanceTestGuidence;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("window").height - 100,
+    height: Dimensions.get("window").height - 200,
     width: "100%",
     marginBottom: 20,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 });

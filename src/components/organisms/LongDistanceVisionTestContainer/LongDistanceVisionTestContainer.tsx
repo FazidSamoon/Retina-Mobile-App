@@ -14,6 +14,7 @@ import { LongDistanceTestGuidenceSteps } from "../../../utils/types/data";
 import { getCurrentWeek } from "../../../utils/common/commonUtil";
 import { VisionTestStateType } from "../../molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestTestTypeSelector from "../../molecules/VisionTestTestTypeSelector/VisionTestTestTypeSelector";
+import LongDistanceVisionSwipableTest from "../../molecules/LongDistanceVisionSwipableTest/LongDistanceVisionSwipableTest";
 
 const LongDistanceVisionTestContainer = () => {
   const [visionTestStates, setVisionTestStates] = useState<VisionTestStateType>(
@@ -84,20 +85,26 @@ const LongDistanceVisionTestContainer = () => {
   };
   return (
     <View>
-      <VisionHomeScreenTopAppBar header={getTopAppBarTitle()} />
+      <VisionHomeScreenTopAppBar
+        header={getTopAppBarTitle()}
+        setSteps={setSteps}
+      />
 
       {steps === VisionTestFlows.TEST_INSTRUCTIONS ? (
         <LongDistanceTestGuidence
           steps={guidenceStep}
           setGuidenceSteps={setGuidenceStep}
           setSelectedFlow={setSteps}
+          flow={selectedFlow}
+          testType={testType}
         />
       ) : steps === VisionTestFlows.TEST_FLOW_SELECTOR ? (
         <LongDistanceFlowSelector
           setSelectedFlow={setSelectedFlow}
           setSteps={setSteps}
         />
-      ) : steps === VisionTestFlows.TEST_SCREEN ? (
+      ) : steps === VisionTestFlows.TEST_SCREEN &&
+        selectedFlow === VisionTestFlowsActions.PERFORM_BY_MYSELF ? (
         <LongDinstanceVisionTest
           selectedFlow={selectedFlow}
           setSteps={setSteps}
@@ -106,6 +113,14 @@ const LongDistanceVisionTestContainer = () => {
         />
       ) : steps === VisionTestFlows.TEST_RESULT ? (
         <TestResults visionTestResults={visionTestStates} setSteps={setSteps} />
+      ) : steps === VisionTestFlows.TEST_SCREEN &&
+        selectedFlow === VisionTestFlowsActions.PERFORM_WITH_HELP ? (
+        <LongDistanceVisionSwipableTest
+          selectedFlow={selectedFlow}
+          setSteps={setSteps}
+          setResults={setVisionTestStates}
+          testType={testType}
+        />
       ) : (
         <VisionTestTestTypeSelector
           setSelectedFlow={setSelectedFlow}

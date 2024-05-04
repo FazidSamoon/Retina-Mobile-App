@@ -59,3 +59,12 @@ export const VisionTestNumbers = [
   "9",
   "0",
 ];
+
+export const SwiperLetterDirections = ["left", "right", "up", "down"];
+
+export enum SwiperLetterDirectionsType {
+  LEFT = "left",
+  RIGHT = "right",
+  UP = "up",
+  DOWN = "down",
+};

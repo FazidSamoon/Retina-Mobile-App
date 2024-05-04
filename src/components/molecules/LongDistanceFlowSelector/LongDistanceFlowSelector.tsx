@@ -21,7 +21,8 @@ const LongDistanceFlowSelector = ({
         ? VisionTestFlowsActions.PERFORM_BY_MYSELF
         : VisionTestFlowsActions.PERFORM_WITH_HELP
     );
-    setSteps(VisionTestFlows.TEST_TYPE_SELECTOR);
+    if (index === 0) setSteps(VisionTestFlows.TEST_TYPE_SELECTOR);
+    else setSteps(VisionTestFlows.TEST_INSTRUCTIONS);
   };
   return (
     <View style={styles.container}>

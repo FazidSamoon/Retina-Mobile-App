@@ -1,16 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import MenuIcon from "../../../assets/MenuIcon";
-import BackwardArrow from "../../../assets/BackwardArrow";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import BackArrowHead from "../../../assets/BackArrowHead";
+import Voice from "@react-native-voice/voice";
+import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 
 const VisionHomeScreenTopAppBar = ({
   header = "Check Vision Task",
   navigateTo,
+  setSteps,
 }: {
   header: string;
   navigateTo?: () => void;
+  setSteps?: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
 }) => {
   const navigation = useNavigation<any>();
 
@@ -19,6 +21,19 @@ const VisionHomeScreenTopAppBar = ({
       navigateTo();
     } else {
       navigation.goBack();
+    }
+
+    stopSpeechToText();
+
+    setSteps && setSteps(VisionTestFlows.TEST_FLOW_SELECTOR);
+  };
+
+  const stopSpeechToText = async () => {
+    try {
+      await Voice.stop();
+      await Voice.destroy();
+    } catch (error) {
+      console.error(error);
     }
   };
   return (
@@ -31,10 +46,7 @@ const VisionHomeScreenTopAppBar = ({
         marginBottom: 30,
       }}
     >
-      <TouchableOpacity
-        style={styles.menuContainer}
-        onPress={handleNavigation}
-      >
+      <TouchableOpacity style={styles.menuContainer} onPress={handleNavigation}>
         <BackArrowHead />
       </TouchableOpacity>
       <Text
