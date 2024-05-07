@@ -23,7 +23,6 @@ const DetailedOverview = ({
         leftEye[leftEye.length - 1][0],
         5 - leftEye[leftEye.length - 1][1]
       );
-
       return leftEyeLogmarScore.toFixed(2);
     }
   };

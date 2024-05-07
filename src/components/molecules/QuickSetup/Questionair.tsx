@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { QuickSetupTypes } from "../../../screens/RootScreens/QuickSetupScreen/quickSetupTypes";
 import BackwardArrow from "../../../assets/BackwardArrow";
@@ -8,11 +8,16 @@ import QuickSetupStepOne from "./QuickSetupStepOne/QuickSetupStepOne";
 import QuickSetupStepTwo from "./QuickSetupStepTwo/QuickSetupStepTwo";
 import QuickSetupStepThree from "./QuickSetupStepThree/QuickSetupStepThree";
 import QuickSetupStepFour from "./QuickSetupStepFour/QuickSetupStepFour";
+import { RegisterUserRequest } from "../../../utils/types/commonTypes";
 
 const Questionair = ({
   setQuickSetupState,
+  setRegistrationData,
 }: {
   setQuickSetupState: React.Dispatch<React.SetStateAction<QuickSetupTypes>>;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegisterUserRequest>
+  >;
 }) => {
   const [step, setStep] = useState<number>(1);
   const onBackButtonPressed = () => {
@@ -52,7 +57,7 @@ const Questionair = ({
           }}
         >
           <LinearProgress
-            value={1 / 4}
+            value={step / 3}
             trackColor="#F4F6F9"
             color={BASIC_COLORS.PRIMARY}
             style={{
@@ -63,7 +68,7 @@ const Questionair = ({
             }}
           />
           <Text>
-            <Text style={{ color: BASIC_COLORS.PRIMARY }}>{step}/4</Text>
+            <Text style={{ color: BASIC_COLORS.PRIMARY }}>{step}/3</Text>
           </Text>
         </View>
 
@@ -75,17 +80,26 @@ const Questionair = ({
         ></View>
       </View>
 
-      <View style={{
-        marginTop: 30,
-      }}>
+      <View
+        style={{
+          marginTop: 30,
+        }}
+      >
         {step === 1 ? (
-          <QuickSetupStepOne setStep={setStep}/>
+          <QuickSetupStepOne
+            setStep={setStep}
+            setRegistrationData={setRegistrationData}
+          />
         ) : step === 2 ? (
-          <QuickSetupStepTwo setStep={setStep}/>
-        ) : step === 3 ? (
-          <QuickSetupStepThree setStep={setStep}/>
+          <QuickSetupStepThree setStep={setStep} 
+          setRegistrationData={setRegistrationData}
+          />
         ) : step === 4 ? (
-          <QuickSetupStepFour setStep={setStep} setQuickSetupState={setQuickSetupState}/>
+          <QuickSetupStepFour
+            setStep={setStep}
+            setQuickSetupState={setQuickSetupState}
+            setRegistrationData={setRegistrationData}
+          />
         ) : null}
       </View>
     </View>
@@ -100,6 +114,6 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     display: "flex",
     flexDirection: "column",
-    height: "100%",
+    height: Dimensions.get("window").height - 50,
   },
 });

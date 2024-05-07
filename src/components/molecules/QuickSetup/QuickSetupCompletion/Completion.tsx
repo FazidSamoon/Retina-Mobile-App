@@ -1,4 +1,13 @@
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 import React, { useRef, useState, CSSProperties, useEffect } from "react";
 import { QuickSetupTypes } from "../../../../screens/RootScreens/QuickSetupScreen/quickSetupTypes";
 import BackwardArrow from "../../../../assets/BackwardArrow";
@@ -11,6 +20,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CompletionIcon from "../../../../assets/CompletionIcon";
 import { Circle } from "react-native-animated-spinkit";
 import { useNavigation } from "@react-navigation/native";
+import { RegisterUserRequest } from "../../../../utils/types/commonTypes";
+import { useFormik } from "formik";
+import { completionValidationSchema } from "../../../../utils/validations";
+import { ScrollView } from "react-native-gesture-handler";
+import { registerUser } from "../../../../api/auth";
 
 const override: CSSProperties = {
   display: "block",
@@ -20,8 +34,14 @@ const override: CSSProperties = {
 
 const Completion = ({
   setQuickSetupState,
+  setRegistrationData,
+  registrationData,
 }: {
   setQuickSetupState: React.Dispatch<React.SetStateAction<QuickSetupTypes>>;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegisterUserRequest>
+  >;
+  registrationData: RegisterUserRequest;
 }) => {
   const navigation = useNavigation<any>();
   const [value, setValue] = useState("");
@@ -34,21 +54,89 @@ const Completion = ({
     setQuickSetupState(QuickSetupTypes.CREATE_ACCOUNT);
   };
 
-  const onNextButtonPressed = () => {
-    if (showModal) {
-      setShowModal(false);
-    } else {
-      setShowModal(true);
-    }
-    // setQuickSetupState(QuickSetupTypes.QUISTIONAIRE);
+  const [name, setName] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [occupation, setOccupation] = useState<string>("");
+
+  const initialValues: {
+    name: string;
+    phoneNumber: string;
+    location: string;
+    occupation: string;
+  } = {
+    name: "",
+    phoneNumber: "",
+    location: "",
+    occupation: "",
   };
+
+  const onSubmit = async (values: any) => {
+    setRegistrationData((prev) => ({
+      ...prev,
+      phone: values.phoneNumber,
+      location: values.location,
+      occupation: values.occupation,
+    }));
+
+    const { apiSuccess, apiError }: any = await registerUser(registrationData);
+    if (apiSuccess) {
+      setShowModal(true);
+    } else {
+      showToastWithGravityAndOffset(apiError);
+    }
+  };
+
+  const showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
+  };
+
+  const handleFormSubmit = async () => {
+    console.log("sss", registrationData);
+    setRegistrationData((prev) => ({
+      ...prev,
+      phone: formattedValue,
+      location: location,
+      occupation: occupation,
+    }));
+    const { apiSuccess, apiError }: any = await registerUser({
+      ...registrationData,
+      phone: formattedValue,
+      location: location,
+      occupation: occupation,
+    });
+    console.log("sss success", registrationData);
+    console.log("sss error", apiError);
+    if (apiSuccess) {
+      setShowModal(true);
+    } else {
+      showToastWithGravityAndOffset(apiError);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema: completionValidationSchema,
+    validateOnChange: true,
+  });
+
+  const { values, errors, handleSubmit } = formik;
 
   useEffect(() => {
     setTimeout(() => {
       if (showModal) navigation.navigate("Login");
     }, 5000);
-  }, [showModal])
+  }, [showModal]);
 
+  const isButtonDisabled = () => {
+    return Object.keys(errors).length > 0;
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -119,25 +207,38 @@ const Completion = ({
           </Text>
         </View>
 
-        <View
+        <ScrollView
           style={{
             gap: 20,
+            marginTop: 20,
           }}
         >
-          <RPInputField
-            inputLabel={"Name"}
-            inputPlaceholder={"Enter your full name"}
-            onChangeText={undefined}
-            value={""}
-            inputStyle={RPSInputFieldStyle.OUTLINED}
-            inputContainerStyle={{
-              backgroundColor: "#F4F6F9",
+          <View
+            style={{
+              marginTop: 15,
             }}
-          />
+          >
+            <RPInputField
+              inputLabel={"Name"}
+              inputPlaceholder={"Enter your full name"}
+              onChangeText={(e) => {
+                setName(e);
+                formik.setFieldValue("name", e);
+              }}
+              value={values.name}
+              inputStyle={RPSInputFieldStyle.OUTLINED}
+              inputContainerStyle={{
+                backgroundColor: "#F4F6F9",
+              }}
+              error={formik.errors.name ? true : false}
+              errorMessage={formik.errors.name as string}
+            />
+          </View>
 
           <View
             style={{
               gap: 5,
+              marginTop: 15,
             }}
           >
             <Text
@@ -151,7 +252,7 @@ const Completion = ({
             </Text>
             <PhoneInput
               ref={phoneInput}
-              defaultValue={value}
+              defaultValue={values.phoneNumber}
               defaultCode="SL"
               layout="second"
               onChangeText={(text) => {
@@ -159,6 +260,7 @@ const Completion = ({
               }}
               onChangeFormattedText={(text) => {
                 setFormattedValue(text);
+                formik.setFieldValue("phoneNumber", text);
               }}
               withDarkTheme
               containerStyle={{
@@ -179,37 +281,58 @@ const Completion = ({
             />
           </View>
 
-          <RPInputField
-            inputLabel={"Location"}
-            inputPlaceholder={"Enter your location"}
-            onChangeText={undefined}
-            value={""}
-            inputStyle={RPSInputFieldStyle.OUTLINED}
-            inputContainerStyle={{
-              backgroundColor: "#F4F6F9",
+          <View
+            style={{
+              marginTop: 15,
             }}
-          />
+          >
+            <RPInputField
+              inputLabel={"Location"}
+              inputPlaceholder={"Enter your location"}
+              onChangeText={(e) => {
+                setLocation(e);
+                formik.setFieldValue("location", e);
+              }}
+              value={values.location}
+              inputStyle={RPSInputFieldStyle.OUTLINED}
+              inputContainerStyle={{
+                backgroundColor: "#F4F6F9",
+              }}
+              error={formik.errors.location ? true : false}
+              errorMessage={formik.errors.location as string}
+            />
+          </View>
 
-          <RPInputField
-            inputLabel={"Occupation"}
-            inputPlaceholder={"Enter your occupation"}
-            onChangeText={undefined}
-            value={""}
-            inputStyle={RPSInputFieldStyle.OUTLINED}
-            inputContainerStyle={{
-              backgroundColor: "#F4F6F9",
+          <View
+            style={{
+              marginTop: 15,
             }}
-          />
-        </View>
+          >
+            <RPInputField
+              inputLabel={"Occupation"}
+              inputPlaceholder={"Enter your occupation"}
+              onChangeText={(e) => {
+                setOccupation(e);
+                formik.setFieldValue("occupation", e);
+              }}
+              value={values.occupation}
+              inputStyle={RPSInputFieldStyle.OUTLINED}
+              inputContainerStyle={{
+                backgroundColor: "#F4F6F9",
+              }}
+              error={formik.errors.occupation ? true : false}
+              errorMessage={formik.errors.occupation as string}
+            />
+          </View>
+        </ScrollView>
 
         <View>
           <RPPrimaryButton
             buttonTitle={"Complete Profile"}
-            //   disabled={!selected}
-            onPress={onNextButtonPressed}
+            disabled={isButtonDisabled()}
+            onPress={handleFormSubmit}
             buttonStyle={{
               borderRadius: 30,
-              // borderColor: selected ? BASIC_COLORS.PRIMARY : "#E6E6E6" ,
             }}
           />
         </View>
@@ -236,15 +359,17 @@ const Completion = ({
             }}
           >
             <CompletionIcon />
-            <View style={{
-              marginTop: 20,
-              gap: 10,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 20,
-            }}>
+            <View
+              style={{
+                marginTop: 20,
+                gap: 10,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 20,
+              }}
+            >
               <Text
                 style={{
                   color: "black",
@@ -258,7 +383,7 @@ const Completion = ({
                 style={{
                   color: "black",
                   fontSize: 14.5,
-                  fontWeight: "medium",
+                  fontWeight: "500",
                   alignContent: "center",
                   textAlign: "center",
                 }}
@@ -284,6 +409,6 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     display: "flex",
     flexDirection: "column",
-    height: "100%",
+    height: Dimensions.get("window").height - 50,
   },
 });

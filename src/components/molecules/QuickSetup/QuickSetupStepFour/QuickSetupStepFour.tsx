@@ -4,6 +4,7 @@ import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import { QuickSetupTypes } from "../../../../screens/RootScreens/QuickSetupScreen/quickSetupTypes";
+import { RegisterUserRequest } from "../../../../utils/types/commonTypes";
 
 const eyeDecieseOptions = [
   "Age-Related Macular Degeneration",
@@ -16,12 +17,20 @@ const eyeDecieseOptions = [
 const QuickSetupStepFour = ({
   setStep,
   setQuickSetupState,
+  setRegistrationData
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   setQuickSetupState: React.Dispatch<React.SetStateAction<QuickSetupTypes>>;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegisterUserRequest>
+  >;
 }) => {
   const [selected, setSelected] = useState(null);
   const onNextButtonPressed = () => {
+    setRegistrationData((prev) => ({
+      ...prev,
+      eyeDisease: selected,
+    }));
     setQuickSetupState(QuickSetupTypes.COMPLETION);
   };
   return (
@@ -76,7 +85,8 @@ const QuickSetupStepFour = ({
               margin: 5,
               borderRadius: 10,
               height: 55,
-              borderColor: selected === option ? BASIC_COLORS.PRIMARY : "#E6E6E6",
+              borderColor:
+                selected === option ? BASIC_COLORS.PRIMARY : "#E6E6E6",
               borderWidth: 1,
             }}
           >
@@ -85,19 +95,23 @@ const QuickSetupStepFour = ({
                 height: 24,
                 width: 24,
                 borderRadius: 10,
-                borderColor: selected === option ? BASIC_COLORS.PRIMARY : "#E6E6E6",
+                borderColor:
+                  selected === option ? BASIC_COLORS.PRIMARY : "#E6E6E6",
                 borderWidth: 1,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <View style={{
-                height: 12,
-                width: 12,
-                borderRadius: 8,
-                backgroundColor: selected === option ? BASIC_COLORS.PRIMARY : "white",
-              }} />
+              <View
+                style={{
+                  height: 12,
+                  width: 12,
+                  borderRadius: 8,
+                  backgroundColor:
+                    selected === option ? BASIC_COLORS.PRIMARY : "white",
+                }}
+              />
             </View>
             <Text>{option}</Text>
           </Pressable>
