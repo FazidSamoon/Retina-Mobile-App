@@ -15,7 +15,7 @@ import { RootState } from "../../store/store";
 const StackNav = createStackNavigator();
 
 const index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const isAuthenticatedD = useSelector(
     (state: RootState) => state.authenticatorReducer.authenticated
   )
