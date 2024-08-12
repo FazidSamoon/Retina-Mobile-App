@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { NavigationProp } from '@react-navigation/native';
 
@@ -9,6 +9,12 @@ const RPDrawer: React.FC<Props> = ({ navigation }) => {
   return (
     <View>
       <Text>RPDrawer</Text>
+<Pressable onPress={() => {
+  navigation.navigate("test")
+}}>
+      <Text >RPDrawerq</Text>
+</Pressable>
+
     </View>
   )
 }
