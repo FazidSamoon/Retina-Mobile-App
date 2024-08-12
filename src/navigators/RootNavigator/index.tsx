@@ -15,23 +15,23 @@ import { RootState } from "../../store/store";
 const StackNav = createStackNavigator();
 
 const index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const isAuthenticatedD = useSelector(
     (state: RootState) => state.authenticatorReducer.authenticated
   )
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const user = await getDataFromAsyncStorage("user");
-      if (user) {
-        setIsAuthenticated(true);
-        return;
-      } else {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, [isAuthenticatedD]);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const user = await getDataFromAsyncStorage("user");
+  //     if (user) {
+  //       setIsAuthenticated(true);
+  //       return;
+  //     } else {
+  //       setIsAuthenticated(false);
+  //     }
+  //   };
+  //   checkAuth();
+  // }, [isAuthenticatedD]);
   return (
     <>
       <StatusBar

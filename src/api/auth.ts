@@ -1,9 +1,9 @@
 import axios from "axios";
 import { API_URL } from "./config";
 import { RegisterUserRequest } from "../utils/types/commonTypes";
+import { useMutation } from "@tanstack/react-query";
 
 export const registerUser = async (data: RegisterUserRequest) => {
-  console.log(API_URL);
   let apiSuccess = null;
   let apiError = null;
   try {
@@ -16,10 +16,7 @@ export const registerUser = async (data: RegisterUserRequest) => {
   return { apiSuccess, apiError };
 };
 
-export const loginUser = async (data: {
-  email: string;
-  password: string;
-}) => {
+export const loginUser = async (data: { email: string; password: string }) => {
   let apiSuccess = null;
   let apiError = null;
   try {

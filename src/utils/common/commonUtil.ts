@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DateTime } from "luxon";
+import { ToastAndroid } from "react-native";
 
 export const getLuxonDateTime = (date: string) => {
   return DateTime.fromISO(date);
@@ -52,4 +53,14 @@ export const setDataToAsyncStorage = async (key: string, data: any) => {
 
 export const removeDataFromAsyncStorage = async (key: string) => {
   await AsyncStorage.removeItem(key);
+};
+
+export const showToastWithGravityAndOffset = (message) => {
+  ToastAndroid.showWithGravityAndOffset(
+    message,
+    ToastAndroid.LONG,
+    ToastAndroid.BOTTOM,
+    25,
+    50
+  );
 };
