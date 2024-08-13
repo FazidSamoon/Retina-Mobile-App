@@ -342,7 +342,7 @@ const ShortDistanceVisionTest = ({
       setStatus(ResultStatus.NULL);
       setShowEyeChangeModal(true);
       setCurrentStepIndex(1);
-      setCurrentTextSize(202.6);
+      setCurrentTextSize(137);
     }
 
     if (
