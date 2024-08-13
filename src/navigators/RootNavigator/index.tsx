@@ -20,18 +20,18 @@ const index = () => {
     (state: RootState) => state.authenticatorReducer.authenticated
   )
 
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     const user = await getDataFromAsyncStorage("user");
-  //     if (user) {
-  //       setIsAuthenticated(true);
-  //       return;
-  //     } else {
-  //       setIsAuthenticated(false);
-  //     }
-  //   };
-  //   checkAuth();
-  // }, [isAuthenticatedD]);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getDataFromAsyncStorage("user");
+      if (user) {
+        setIsAuthenticated(true);
+        return;
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, [isAuthenticatedD]);
   return (
     <>
       <StatusBar
