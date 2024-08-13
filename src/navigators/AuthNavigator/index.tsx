@@ -6,6 +6,7 @@ import HomeScreen from "../../screens/AuthScreens/HomeScreen/HomeScreen";
 import VisionTestHomeScreen from "../../screens/AuthScreens/VisionTestHomeScreen/VisionTestHomeScreen";
 import EyeExerciseHome from "../../screens/AuthScreens/EyeExerciseHome/EyeExerciseHome";
 import LongDistanceVisionTestScreen from "../../screens/AuthScreens/LongDistanceVisionTestScreen/LongDistanceVisionTestScreen";
+import ShortDistanceVisionTestScreen from "../../screens/AuthScreens/ShortDistanceVisionTestScreen/ShortDistanceVisionTestScreen";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -35,6 +36,7 @@ const index = () => {
         <DrawerNav.Screen name="VisionTestHome" component={VisionTestHomeScreen} />
         <DrawerNav.Screen name="EyeExercisiseHome" component={EyeExerciseHome} />
         <DrawerNav.Screen name="LongDistanceVisionTest" component={LongDistanceVisionTestScreen} />
+        <DrawerNav.Screen name="ShortDistanceVisionTest" component={ShortDistanceVisionTestScreen} />
       </DrawerNav.Navigator>
     </>
   );

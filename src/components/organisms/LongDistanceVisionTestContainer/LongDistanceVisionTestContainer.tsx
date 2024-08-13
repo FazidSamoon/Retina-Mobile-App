@@ -123,7 +123,6 @@ const LongDistanceVisionTestContainer = () => {
         />
       ) : (
         <VisionTestTestTypeSelector
-          setSelectedFlow={setSelectedFlow}
           setSteps={setSteps}
           setTestType={setTestType}
         />
