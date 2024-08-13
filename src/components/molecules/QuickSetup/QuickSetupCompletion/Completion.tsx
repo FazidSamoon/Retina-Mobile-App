@@ -110,8 +110,6 @@ const Completion = ({
       location: location,
       occupation: occupation,
     });
-    console.log("sss success", registrationData);
-    console.log("sss error", apiError);
     if (apiSuccess) {
       setShowModal(true);
     } else {

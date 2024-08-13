@@ -10,17 +10,17 @@ import store from "../store/store";
 
 const queryClient = new QueryClient();
 
-// const getErrorBoundary = (error: any): boolean => {
-//     if (
-//         error &&
-//         error.response &&
-//         error.response.status &&
-//         error.response.status >= 500
-//     ) {
-//         return true;
-//     }
-//     return false;
-// };
+const getErrorBoundary = (error: any): boolean => {
+    if (
+        error &&
+        error.response &&
+        error.response.status &&
+        error.response.status >= 500
+    ) {
+        return true;
+    }
+    return false;
+};
 
 // queryClient.setDefaultOptions({
 //     queries: {

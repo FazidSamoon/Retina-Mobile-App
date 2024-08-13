@@ -1,14 +1,43 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import RPInputField from "../../atoms/RPInputField/RPInputField";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
+import { showToastWithGravityAndOffset } from "../../../utils/common/commonUtil";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../../../api/axiosConfig";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const ResetPassword = ({
   onResetPasswordModalButtonPress,
 }: {
   onResetPasswordModalButtonPress: () => void;
 }) => {
+  const { email, verificationCode } = useSelector((state: RootState) => ({
+    email: state?.authenticatorReducer?.email,
+    verificationCode: state?.authenticatorReducer?.verificationCode,
+  }));
+
+  console.log(email, verificationCode);
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      const response = axiosInstance.post("/auth/reset-password-with-code", {
+        email: email,
+        verificationCode: verificationCode,
+        newPassword: password,
+        confirmPassword: confirmPassword,
+      });
+      return (await response).data;
+    },
+    onSuccess: (data) => {
+      showToastWithGravityAndOffset("Successfully changed the password");
+      onResetPasswordModalButtonPress();
+    },
+  });
   return (
     <View>
       <View>
@@ -19,8 +48,8 @@ const ResetPassword = ({
         <RPInputField
           inputLabel={"New Password"}
           inputPlaceholder={"********"}
-          onChangeText={undefined}
-          value={""}
+          onChangeText={(e) => setPassword(e)}
+          value={password}
           secureTextEntry={true}
           inputContainerStyle={{
             backgroundColor: "#F4F6F9",
@@ -32,8 +61,8 @@ const ResetPassword = ({
         <RPInputField
           inputLabel={"Re-enter Password"}
           inputPlaceholder={"********"}
-          onChangeText={undefined}
-          value={""}
+          onChangeText={(e) => setConfirmPassword(e)}
+          value={confirmPassword}
           secureTextEntry={true}
           inputContainerStyle={{
             backgroundColor: "#F4F6F9",
@@ -48,9 +77,21 @@ const ResetPassword = ({
           }}
         >
           <RPPrimaryButton
-            onPress={onResetPasswordModalButtonPress}
+            onPress={() => {
+              if (password !== confirmPassword)
+                showToastWithGravityAndOffset(
+                  "Password and confirm password mismatch."
+                );
+              else mutate();
+            }}
             buttonTitle={"Reset Password"}
             buttonStyle={{ borderRadius: 30 }}
+            disabled={
+              !password ||
+              password === "" ||
+              !confirmPassword ||
+              confirmPassword === ""
+            }
           />
         </View>
       </View>
@@ -75,6 +116,6 @@ const styles = StyleSheet.create({
     color: BASIC_COLORS.FONT_SECONDARY,
     lineHeight: 24,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });

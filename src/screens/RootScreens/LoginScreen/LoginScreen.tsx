@@ -1,6 +1,4 @@
 import {
-  Button,
-  Pressable,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -17,12 +15,13 @@ import { Feather } from "@expo/vector-icons";
 import ForgotPassword from "../../../components/molecules/ForgotPassword/ForgotPassword";
 import OTPVerification from "../../../components/molecules/OTPVerification/OTPVerification";
 import ResetPassword from "../../../components/molecules/ResetPassword/ResetPassword";
-import DatePicker from "react-native-date-picker";
 import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "../../../utils/validations";
 import { loginUser } from "../../../api/auth";
-import { getDataFromAsyncStorage, setDataToAsyncStorage } from "../../../utils/common/commonUtil";
+import {
+  setDataToAsyncStorage,
+} from "../../../utils/common/commonUtil";
 import { useDispatch } from "react-redux";
 import { setAuthenticated } from "../../../store/slices/authSlice";
 
@@ -65,7 +64,7 @@ const LoginScreen = () => {
 
     if (apiSuccess) {
       await setDataToAsyncStorage("user", apiSuccess);
-      dispatch(setAuthenticated(true))
+      dispatch(setAuthenticated(true));
     } else {
       showToastWithGravityAndOffset("Invalid email or password");
     }
