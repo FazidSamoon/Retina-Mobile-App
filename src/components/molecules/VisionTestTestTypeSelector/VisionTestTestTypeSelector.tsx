@@ -17,11 +17,9 @@ import LetterA from "../../../assets/LetterA";
 import Number1 from "../../../assets/Number1";
 
 const VisionTestTestTypeSelector = ({
-  setSelectedFlow,
   setSteps,
   setTestType,
 }: {
-  setSelectedFlow: React.Dispatch<React.SetStateAction<VisionTestFlowsActions>>;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
   setTestType: React.Dispatch<React.SetStateAction<TestTypes>>;
 }) => {

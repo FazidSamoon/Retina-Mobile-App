@@ -3,37 +3,41 @@ export const mainTasks = [
         id: 1,
         task: "Complete 1 Long Distance Vision Test",
         status: "Pending",
+        dificulty: "easy",
         identification: ["LongDistanceVisionTest", "speach"]
     },
     {
         id: 2,
         task: "Complete 1 swipable Long Distance Vision Test",
         status: "Pending",
-        identification: ["LongDistanceVisionTest", "speach"]
+        dificulty: "easy",
+        identification: ["LongDistanceVisionTest", "speach", "LongDistanceVisionTest", "gestureIdentificationTest"]
     },
     {
         id: 3,
         task: "Complete 1 Short Distance Vision Test",
         status: "Pending",
-        identification: ["shortDistanceVisionTest"]
+        dificulty: "easy",
+        identification: ["shortDistanceVisionTest", "LongDistanceVisionTest", "gestureIdentificationTest"]
     },
     {
         id: 4,
-        task: "Identify 3 SIZE_144 letters",
+        task: "Identify 3 SIZE_202_6 letters",
         status: "Pending",
-        identification: ["SpeechIdentificationTest", "144"]
+        dificulty: "easy",
+        identification: ["SpeechIdentificationTest", "144", "LongDistanceVisionTest", "gestureIdentificationTest"]
     },
     {
         id: 5,
         task: "Identify 3 SIZE_116 letters",
         status: "Pending",
-        identification: ["SpeechIdentificationTest", "116"]
+        identification: ["SpeechIdentificationTest", "116", "LongDistanceVisionTest", "gestureIdentificationTest"]
     },
     {
         id: 2,
         task: "Identify 3 SIZE_202_6 letters",
         status: "Pending",
-        identification: ["SpeechIdentificationTest", "202.6"]
+        identification: ["SpeechIdentificationTest", "202.6", "LongDistanceVisionTest", "gestureIdentificationTest"]
     },
     {
         id: 2,
@@ -154,31 +158,31 @@ export const weeklyChallengesList = [
                 id: 1,
                 task: "Complete 1 swipable Long Distance Vision Test",
                 status: "Pending",
-                identification: ["LongDistanceVisionTest", "swipe"]
+                identification: ["LongDistanceVisionTest", "swipe", "SpeechIdentificationTest"]
             },
             {
                 id: 2,
                 task: "Identify 3 SIZE_86_6 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "86.6"]
+                identification: ["SpeechIdentificationTest", "86.6", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 3,
                 task: "Identify 3 SIZE_173_3 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "173.3"]
+                identification: ["SpeechIdentificationTest", "173.3", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 4,
                 task: "Identify 3 SIZE_144 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "144"]
+                identification: ["SpeechIdentificationTest", "144", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 2,
                 task: "Identify 3 SIZE_202_6 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "202.6"]
+                identification: ["SpeechIdentificationTest", "202.6", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
         ]
     },
@@ -201,25 +205,25 @@ export const weeklyChallengesList = [
                 id: 2,
                 task: "Identify 3 SIZE_202_6 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "202.6"]
+                identification: ["SpeechIdentificationTest", "202.6", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 3,
                 task: "Identify 3 SIZE_173_3 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "173.3"]
+                identification: ["SpeechIdentificationTest", "173.3", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 4,
                 task: "Identify 3 SIZE_144 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "144"]
+                identification: ["SpeechIdentificationTest", "144", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 5,
                 task: "Identify 3 SIZE_116 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "116"]
+                identification: ["SpeechIdentificationTest", "116", "LongDistanceVisionTest", "gestureIdentificationTest"]
             }
         ]
     },
@@ -242,25 +246,25 @@ export const weeklyChallengesList = [
                 id: 2,
                 task: "Identify 3 SIZE_202_6 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "202.6"]
+                identification: ["SpeechIdentificationTest", "202.6", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 3,
                 task: "Identify 3 SIZE_173_3 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "173.3"]
+                identification: ["SpeechIdentificationTest", "173.3", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 4,
                 task: "Identify 3 SIZE_144 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "144"]
+                identification: ["SpeechIdentificationTest", "144", "LongDistanceVisionTest", "gestureIdentificationTest"]
             },
             {
                 id: 5,
                 task: "Identify 3 SIZE_116 letters",
                 status: "Pending",
-                identification: ["SpeechIdentificationTest", "116"]
+                identification: ["SpeechIdentificationTest", "116", "LongDistanceVisionTest", "gestureIdentificationTest"]
             }
         ]
     },

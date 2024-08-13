@@ -1,4 +1,5 @@
 import { LongDIstanceVisionTestSteps } from "../../components/molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+import { ShortDistanceVisionTestSteps } from "../../components/molecules/NearVisionTest/NearVisionTestTypes";
 
 export const identifiyLetters = (
   text: string[],
@@ -124,7 +125,6 @@ export const identifyNumbers = (
 };
 
 export const getNextTextSize = (curr: number) => {
-  console.log("curr", curr);
   switch (curr) {
     case 202.6:
       return 173.3;
@@ -151,8 +151,12 @@ export const getNextTextSize = (curr: number) => {
   }
 };
 
-
-export const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps, setCurrentStep: React.Dispatch<React.SetStateAction<LongDIstanceVisionTestSteps>>) => {
+export const setLongDistanceVisionTestStep = (
+  step: LongDIstanceVisionTestSteps,
+  setCurrentStep: React.Dispatch<
+    React.SetStateAction<LongDIstanceVisionTestSteps>
+  >
+) => {
   switch (step) {
     case LongDIstanceVisionTestSteps.SIZE_202_6:
       setCurrentStep(LongDIstanceVisionTestSteps.SIZE_173_3);
@@ -186,6 +190,73 @@ export const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps,
       break;
     default:
       setCurrentStep(LongDIstanceVisionTestSteps.SIZE_202_6);
+      break;
+  }
+};
+
+export const getNextNearTextSize = (currentSize: number) => {
+  switch (currentSize) {
+    case 137:
+      return 69;
+    case 69:
+      return 55;
+    case 55:
+      return 48;
+    case 48:
+      return 34;
+    case 34:
+      return 28;
+    case 28:
+      return 21;
+    case 21:
+      return 17;
+    case 17:
+      return 14;
+    case 14:
+      return 11;
+    case 11:
+      return 0;
+    default:
+      return 0;
+  }
+};
+
+export const setShortDistanceVisionTestStep = (
+  step: ShortDistanceVisionTestSteps,
+  setCurrentStep: React.Dispatch<
+    React.SetStateAction<ShortDistanceVisionTestSteps>
+  >
+) => {
+  switch (step) {
+    case ShortDistanceVisionTestSteps.SIZE_J10:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J7);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J7:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J6);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J6:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J5);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J5:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J4);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J4:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J3);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J3:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J2);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J2:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J1PLUS);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J1PLUS:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J1);
+      break;
+    case ShortDistanceVisionTestSteps.SIZE_J1:
+      setCurrentStep(ShortDistanceVisionTestSteps.PASSED);
+      break;
+    default:
+      setCurrentStep(ShortDistanceVisionTestSteps.SIZE_J10);
       break;
   }
 };

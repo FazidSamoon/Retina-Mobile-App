@@ -1,16 +1,16 @@
 import { SafeAreaView, StyleSheet } from 'react-native'
 import React from 'react'
-import LongDistanceVisionTestContainer from '../../../components/organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestContainer'
+import ShortDistanceVIsionTestContainer from '../../../components/organisms/ShortDistanceVisionTestContainer/ShortDistanceVIsionTestContainer'
 
-const LongDistanceVisionTestScreen = () => {
+const ShortDistanceVisionTestScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <LongDistanceVisionTestContainer />
+      <ShortDistanceVIsionTestContainer />
     </SafeAreaView>
   )
 }
 
-export default LongDistanceVisionTestScreen
+export default ShortDistanceVisionTestScreen
 
 const styles = StyleSheet.create({
     container: {
