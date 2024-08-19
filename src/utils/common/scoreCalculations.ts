@@ -1,4 +1,8 @@
-import { VisionTestStateType } from "../../components/molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+import {
+  LongDIstanceVisionTestSteps,
+  PersonalizedDistance,
+  VisionTestStateType,
+} from "../../components/molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 
 export const calculateScores = (results: VisionTestStateType) => {
   const leftEye = results.testResults.leftEye.result;
@@ -67,6 +71,13 @@ export const VisionTestIdentificationBaseScoreValueForEachLetterSize = {
   12: 10,
 };
 
+const getDistanceScore = (personalizedDistance: PersonalizedDistance) => {
+  if (Number(personalizedDistance.toFixed(2)) === 4) return 0.0;
+  else if (Number(personalizedDistance.toFixed(2)) === 2) return 0.3;
+  else if (Number(personalizedDistance.toFixed(2)) === 1) return 0.6;
+  else if (Number(personalizedDistance.toFixed(2)) === 0.5) return 0.9;
+};
+
 export const getLogmarValueForSize = (size: string) => {
   switch (size) {
     case "202.6":
@@ -96,8 +107,50 @@ export const getLogmarValueForSize = (size: string) => {
 
 export const calculateVisualAcuityScoreUsingSLMAformula = (
   size: string,
-  unIdentifiedCount: number
+  unIdentifiedCount: number,
+  personalizedDistance: PersonalizedDistance
 ) => {
-  const logmarValue = getLogmarValueForSize(size) + unIdentifiedCount * 0.02;
+  const distanceValue: number = getDistanceScore(personalizedDistance);
+  const logmarValue =
+    getLogmarValueForSize(size) + unIdentifiedCount * 0.02 + distanceValue;
   return logmarValue;
+};
+
+export const getTestParameters = (logMAR: number) => {
+  let distance: PersonalizedDistance;
+  let startLine: LongDIstanceVisionTestSteps;
+
+  if (logMAR <= -0.3) {
+    distance = PersonalizedDistance.FOURMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_116;
+  } else if (logMAR > -0.3 && logMAR <= -0.1) {
+    distance = PersonalizedDistance.FOURMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_144;
+  } else if (logMAR > -0.1 && logMAR <= 0.0) {
+    distance = PersonalizedDistance.FOURMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_173_3;
+  } else if (logMAR > 0.0 && logMAR <= 0.2) {
+    distance = PersonalizedDistance.FOURMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_202_6;
+  } else if (logMAR > 0.2 && logMAR <= 0.4) {
+    distance = PersonalizedDistance.TWOMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_144;
+  } else if (logMAR > 0.4 && logMAR <= 0.6) {
+    distance = PersonalizedDistance.TWOMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_173_3;
+  } else if (logMAR > 0.6 && logMAR <= 0.8) {
+    distance = PersonalizedDistance.ONEMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_144;
+  } else if (logMAR > 0.8 && logMAR <= 1.0) {
+    distance = PersonalizedDistance.ONEMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_173_3;
+  } else if (logMAR > 1.0) {
+    distance = PersonalizedDistance.POINTFIMEMETER;
+    startLine = LongDIstanceVisionTestSteps.SIZE_144;
+  }
+
+  return {
+    distance: distance,
+    startLine: startLine,
+  };
 };

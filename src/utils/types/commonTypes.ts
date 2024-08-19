@@ -15,3 +15,27 @@ export type RegisterUserRequest = {
     location: string,
     occupation: string
 }
+
+export type UserType = {
+    data: {
+      otherDetails: {
+        __v: number;
+        _id: string;
+        createdAt: string;
+        date_of_birth: string;
+        email: string;
+        eye_deciease: string;
+        gender: 'MALE' | 'FEMALE' | 'OTHER';
+        is_active: boolean;
+        is_loggedIn: boolean;
+        location: string;
+        name: string;
+        occupation: string;
+        phone: string;
+        updatedAt: string;
+        username: string;
+      };
+      token: string;
+    };
+    message: string;
+  };

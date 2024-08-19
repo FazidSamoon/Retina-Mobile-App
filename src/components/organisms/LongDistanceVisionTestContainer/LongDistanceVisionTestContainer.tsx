@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import LongDistanceFlowSelector from "../../molecules/LongDistanceFlowSelector/LongDistanceFlowSelector";
 import {
@@ -11,12 +11,30 @@ import LongDistanceTestGuidence from "../../molecules/LongDistanceTestGuidence/L
 import LongDinstanceVisionTest from "../../molecules/LongDistanceVisionTest/LongDinstanceVisionTest";
 import TestResults from "../../molecules/TestResults/TestResults";
 import { LongDistanceTestGuidenceSteps } from "../../../utils/types/data";
-import { getCurrentWeek } from "../../../utils/common/commonUtil";
-import { VisionTestStateType } from "../../molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+import {
+  getCurrentWeek,
+  getDataFromAsyncStorage,
+} from "../../../utils/common/commonUtil";
+import {
+  LongDIstanceVisionTestSteps,
+  PersonalizedDistance,
+  VisionTestStateType,
+} from "../../molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestTestTypeSelector from "../../molecules/VisionTestTestTypeSelector/VisionTestTestTypeSelector";
 import LongDistanceVisionSwipableTest from "../../molecules/LongDistanceVisionSwipableTest/LongDistanceVisionSwipableTest";
+import LongDistanceVIsionTestDistanceConfirermer from "../../molecules/LongDIstanceVisionTestDistanceConfirmer/LongDistanceVIsionTestDistanceConfirermer";
+import { UserType } from "../../../utils/types/commonTypes";
+import { getAverageTestScore } from "../../../api/tests";
+import { getTestParameters } from "../../../utils/common/scoreCalculations";
 
 const LongDistanceVisionTestContainer = () => {
+  const [personalizedDistance, setPersonalizedDistance] =
+    useState<PersonalizedDistance>(PersonalizedDistance.FOURMETER);
+  const [personalizedTestSize, setPersonalizedTestSize] =
+    useState<LongDIstanceVisionTestSteps>(
+      LongDIstanceVisionTestSteps.SIZE_202_6
+    );
+  const [user, setUser] = useState<UserType>();
   const [visionTestStates, setVisionTestStates] = useState<VisionTestStateType>(
     {
       date: new Date(),
@@ -79,10 +97,37 @@ const LongDistanceVisionTestContainer = () => {
         return "Test Results";
       case VisionTestFlows.TEST_TYPE_SELECTOR:
         return "Vision Test Element";
+      case VisionTestFlows.TEST_DISTANCE_MEASURER:
+        return "Keep your distance";
       default:
         return "Long Distance Test";
     }
   };
+
+  const getUser = async () => {
+    const userObj = await getDataFromAsyncStorage("user");
+    setUser(userObj);
+
+    const { apiError, apiSuccess } = await getAverageTestScore(
+      userObj.data?.otherDetails?._id
+    );
+    if (apiSuccess) {
+      console.log(apiSuccess.data.rightEye);
+      const { distance, startLine } = getTestParameters(
+        apiSuccess.data.rightEye
+      );
+
+      setPersonalizedDistance(distance);
+      setPersonalizedTestSize(startLine);
+    } else if (apiError) {
+      console.log(apiError);
+    }
+  };
+
+  useEffect(() => {
+    void getUser();
+  }, []);
+
   return (
     <View>
       <VisionHomeScreenTopAppBar
@@ -110,9 +155,15 @@ const LongDistanceVisionTestContainer = () => {
           setSteps={setSteps}
           setResults={setVisionTestStates}
           testType={testType}
+          personalizedTestSize={personalizedTestSize}
         />
       ) : steps === VisionTestFlows.TEST_RESULT ? (
-        <TestResults visionTestResults={visionTestStates} setSteps={setSteps} />
+        <TestResults
+          visionTestResults={visionTestStates}
+          setSteps={setSteps}
+          personalizedDistance={personalizedDistance}
+          user={user}
+        />
       ) : steps === VisionTestFlows.TEST_SCREEN &&
         selectedFlow === VisionTestFlowsActions.PERFORM_WITH_HELP ? (
         <LongDistanceVisionSwipableTest
@@ -120,6 +171,11 @@ const LongDistanceVisionTestContainer = () => {
           setSteps={setSteps}
           setResults={setVisionTestStates}
           testType={testType}
+        />
+      ) : steps === VisionTestFlows.TEST_DISTANCE_MEASURER ? (
+        <LongDistanceVIsionTestDistanceConfirermer
+          personalizedDistance={personalizedDistance}
+          setSteps={setSteps}
         />
       ) : (
         <VisionTestTestTypeSelector
