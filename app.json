@@ -37,6 +37,14 @@
           "microphonePermission": "Allow Retina mobile app to access your microphone",
           "speechRecognitionPermission": "Allow Retina mobile app to access your speech recognition"
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
       ]
     ],
     "extra": {

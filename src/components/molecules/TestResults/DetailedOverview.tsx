@@ -1,52 +1,27 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { VisionTestStateType } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+import {
+  PersonalizedDistance,
+  VisionTestStateType,
+} from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestResultSingleCard from "../VisionTestResultSingleCard/VisionTestResultSingleCard";
 import { calculateVisualAcuityScoreUsingSLMAformula } from "../../../utils/common/scoreCalculations";
+import { useMutation } from "@tanstack/react-query";
+import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
+import axiosInstance from "../../../api/axiosConfig";
+import { API_URL } from "../../../api/config";
 
 const DetailedOverview = ({
   visionTestResults,
+  personalizedDistance,
+  leftEyeScore,
+  rightEyeScore
 }: {
   visionTestResults: VisionTestStateType;
+  personalizedDistance: PersonalizedDistance;
+  leftEyeScore: string,
+  rightEyeScore: string
 }) => {
-  const calculateLeftEyeLogmarScore = (): string => {
-    const sortedResultsLeftEye: [string, number][] = Object.entries(
-      visionTestResults.testResults.leftEye.result
-    ).sort((a, b) => {
-      return parseFloat(b[0]) - parseFloat(a[0]);
-    });
-    const leftEye = sortedResultsLeftEye.filter((item) => item[1] > 0);
-    if (leftEye.length === 0) {
-      return "0";
-    } else {
-      const leftEyeLogmarScore = calculateVisualAcuityScoreUsingSLMAformula(
-        leftEye[leftEye.length - 1][0],
-        5 - leftEye[leftEye.length - 1][1]
-      );
-      return leftEyeLogmarScore.toFixed(2);
-    }
-  };
-
-  const calculateRightEyeLogmarScore = (): string => {
-    const sortedResultsRightEye: [string, number][] = Object.entries(
-      visionTestResults.testResults.rightEye.result
-    ).sort((a, b) => {
-      return parseFloat(b[0]) - parseFloat(a[0]);
-    });
-
-    const rightEye = sortedResultsRightEye.filter((item) => item[1] > 0);
-    if (rightEye.length === 0) {
-      return "0";
-    } else {
-      const rightEyeLogmarScore = calculateVisualAcuityScoreUsingSLMAformula(
-        rightEye[rightEye.length - 1][0],
-        5 - rightEye[rightEye.length - 1][1]
-      );
-
-      return rightEyeLogmarScore.toFixed(2);
-    }
-  };
-
   const getLabelsBasedOnLogmar = (logmar: number) => {
     if (logmar <= 0.1) {
       return "Normal";
@@ -127,16 +102,16 @@ const DetailedOverview = ({
                 marginBottom: 10,
               }}
             >
-              Left Eye: {calculateLeftEyeLogmarScore()} :{" "}
+              Left Eye: {leftEyeScore} :{" "}
               <Text
                 style={{
                   color: getLabelColor(
-                    parseFloat(calculateLeftEyeLogmarScore())
+                    parseFloat(leftEyeScore)
                   ),
                 }}
               >
                 {getLabelsBasedOnLogmar(
-                  parseFloat(calculateLeftEyeLogmarScore())
+                  parseFloat(leftEyeScore)
                 )}
               </Text>
             </Text>
@@ -149,16 +124,16 @@ const DetailedOverview = ({
               marginBottom: 10,
             }}
           >
-            Right Eye: {calculateRightEyeLogmarScore()} :{" "}
+            Right Eye: {rightEyeScore} :{" "}
             <Text
               style={{
                 color: getLabelColor(
-                  parseFloat(calculateRightEyeLogmarScore())
+                  parseFloat(rightEyeScore)
                 ),
               }}
             >
               {getLabelsBasedOnLogmar(
-                parseFloat(calculateRightEyeLogmarScore())
+                parseFloat(rightEyeScore)
               )}
             </Text>
           </Text>

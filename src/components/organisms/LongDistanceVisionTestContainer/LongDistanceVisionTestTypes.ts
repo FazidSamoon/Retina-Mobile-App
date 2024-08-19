@@ -4,6 +4,7 @@ export enum VisionTestFlows {
   TEST_SCREEN = "TEST_SCREEN",
   TEST_RESULT = "TEST_RESULT",
   TEST_TYPE_SELECTOR = "TEST_TYPE_SELECTOR",
+  TEST_DISTANCE_MEASURER = "TEST_DISTANCE_MEASURER",
 }
 
 export enum VisionTestFlowsActions {

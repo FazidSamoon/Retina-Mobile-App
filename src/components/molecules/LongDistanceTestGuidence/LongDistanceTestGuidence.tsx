@@ -36,9 +36,9 @@ const LongDistanceTestGuidence = ({
 
     if (steps === LongDistanceTestGuidenceSteps.length - 1) {
       if (flow === VisionTestFlowsActions.PERFORM_BY_MYSELF) {
-        setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+        setSelectedFlow(VisionTestFlows.TEST_DISTANCE_MEASURER);
       } else {
-        setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+        setSelectedFlow(VisionTestFlows.TEST_DISTANCE_MEASURER);
       }
     }
   };

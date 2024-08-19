@@ -26,16 +26,19 @@ import {
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 import ForwardArrowHead from "../../../assets/ForwardArrowHead";
+import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 
 const LongDinstanceVisionTest = ({
   selectedFlow,
   setSteps,
   setResults,
   testType,
+  personalizedTestSize,
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
   setResults: React.Dispatch<React.SetStateAction<VisionTestStateType>>;
+  personalizedTestSize: LongDIstanceVisionTestSteps;
   testType: TestTypes;
 }) => {
   const [startedListning, setStartedListning] = useState<boolean>(false);
@@ -81,9 +84,8 @@ const LongDinstanceVisionTest = ({
     }
   );
 
-  const [currentStep, setCurrentStep] = useState<LongDIstanceVisionTestSteps>(
-    LongDIstanceVisionTestSteps.SIZE_202_6
-  );
+  const [currentStep, setCurrentStep] =
+    useState<LongDIstanceVisionTestSteps>(personalizedTestSize);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(1);
 
   const [showStepChangeModal, setShowStepChangeModal] =
@@ -104,7 +106,17 @@ const LongDinstanceVisionTest = ({
   const [startTimer, setStartTimer] = useState<boolean>(false);
   const letterInView = useRef<string>("E");
 
+  const [inRange, setInRange] = useState(true);
+  const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
+  const handleInRange = () => {
+    setInRange(true);
+    if (showNotInRangeModal) setShowEyeChangeModal(false);
+  };
+  const handleNotInRange = () => {
+    setInRange(false);
+    if (!showNotInRangeModal) setShowEyeChangeModal(true);
+  };
   const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps) => {
     switch (step) {
       case LongDIstanceVisionTestSteps.SIZE_202_6:
@@ -433,22 +445,24 @@ const LongDinstanceVisionTest = ({
 
       <View style={styles.textContainerView}>
         {letterInView.current === null ? (
-          (<>
-            <View style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 200,
-              height: 200,
-              borderRadius: 100,
-              backgroundColor: "white",
-              borderColor: "#E9F1FF",
-              borderWidth: 5,
-            }}>
-              <ForwardArrowHead height={60} width={60}/>
+          <>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: 200,
+                height: 200,
+                borderRadius: 100,
+                backgroundColor: "white",
+                borderColor: "#E9F1FF",
+                borderWidth: 5,
+              }}
+            >
+              <ForwardArrowHead height={60} width={60} />
             </View>
-          </>)
+          </>
         ) : (
           <Text
             style={{
@@ -463,74 +477,127 @@ const LongDinstanceVisionTest = ({
 
       <View
         style={{
+          display: "flex",
+          flexDirection: "row",
           marginTop: 30,
-        }}
-      >
-        {status === ResultStatus.NULL ? (
-          <AnimatedCircularProgress
-            size={100}
-            width={7}
-            fill={(timer * 100) / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => (
-              <Text
-                style={{
-                  fontSize: 50,
-                  fontWeight: "bold",
-                }}
-              >
-                {timer}
-              </Text>
-            )}
-          </AnimatedCircularProgress>
-        ) : (
-          <AnimatedCircularProgress
-            size={30}
-            width={3}
-            fill={15 / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => <Text>15</Text>}
-          </AnimatedCircularProgress>
-        )}
-      </View>
-
-      <View
-        style={{
-          marginTop: 10,
-          width: "100%",
         }}
       >
         <View
           style={{
+            backgroundColor: "blue",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            height: 270,
+          }}
+        >
+          <View
+            style={{
+              ...styles.camearaContainer,
+              backgroundColor: inRange ? "green" : "red",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            <FaceDetectorComponenet
+              handleInRange={handleInRange}
+              handleNotInRange={handleNotInRange}
+              fullScreenEnabled={false}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            alignContent: "center",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          {identified && (
-            <Text
+          <View
+            style={{
+              marginTop: 30,
+            }}
+          >
+            {status === ResultStatus.NULL ? (
+              <AnimatedCircularProgress
+                size={100}
+                width={7}
+                fill={(timer * 100) / 15}
+                tintColor={
+                  timer > 10
+                    ? BASIC_COLORS.PRIMARY
+                    : timer > 5
+                    ? "orange"
+                    : "red"
+                }
+                backgroundColor="#3d5875"
+              >
+                {(fill) => (
+                  <Text
+                    style={{
+                      fontSize: 50,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {timer}
+                  </Text>
+                )}
+              </AnimatedCircularProgress>
+            ) : (
+              <AnimatedCircularProgress
+                size={30}
+                width={3}
+                fill={15 / 15}
+                tintColor={
+                  timer > 10
+                    ? BASIC_COLORS.PRIMARY
+                    : timer > 5
+                    ? "orange"
+                    : "red"
+                }
+                backgroundColor="#3d5875"
+              >
+                {(fill) => <Text>15</Text>}
+              </AnimatedCircularProgress>
+            )}
+          </View>
+          <View
+            style={{
+              marginTop: 10,
+              width: "100%",
+            }}
+          >
+            <View
               style={{
-                fontSize: 20,
-                fontWeight: "bold",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Identified
-            </Text>
-          )}
-          {listning && !identified && !showEyeChangeModal && (
-            <Image source={require("../../../assets/SoundWave.gif")} />
-          )}
+              {identified && (
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Identified
+                </Text>
+              )}
+              {true && (
+                <Image source={require("../../../assets/SoundWave.gif")} />
+              )}
+            </View>
+          </View>
         </View>
       </View>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -560,17 +627,73 @@ const LongDinstanceVisionTest = ({
               alignItems: "center",
             }}
           >
-            <Text style={{
-              fontSize: 30,
-              fontWeight: "bold",
-              marginBottom: 20,
-            textAlign: "center"
-            }}>Please close your LEFT eye</Text>
-            <Image source={require("../../../assets/CloseLeftEye.png")} style={{
-              width: Dimensions.get("window").width * 0.6,
-              height: Dimensions.get("window").height * 0.4,
-            
-            }}/>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Please close your LEFT eye
+            </Text>
+            <Image
+              source={require("../../../assets/CloseLeftEye.png")}
+              style={{
+                width: Dimensions.get("window").width * 0.6,
+                height: Dimensions.get("window").height * 0.4,
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showNotInRangeModal}
+        onRequestClose={() => {
+          setShowNotInRangeModal(false);
+        }}
+      >
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              height: Dimensions.get("window").height * 0.7,
+              width: 300,
+              backgroundColor: "white",
+              borderRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Please maintain the distance
+            </Text>
+            <Image
+              source={require("../../../assets/doctor1.jpg")}
+              style={{
+                width: Dimensions.get("window").width * 0.6,
+                height: Dimensions.get("window").height * 0.4,
+              }}
+            />
           </View>
         </View>
       </Modal>
@@ -599,5 +722,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  camearaContainer: {
+    padding: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "auto",
   },
 });
