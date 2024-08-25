@@ -110,7 +110,7 @@ const TestResults = ({
         distance: personalizedDistance,
       };
       const response = await axiosInstance.post(
-        `http://192.168.8.138:3005/api/v1/test-results`,
+        `${API_URL}/test-results`,
         payload
       );
       return response;
@@ -118,9 +118,7 @@ const TestResults = ({
     onSuccess: () => {
       setShowModal(true);
     },
-    onError: () => {
-
-    }
+    onError: () => {},
   });
   const onNextButtonPressed = async () => {
     mutate(user?.data?.otherDetails?._id);

@@ -6,7 +6,7 @@ export const getAverageTestScore = async (userId: string) => {
   let apiSuccess = null;
   let apiError = null;
   try {
-    const response = await axios.get(`http://192.168.8.138:3005/api/v1/test-results/average-user/${userId}`);
+    const response = await axios.get(`${API_URL}/test-results/average-user/${userId}`);
     apiSuccess = response.data;
   } catch (error) {
     apiError = error;

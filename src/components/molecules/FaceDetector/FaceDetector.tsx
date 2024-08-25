@@ -17,7 +17,7 @@ import { PersonalizedDistance } from "../LongDistanceVisionTest/LongDistanceVIsi
 const FaceDetectorComponenet = ({
   fullScreenEnabled = true,
   cameraStyles,
-  distanceToMaintain = PersonalizedDistance.FOURMETER,
+  distanceToMaintain = PersonalizedDistance.ONEMETER,
   handleNotInRange,
   handleInRange,
 }: {
@@ -38,6 +38,7 @@ const FaceDetectorComponenet = ({
     const realFaceWidth = 0.16; // Average real face width in meters (16 cm)
 
     const distance = (realFaceWidth * focalLength) / faceWidth;
+    console.log(distance.toFixed(2) < distanceToMaintain.toFixed(2))
     if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
     else handleInRange();
     return distance.toFixed(2); // Distance in meters
@@ -102,6 +103,7 @@ const FaceDetectorComponenet = ({
                 style={{
                   fontSize: 20,
                   color: "white",
+                  marginBottom: 100
                 }}
               >
                 Distance: {estimateDistance(face)} meters

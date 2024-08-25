@@ -128,6 +128,7 @@ const LongDistanceVisionTestContainer = () => {
     void getUser();
   }, []);
 
+  console.log(steps)
   return (
     <View>
       <VisionHomeScreenTopAppBar

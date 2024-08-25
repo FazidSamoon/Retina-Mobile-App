@@ -5,19 +5,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import RPAvatar from "../../atoms/RPAvatar/RPAvatar";
 import RPAvatarGroup from "../../atoms/RPAvatarGroup/RPAvatarGroup";
 import { dummyAvatar } from "../../atoms/RPAvatarGroup/RPAvatarGroupTypes";
 import { LinearProgress } from "@rneui/base";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
+import { useQuery } from "@tanstack/react-query";
+import { UserType } from "../../../utils/types/commonTypes";
+import axiosInstance from "../../../api/axiosConfig";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
-const WeeklyChallengesCard = () => {
+const WeeklyChallengesCard = ({ user }: { user: UserType }) => {
+  const navigation = useNavigation<any>()
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["weeklychallanges"],
+  //   queryFn: async () => {
+  //     if (user) {
+  //       return await axios.get(
+  //         `http://192.168.8.138:3005/api/v1/challanges/monthly-challange/${user.data.otherDetails._id}`
+  //       );
+  //     }
+  //   },
+  // });
+
+  // console.log(data)
+  // useEffect(() => {
+  //   if(data && !isLoading) {
+  //     console.log(data)
+  //   }
+  // }, [data, isLoading])
   return (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
+        navigation.navigate("MonthlyChallenges");
         // alert("Weekly Challenges Card Pressed");
       }}
     >
