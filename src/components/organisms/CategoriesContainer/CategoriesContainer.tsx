@@ -12,6 +12,13 @@ const cards: CategoriesCardType[] = [
     backgroundColor: "#A99BFF",
   },
   {
+    title: "Recommendations",
+    description: "Get personalized dietary and exersize recommendations.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "VisionTestHome",
+    backgroundColor: "#31d45c",
+  },
+  {
     title: "Eye Exercise",
     description: "Do some eye exercise to improve your vision.",
     imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
