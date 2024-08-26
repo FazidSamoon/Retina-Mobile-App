@@ -15,7 +15,7 @@ const cards: CategoriesCardType[] = [
     title: "Recommendations",
     description: "Get personalized dietary and exersize recommendations.",
     imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "VisionTestHome",
+    ontapLink: "RecommendHome",
     backgroundColor: "#31d45c",
   },
   {
