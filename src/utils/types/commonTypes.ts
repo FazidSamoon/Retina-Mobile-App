@@ -44,7 +44,7 @@ export type VisionTestChallenge = {
   id: number;
   task: string;
   status: "PENDING" | "COMPLETED";
-  difficulty: "easy" | "medium" | "hard";
+  dificulty: "easy" | "medium" | "hard";
   identification: string[];
   scorePoints: number;
   minDistanceRequirement?: number;

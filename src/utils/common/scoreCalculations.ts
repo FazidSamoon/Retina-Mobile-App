@@ -105,6 +105,33 @@ export const getLogmarValueForSize = (size: string) => {
   }
 };
 
+export const getLogmarValueForJaegerNotation = (size: string) => {
+  switch (size) {
+    case "14": // J1+
+      return 0.1;
+    case "11": // J1
+      return 0.0;
+    case "17": // J2
+      return 0.2;
+    case "21": // J3
+      return 0.3;
+    case "28": // J4
+      return 0.4;
+    case "34": // J5
+      return 0.5;
+    case "48": // J6
+      return 0.6;
+    case "55": // J16
+      return 0.7;
+    case "69": // J16
+      return 0.9;
+    case "137": // J16
+      return 1.0;
+    default:
+      return null; // If the pixel value does not match any known values
+  }
+};
+
 export const calculateVisualAcuityScoreUsingSLMAformula = (
   size: string,
   unIdentifiedCount: number,
@@ -113,6 +140,15 @@ export const calculateVisualAcuityScoreUsingSLMAformula = (
   const distanceValue: number = getDistanceScore(personalizedDistance);
   const logmarValue =
     getLogmarValueForSize(size) + unIdentifiedCount * 0.02 + distanceValue;
+  return logmarValue;
+};
+
+export const calculateVisualAcuityScoreUsingSLMAformulaNearVision = (
+  size: string,
+  unIdentifiedCount: number
+) => {
+  const logmarValue =
+    getLogmarValueForJaegerNotation(size) + unIdentifiedCount * 0.02;
   return logmarValue;
 };
 
@@ -153,4 +189,13 @@ export const getTestParameters = (logMAR: number) => {
     distance: distance,
     startLine: startLine,
   };
+};
+
+export const calculateGainedXp = (
+  currentXp: number,
+  dificulty: string
+): number => {
+  if (dificulty === "easy") return currentXp + 2;
+  else if (dificulty === "medium") return currentXp + 5;
+  else if (dificulty === "hard") return currentXp + 8;
 };

@@ -30,6 +30,7 @@ export type VisionTestStateType = {
   week: number;
   year: number;
   testCompleted: boolean;
+  testType: string;
   testResults: {
     leftEye: {
       result: {
@@ -66,4 +67,13 @@ export type VisionTestStateType = {
 
 export type Results = {
   [key: string]: number;
+};
+
+export type UserLevelResponseType = {
+  _id: string;
+  user: string;
+  year: number;
+  level: number;
+  xpGained: number;
+  maxXpPerLevel: number;
 };

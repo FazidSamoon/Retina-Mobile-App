@@ -11,6 +11,8 @@ import { UserType, VisionTestChallenge, VisionTestChallengesResponse } from "../
 const MonthlyChallengesView = () => {
   const [user, setUser] = useState<UserType>();
   const [challanges, setChallanges] = useState<VisionTestChallenge[]>([]);
+  const [totalTasks, setTotalTasks] = useState(0)
+  const [completedTasks, setCompletedTasks] = useState(0)
   const getUser = async () => {
     const userObj = await getDataFromAsyncStorage("user");
     setUser(userObj);
@@ -21,6 +23,8 @@ const MonthlyChallengesView = () => {
 
       if(apiSuccess) {
         setChallanges(apiSuccess.data)
+        setTotalTasks(apiSuccess.data.length)
+        setCompletedTasks(apiSuccess?.data?.filter((task: VisionTestChallenge) => task?.status !== "PENDING")?.length)
       }
     }
   };
@@ -32,7 +36,7 @@ const MonthlyChallengesView = () => {
     <View style={styles.container}>
       <VisionHomeScreenTopAppBar header={"Weekly Chalenges"} />
 
-      <ChallengeCompletionTracker />
+      <ChallengeCompletionTracker totalTasks={totalTasks} completedTasks={completedTasks}/>
       <ChallengesListView challanges={challanges} />
     </View>
   );

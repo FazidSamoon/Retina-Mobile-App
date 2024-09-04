@@ -18,6 +18,7 @@ import {
 import {
   LongDIstanceVisionTestSteps,
   PersonalizedDistance,
+  UserLevelResponseType,
   VisionTestStateType,
 } from "../../molecules/LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestTestTypeSelector from "../../molecules/VisionTestTestTypeSelector/VisionTestTestTypeSelector";
@@ -26,8 +27,16 @@ import LongDistanceVIsionTestDistanceConfirermer from "../../molecules/LongDIsta
 import { UserType } from "../../../utils/types/commonTypes";
 import { getAverageTestScore } from "../../../api/tests";
 import { getTestParameters } from "../../../utils/common/scoreCalculations";
+import { useDispatch } from "react-redux";
+import {
+  setPersonalizedDistanceGlobal,
+  setPersonalizedStartLineGLobal,
+  setUserLevel,
+} from "../../../store/slices/visionTestChallengesSlice";
+import { getUserLevels } from "../../../api/challanges";
 
 const LongDistanceVisionTestContainer = () => {
+  const dispatch = useDispatch();
   const [personalizedDistance, setPersonalizedDistance] =
     useState<PersonalizedDistance>(PersonalizedDistance.FOURMETER);
   const [personalizedTestSize, setPersonalizedTestSize] =
@@ -41,6 +50,7 @@ const LongDistanceVisionTestContainer = () => {
       week: getCurrentWeek(),
       year: new Date().getFullYear(),
       testCompleted: false,
+      testType: "LONG_DISTANCE",
       testResults: {
         leftEye: {
           result: {
@@ -82,6 +92,7 @@ const LongDistanceVisionTestContainer = () => {
     VisionTestFlows.TEST_FLOW_SELECTOR
   );
   const [testType, setTestType] = useState<TestTypes>(TestTypes.LETTERS);
+  const [levelStatus, setLevelStatus] = useState<UserLevelResponseType>();
 
   const getTopAppBarTitle = () => {
     const guidenceStepText =
@@ -112,15 +123,26 @@ const LongDistanceVisionTestContainer = () => {
       userObj.data?.otherDetails?._id
     );
     if (apiSuccess) {
-      console.log(apiSuccess.data.rightEye);
       const { distance, startLine } = getTestParameters(
         apiSuccess.data.rightEye
       );
 
       setPersonalizedDistance(distance);
       setPersonalizedTestSize(startLine);
+      dispatch(setPersonalizedDistanceGlobal(distance));
+      dispatch(setPersonalizedStartLineGLobal(startLine));
     } else if (apiError) {
       console.log(apiError);
+    }
+
+    const { apiError: userLevelError, apiSuccess: userLevelSuccess } =
+      await getUserLevels(userObj.data?.otherDetails?._id);
+
+    if (userLevelSuccess) {
+      dispatch(setUserLevel(userLevelSuccess));
+      setLevelStatus(userLevelSuccess);
+    } else if (userLevelError) {
+      console.log(userLevelError);
     }
   };
 
@@ -128,7 +150,6 @@ const LongDistanceVisionTestContainer = () => {
     void getUser();
   }, []);
 
-  console.log(steps)
   return (
     <View>
       <VisionHomeScreenTopAppBar

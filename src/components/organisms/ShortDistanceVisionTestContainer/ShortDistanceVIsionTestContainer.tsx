@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { getCurrentWeek } from "../../../utils/common/commonUtil";
+import React, { useEffect, useState } from "react";
+import { getCurrentWeek, getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
 import { ShortDistanceVisionTestStateType } from "./ShortDistanceVisionTestTypes";
 import {
   TestTypes,
@@ -12,8 +12,15 @@ import ShortDistaneTestGuidence from "../../molecules/ShortDistanceTestGuidence/
 import ShortDistanceVisionTest from "../../molecules/ShortDistanceVisionTest/ShortDistanceVisionTest";
 import TestResults from "../../molecules/TestResults/TestResults";
 import VisionTestTestTypeSelector from "../../molecules/VisionTestTestTypeSelector/VisionTestTestTypeSelector";
+import ShortDistanceTestResults from "../../molecules/TestResults/ShortDistanceTestResults";
+import { UserType } from "../../../utils/types/commonTypes";
+import { getUserLevels } from "../../../api/challanges";
+import { useDispatch } from "react-redux";
+import { setUserLevel } from "../../../store/slices/visionTestChallengesSlice";
 
 const ShortDistanceVIsionTestContainer = () => {
+  const [user, setUser] = useState<UserType>();
+  const dispatch = useDispatch();
   const [visionTestStates, setVisionTestStates] =
     useState<ShortDistanceVisionTestStateType>({
       date: new Date(),
@@ -77,6 +84,24 @@ const ShortDistanceVIsionTestContainer = () => {
         return "Near Distance Test";
     }
   };
+
+  const getUser = async () => {
+    const userObj = await getDataFromAsyncStorage("user");
+    setUser(userObj);
+
+    const { apiError: userLevelError, apiSuccess: userLevelSuccess } =
+      await getUserLevels(userObj.data?.otherDetails?._id);
+
+    if (userLevelSuccess) {
+      dispatch(setUserLevel(userLevelSuccess));
+    } else if (userLevelError) {
+      console.log(userLevelError);
+    }
+  };
+
+  useEffect(() => {
+    void getUser();
+  }, []);
   return (
     <View>
       <VisionHomeScreenTopAppBar
@@ -97,7 +122,7 @@ const ShortDistanceVIsionTestContainer = () => {
           testType={testType}
         />
       ) : steps === VisionTestFlows.TEST_RESULT ? (
-        <TestResults visionTestResults={visionTestStates} setSteps={setSteps} />
+        <ShortDistanceTestResults  visionTestResults={visionTestStates} setSteps={setSteps}/>
       ) : (
         <VisionTestTestTypeSelector
           setSteps={setSteps}

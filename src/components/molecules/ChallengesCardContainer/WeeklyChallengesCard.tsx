@@ -13,13 +13,22 @@ import { dummyAvatar } from "../../atoms/RPAvatarGroup/RPAvatarGroupTypes";
 import { LinearProgress } from "@rneui/base";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import { useQuery } from "@tanstack/react-query";
-import { UserType } from "../../../utils/types/commonTypes";
+import {
+  UserType,
+  VisionTestChallenge,
+} from "../../../utils/types/commonTypes";
 import axiosInstance from "../../../api/axiosConfig";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-const WeeklyChallengesCard = ({ user }: { user: UserType }) => {
-  const navigation = useNavigation<any>()
+const WeeklyChallengesCard = ({
+  user,
+  challanges,
+}: {
+  user: UserType;
+  challanges: VisionTestChallenge[];
+}) => {
+  const navigation = useNavigation<any>();
   // const { data, isLoading } = useQuery({
   //   queryKey: ["weeklychallanges"],
   //   queryFn: async () => {
@@ -103,11 +112,20 @@ const WeeklyChallengesCard = ({ user }: { user: UserType }) => {
               <Text style={{ color: "white", fontSize: 14 }}>Progress</Text>
 
               <Text style={{ color: "white", fontSize: 14, fontWeight: "900" }}>
-                2/10
+                {
+                  challanges?.filter(
+                    (task: VisionTestChallenge) => task?.status !== "PENDING"
+                  )?.length
+                }
+                /{challanges?.length}
               </Text>
             </View>
             <LinearProgress
-              value={2 / 10}
+              value={
+                challanges?.filter(
+                  (task: VisionTestChallenge) => task?.status !== "PENDING"
+                )?.length / challanges?.length
+              }
               color={BASIC_COLORS.WHITE}
               style={{
                 height: 10,

@@ -1,7 +1,6 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import {
-  PersonalizedDistance,
   VisionTestStateType,
 } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestResultSingleCard from "../VisionTestResultSingleCard/VisionTestResultSingleCard";
@@ -13,12 +12,10 @@ import { API_URL } from "../../../api/config";
 
 const DetailedOverview = ({
   visionTestResults,
-  personalizedDistance,
   leftEyeScore,
   rightEyeScore
 }: {
-  visionTestResults: VisionTestStateType;
-  personalizedDistance: PersonalizedDistance;
+  visionTestResults: VisionTestStateType | any;
   leftEyeScore: string,
   rightEyeScore: string
 }) => {

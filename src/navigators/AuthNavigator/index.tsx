@@ -9,6 +9,7 @@ import LongDistanceVisionTestScreen from "../../screens/AuthScreens/LongDistance
 import ShortDistanceVisionTestScreen from "../../screens/AuthScreens/ShortDistanceVisionTestScreen/ShortDistanceVisionTestScreen";
 import MonthlyChallengesView from "../../screens/AuthScreens/MonthlyChallengesScreen/MonthlyChallengesView";
 import LeaderboardScreen from "../../screens/AuthScreens/LeaderboardScreen/LeaderboardScreen";
+import ChannelDoctorsScreen from "../../screens/AuthScreens/ChannelDoctors/ChannelDoctorsScreen";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -41,6 +42,7 @@ const index = () => {
         <DrawerNav.Screen name="ShortDistanceVisionTest" component={ShortDistanceVisionTestScreen} />
         <DrawerNav.Screen name="MonthlyChallenges" component={MonthlyChallengesView} />
         <DrawerNav.Screen name="Leaderboard" component={LeaderboardScreen} />
+        <DrawerNav.Screen name="ChannelDoctorsScreen" component={ChannelDoctorsScreen} />
       </DrawerNav.Navigator>
     </>
   );
