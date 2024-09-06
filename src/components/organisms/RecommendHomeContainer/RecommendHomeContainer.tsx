@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import React from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import { AuthScreensParamList } from "../../../navigators/RootNavigator/types"
+import { AuthScreensParamList } from "../../../navigators/RootNavigator/types";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
+import PrimaryRecommondationCard from "../../molecules/RecommondationCards/PrimaryRecommondationCard";
+
+const height = Dimensions.get("window").height;
 
 const RecommendHomeContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
@@ -16,18 +19,40 @@ const RecommendHomeContainer = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <VisionHomeScreenTopAppBar header="Recommend Home" />
 
-      <TouchableOpacity onPress={navigateToMealsScreen}>
-        <Text>Meals</Text>
-      </TouchableOpacity>
+      <View style={styles.cardsContainer}>
+        <PrimaryRecommondationCard
+          title="Food Recommendations"
+          onPress={navigateToMealsScreen}
+          backgroundSrc={{
+            uri: "https://img.freepik.com/free-photo/bowl-mozzarella-balls-with-tomato-sauce-garlic-pasta-turquoise-background_23-2147922791.jpg",
+          }}
+        />
 
-      <TouchableOpacity onPress={navigateToExerciseScreen}>
-        <Text>Exercise</Text>
-      </TouchableOpacity>
+        <PrimaryRecommondationCard
+          title="Exercise Recommendations"
+          onPress={navigateToExerciseScreen}
+          backgroundSrc={{
+            uri: "https://img.freepik.com/free-photo/apple-energy-bar-near-sports-stuff_23-2147750783.jpg",
+          }}
+        />
+      </View>
     </View>
   );
 };
 
 export default RecommendHomeContainer;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  cardsContainer: {
+    flex: 1,
+    gap: 30,
+    paddingBottom: height * 0.1,
+    justifyContent: "space-between",
+  },
+});
