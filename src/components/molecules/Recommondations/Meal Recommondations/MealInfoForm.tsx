@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import RPInputField from "../../../atoms/RPInputField/RPInputField";
-//import RPPickerInput from "../../../atoms/RPPickerInput/RPPickerInput";
+import RPPickerInput from "../../../atoms/RPPickerInput/RPPickerInput";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import { RootState } from "../../../../store/store";
 import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
@@ -57,13 +57,13 @@ const MealInfoForm = () => {
       <Text style={styles.formHeader}>My Information</Text>
 
       {/* Meal Preference Dropdown */}
-      {/* <RPPickerInput
+      <RPPickerInput
         label="Meal Preference"
         selectedValue={mealPreference}
         onValueChange={(value) => setMealPreference(value)}
         options={mealPreferenceOptions}
-        error={mealPreference === "" ? "This field is required" : ""}
-      /> */}
+        error={mealPreference === "" ? "Please select a meal preference" : ""}
+      />
 
       {/* Weight Input */}
       <RPInputField
@@ -86,20 +86,20 @@ const MealInfoForm = () => {
       />
 
       {/* Meal Type Dropdown */}
-      {/* <RPPickerInput
+      <RPPickerInput
         label="Meal Type"
         selectedValue={mealType}
         onValueChange={(value) => setMealType(value)}
         options={mealTypeOptions}
-      /> */}
+      />
 
       {/* Exercise Level Dropdown */}
-      {/* <RPPickerInput
+      <RPPickerInput
         label="Exercise Level"
         selectedValue={exerciseLevel}
         onValueChange={(value) => setExerciseLevel(value)}
         options={exerciseLevelOptions}
-      /> */}
+      />
 
       {/* Submit Button */}
       <View style={styles.buttonContainer}>
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   },
   customInputFieled: {
     borderColor: BASIC_COLORS.LIGHT_GRAY,
+    height: 45,
   },
   customLabelStyle: {
     fontWeight: "400",
