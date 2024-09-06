@@ -6,6 +6,10 @@ export const API_URL = isProd
   ? "https://retina-mobile-app-bankend.vercel.app/api/v1"
   : "https://retina-mobile-app-bankend.vercel.app/api/v1";
 
+export const RecommendAPI = isProd
+  ? "https://retina-care-recoomend-server-565418b38e96.herokuapp.com/api/"
+  : "https://retina-care-recoomend-server-565418b38e96.herokuapp.com/api/";
+
 export const getAccessToken = async () => {
   const user = await AsyncStorage.getItem("user");
   if (user) {

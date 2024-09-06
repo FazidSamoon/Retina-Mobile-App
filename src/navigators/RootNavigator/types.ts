@@ -16,4 +16,7 @@ export type AuthScreensParamList = {
     Notifications: undefined;
     Chat: undefined;
     ChatRoom: { userId: string };
+    MealsRecommend: undefined;
+    ExerciseRecommend: undefined;
+    RecommendHome: undefined;
 };
