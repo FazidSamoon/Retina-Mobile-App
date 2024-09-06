@@ -1,12 +1,14 @@
 import { View, StyleSheet, Text } from "react-native";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
 import RPInputField from "../../../atoms/RPInputField/RPInputField";
 import RPPickerInput from "../../../atoms/RPPickerInput/RPPickerInput";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import { RootState } from "../../../../store/store";
 import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
+import { updateUserData } from "../../../../store/slices/recommondationSlice"; // Action to update Redux
+import { mealFormValidationSchema } from "../../../../utils/validations";
 
 const mealPreferenceOptions = [
   { label: "Vegetarian", value: "Vegetarian" },
@@ -32,25 +34,20 @@ const MealInfoForm = () => {
     (state: RootState) => state.recommondationReducer.userData
   );
 
-  const [mealPreference, setMealPreference] = useState<string>(
-    userData.mealPreference
-  );
-  const [weight, setWeight] = useState<string>(userData.weight);
-  const [height, setHeight] = useState<string>(userData.height);
-  const [mealType, setMealType] = useState<string>(userData.mealType);
-  const [exerciseLevel, setExerciseLevel] = useState<string>(
-    userData.exerciseLevel
-  );
-
-  const handleRecommendMeal = () => {
-    console.log({
-      mealPreference,
-      weight,
-      height,
-      mealType,
-      exerciseLevel,
-    });
-  };
+  const formik = useFormik({
+    initialValues: {
+      mealPreference: userData.mealPreference,
+      weight: userData.weight,
+      height: userData.height,
+      mealType: userData.mealType,
+      exerciseLevel: userData.exerciseLevel,
+    },
+    validationSchema: mealFormValidationSchema,
+    onSubmit: (values) => {
+      dispatch(updateUserData(values));
+      console.log("Updated Values: ", values);
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -59,53 +56,62 @@ const MealInfoForm = () => {
       {/* Meal Preference Dropdown */}
       <RPPickerInput
         label="Meal Preference"
-        selectedValue={mealPreference}
-        onValueChange={(value) => setMealPreference(value)}
+        selectedValue={formik.values.mealPreference}
+        onValueChange={(value) => formik.setFieldValue("mealPreference", value)}
         options={mealPreferenceOptions}
-        error={mealPreference === "" ? "Please select a meal preference" : ""}
+        error={formik.errors.mealPreference}
       />
 
       {/* Weight Input */}
       <RPInputField
-        inputLabel="Weight"
+        inputLabel="Weight (kg)"
         inputContainerStyle={styles.customInputFieled}
         labelStyles={styles.customLabelStyle}
         inputPlaceholder="Enter your weight"
-        onChangeText={(text) => setWeight(text)}
-        value={weight}
+        inputTextStyles={styles.customTextInputColor}
+        onChangeText={(text) => formik.setFieldValue("weight", text)}
+        value={formik.values.weight.toString()}
+        error={formik.errors.weight ? true : false}
+        errorMessage={formik.errors.weight}
       />
 
       {/* Height Input */}
       <RPInputField
-        inputLabel="Height"
+        inputLabel="Height (cm)"
         inputContainerStyle={styles.customInputFieled}
         labelStyles={styles.customLabelStyle}
         inputPlaceholder="Enter your height"
-        onChangeText={(text) => setHeight(text)}
-        value={height}
+        inputTextStyles={styles.customTextInputColor}
+        onChangeText={(text) => formik.setFieldValue("height", text)}
+        value={formik.values.height.toString()}
+        error={formik.errors.height ? true : false}
+        errorMessage={formik.errors.height}
       />
 
       {/* Meal Type Dropdown */}
       <RPPickerInput
         label="Meal Type"
-        selectedValue={mealType}
-        onValueChange={(value) => setMealType(value)}
+        selectedValue={formik.values.mealType}
+        onValueChange={(value) => formik.setFieldValue("mealType", value)}
         options={mealTypeOptions}
+        error={formik.errors.mealType}
       />
 
       {/* Exercise Level Dropdown */}
       <RPPickerInput
         label="Exercise Level"
-        selectedValue={exerciseLevel}
-        onValueChange={(value) => setExerciseLevel(value)}
+        selectedValue={formik.values.exerciseLevel}
+        onValueChange={(value) => formik.setFieldValue("exerciseLevel", value)}
         options={exerciseLevelOptions}
+        error={formik.errors.exerciseLevel}
       />
 
       {/* Submit Button */}
       <View style={styles.buttonContainer}>
         <RPPrimaryButton
           buttonTitle={"Recommend Meal"}
-          onPress={handleRecommendMeal}
+          onPress={formik.handleSubmit}
+          disabled={formik.isSubmitting || !formik.isValid}
           buttonStyle={{ height: 60 }}
         />
       </View>
@@ -144,5 +150,8 @@ const styles = StyleSheet.create({
   },
   customLabelStyle: {
     fontWeight: "400",
+  },
+  customTextInputColor: {
+    color: BASIC_COLORS.FONT_PRIMARY,
   },
 });

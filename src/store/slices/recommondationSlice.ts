@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserData {
   mealPreference: string;
-  weight: string;
-  height: string;
+  weight: number;
+  height: number;
   mealType: string;
   exerciseLevel: string;
 }
@@ -15,8 +15,8 @@ interface RecommondationState {
 const initialState: RecommondationState = {
   userData: {
     mealPreference: "Vegetarian",
-    weight: "40kg",
-    height: "175 cm",
+    weight: 40,
+    height: 175,
     mealType: "Breakfast",
     exerciseLevel: "Low",
   },
@@ -25,8 +25,13 @@ const initialState: RecommondationState = {
 const RecommondationSlice = createSlice({
   name: "recommondation",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUserData: (state, action: PayloadAction<UserData>) => {
+      state.userData = { ...state.userData, ...action.payload };
+      console.log(action.payload);
+    },
+  },
 });
 
+export const { updateUserData } = RecommondationSlice.actions;
 export default RecommondationSlice.reducer;
-export const {} = RecommondationSlice.actions;
