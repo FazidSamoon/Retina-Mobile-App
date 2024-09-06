@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { recommendationActions } from "../../utils/types/data";
 
-export interface UserData {
+interface UserData {
   mealPreference: string;
   weight: number;
   height: number;
@@ -8,8 +9,17 @@ export interface UserData {
   exerciseLevel: string;
 }
 
+interface Recommendation {
+  _id: number;
+  action_name: string;
+}
+
 interface RecommondationState {
   userData: UserData;
+  mainMeal: Recommendation | null;
+  otherMeals: Recommendation[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: RecommondationState = {
@@ -20,6 +30,10 @@ const initialState: RecommondationState = {
     mealType: "Breakfast",
     exerciseLevel: "Low",
   },
+  mainMeal: null,
+  otherMeals: [],
+  loading: false,
+  error: null,
 };
 
 const RecommondationSlice = createSlice({
@@ -28,10 +42,22 @@ const RecommondationSlice = createSlice({
   reducers: {
     updateUserData: (state, action: PayloadAction<UserData>) => {
       state.userData = { ...state.userData, ...action.payload };
-      console.log(action.payload);
+    },
+    setMainMeal: (state, action: PayloadAction<number>) => {
+      const mainMeal = recommendationActions.find(
+        (meal) => meal._id === action.payload
+      );
+      state.mainMeal = mainMeal || null;
+    },
+    setOtherMeals: (state, action: PayloadAction<number[]>) => {
+      const otherMeals = action.payload.map(
+        (id) => recommendationActions.find((meal) => meal._id === id)!
+      );
+      state.otherMeals = otherMeals;
     },
   },
 });
 
-export const { updateUserData } = RecommondationSlice.actions;
+export const { updateUserData, setMainMeal, setOtherMeals } =
+  RecommondationSlice.actions;
 export default RecommondationSlice.reducer;
