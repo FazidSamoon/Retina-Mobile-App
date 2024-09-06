@@ -7,8 +7,10 @@ import RPPickerInput from "../../../atoms/RPPickerInput/RPPickerInput";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import { RootState } from "../../../../store/store";
 import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
-import { updateUserData } from "../../../../store/slices/recommondationSlice"; // Action to update Redux
+import { updateUserData } from "../../../../store/slices/recommondationSlice";
 import { mealFormValidationSchema } from "../../../../utils/validations";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { AuthScreensParamList } from "../../../../navigators/RootNavigator/types";
 
 const mealPreferenceOptions = [
   { label: "Vegetarian", value: "Vegetarian" },
@@ -30,6 +32,8 @@ const exerciseLevelOptions = [
 
 const MealInfoForm = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
+
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
@@ -45,7 +49,7 @@ const MealInfoForm = () => {
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
       dispatch(updateUserData(values));
-      console.log("Updated Values: ", values);
+      navigation.navigate("MyRecommondation");
     },
   });
 
