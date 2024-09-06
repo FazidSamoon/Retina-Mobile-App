@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { AuthScreensParamList } from "../../../navigators/RootNavigator/types";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
-import PrimaryRecommondationCard from "../../molecules/RecommondationCards/PrimaryRecommondationCard";
+import PrimaryRecommondationCard from "../../molecules/Recommondations/PrimaryRecommondationCard";
 
 const height = Dimensions.get("window").height;
 
