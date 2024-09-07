@@ -1,7 +1,6 @@
 export const mealPreferenceOptions = [
   { label: "Vegetarian", value: "Vegetarian" },
   { label: "Non-Vegetarian", value: "Non-Vegetarian" },
-  { label: "Vegan", value: "Vegan" },
 ];
 
 export const mealTypeOptions = [
@@ -12,6 +11,5 @@ export const mealTypeOptions = [
 
 export const exerciseLevelOptions = [
   { label: "Low", value: "Low" },
-  { label: "Medium", value: "Medium" },
   { label: "High", value: "High" },
 ];

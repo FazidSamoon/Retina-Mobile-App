@@ -18,6 +18,7 @@ import {
   mealPreferenceOptions,
   mealTypeOptions,
 } from "../../../../data/mealPrefernces";
+import { getMealRecommendation } from "../../../../api/recommend";
 
 const MealInfoForm = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
@@ -27,6 +28,113 @@ const MealInfoForm = () => {
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
+  const user_id: string = "IO25";
+
+  const stateFunction = ({
+    mealPreference,
+    weight,
+    height,
+    mealType,
+    exerciseLevel,
+  }: {
+    mealPreference: string;
+    weight: number;
+    height: number;
+    mealType: string;
+    exerciseLevel: string;
+  }): number | null => {
+    const weightFloat = parseFloat(weight.toString());
+    const heightFloat = parseFloat(height.toString()) / 100; // Assuming height is in cm, converting to meters
+    const isVegetarian = mealPreference === "Vegetarian" ? 1 : 0;
+    const exerciseLevelInt = exerciseLevel === "Low" ? 0 : 1;
+    const mealTypeInt =
+      mealType === "Breakfast" ? 0 : mealType === "Lunch" ? 1 : 2;
+    const BMI = weightFloat / (heightFloat * heightFloat);
+    let state: number | null = null;
+    if (mealTypeInt === 0) {
+      if (isVegetarian === 0) {
+        if (BMI < 18.5) {
+          state = 1; // breakfast non-veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 7 : 1; // non-veg low/high cal
+        } else {
+          state = 7; // breakfast non-veg low cal
+        }
+      } else {
+        if (BMI < 18.5) {
+          state = 4; // breakfast veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 10 : 4; // veg low/high cal
+        } else {
+          state = 10; // breakfast veg low cal
+        }
+      }
+    } else if (mealTypeInt === 1) {
+      if (isVegetarian === 0) {
+        if (BMI < 18.5) {
+          state = 2; // lunch non-veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 8 : 2; // non-veg low/high cal
+        } else {
+          state = 8; // lunch non-veg low cal
+        }
+      } else {
+        if (BMI < 18.5) {
+          state = 5; // lunch veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 11 : 5; // veg low/high cal
+        } else {
+          state = 11; // lunch veg low cal
+        }
+      }
+    } else if (mealTypeInt === 2) {
+      if (isVegetarian === 0) {
+        if (BMI < 18.5) {
+          state = 3; // dinner non-veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 9 : 3; // non-veg low/high cal
+        } else {
+          state = 9; // dinner non-veg low cal
+        }
+      } else {
+        if (BMI < 18.5) {
+          state = 6; // dinner veg high cal
+        } else if (BMI >= 18.5 && BMI < 25) {
+          state = exerciseLevelInt === 0 ? 12 : 6; // veg low/high cal
+        } else {
+          state = 12; // dinner veg low cal
+        }
+      }
+    }
+    return state;
+  };
+
+  const handleSubmit = async (values: {
+    mealPreference: string;
+    weight: number;
+    height: number;
+    mealType: string;
+    exerciseLevel: string;
+  }) => {
+    dispatch(updateUserData(values));
+    const state = stateFunction(values) || 1;
+
+    const data = {
+      user_id: "I017",
+      state: state,
+    };
+
+    const { apiSuccess, apiError, activityNumber } =
+      await getMealRecommendation(data);
+
+    if (apiSuccess) {
+      console.log("Meal Recommendation Success: ", apiSuccess);
+    } else {
+      console.error("Error fetching meal recommendation: ", apiError);
+    }
+
+    console.log("Activity Number: ", activityNumber);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +146,7 @@ const MealInfoForm = () => {
     },
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
-      dispatch(updateUserData(values));
+      handleSubmit(values);
       setLoading(true);
       setShowModal(true);
     },
@@ -49,8 +157,8 @@ const MealInfoForm = () => {
       const timeout = setTimeout(() => {
         setLoading(false);
         setShowModal(false);
-        navigation.navigate("MyRecommondation");
-      }, 3000);
+        //navigation.navigate("MyRecommondation");
+      }, 1000);
 
       return () => {
         clearTimeout(timeout);
