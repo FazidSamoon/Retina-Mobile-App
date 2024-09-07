@@ -50,3 +50,33 @@ export const getOtherMealRecommendations = async (data: { state: number }) => {
 
   return { apiSuccess, apiError };
 };
+
+export const updateQValue = async (data: {
+  state: number;
+  action: number;
+  reward: number;
+  user_id: string;
+}) => {
+  let apiSuccess = null;
+  let apiError = null;
+
+  const { state, action, reward, user_id } = data;
+
+  try {
+    const response = await axios.post(
+      `${RecommendAPI}/v2/recommendations/updateq`,
+      {},
+      {
+        params: { user_id, state, action, reward },
+      }
+    );
+
+    apiSuccess = response?.data?.["update Response"]?.Attributes?.q;
+    console.log("API Success - Q Value:", apiSuccess);
+  } catch (error) {
+    apiError = error;
+    console.error("Error in API Call:", apiError);
+  }
+
+  return { apiSuccess, apiError };
+};

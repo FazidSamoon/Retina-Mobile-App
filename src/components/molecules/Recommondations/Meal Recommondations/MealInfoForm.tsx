@@ -31,8 +31,8 @@ const MealInfoForm = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const userData = useSelector(
-    (state: RootState) => state.recommondationReducer.userData
+  const { userData, user_id } = useSelector(
+    (state: RootState) => state.recommondationReducer
   );
 
   const stateFunction = ({
@@ -130,7 +130,7 @@ const MealInfoForm = () => {
 
     const state = stateFunction(values) || 1;
     const data = {
-      user_id: "I025",
+      user_id: user_id,
       state: state,
     };
 
@@ -141,22 +141,20 @@ const MealInfoForm = () => {
       const { apiSuccess: otherMealSuccess, apiError: otherMealError } =
         await getOtherMealRecommendations({ state });
 
-      // Set meal recommendation state if API succeeds
-      // if (mealSuccess) {
-      //   console.log("Meal Recommendation Success: ", mealSuccess);
-      // } else {
-      //   console.error("Error fetching meal recommendation: ", mealError);
-      // }
+      if (mealSuccess) {
+        return;
+      } else {
+        console.error("Error fetching meal recommendation: ", mealError);
+      }
 
-      // Set other meal recommendations state if API succeeds
-      // if (otherMealSuccess) {
-      //   console.log("Other Meal Recommendations Success: ", otherMealSuccess);
-      // } else {
-      //   console.error(
-      //     "Error fetching other meal recommendations: ",
-      //     otherMealError
-      //   );
-      // }
+      if (otherMealSuccess) {
+        return;
+      } else {
+        console.error(
+          "Error fetching other meal recommendations: ",
+          otherMealError
+        );
+      }
 
       dispatch(
         setRecommondedActions({
