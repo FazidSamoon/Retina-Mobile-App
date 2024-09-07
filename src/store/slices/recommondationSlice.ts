@@ -9,15 +9,15 @@ interface UserData {
   exerciseLevel: string;
 }
 
-interface Recommendation {
+export interface RecommendedMeal {
   _id: number;
   action_name: string;
 }
 
 interface RecommondationState {
   userData: UserData;
-  mainMeal: Recommendation | null;
-  otherMeals: Recommendation[];
+  mainMeal: RecommendedMeal | null;
+  otherMeals: RecommendedMeal[];
   loading: boolean;
   error: string | null;
 }
