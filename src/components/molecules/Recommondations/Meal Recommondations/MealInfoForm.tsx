@@ -133,11 +133,7 @@ const MealInfoForm = () => {
               <Text style={styles.textPrimary}>
                 Preparing your meal Recommendation!
               </Text>
-              <View style={styles.periodStyle}>
-                {Array.from({ length: 60 }).map((_, index) => (
-                  <Text key={index}>.</Text>
-                ))}
-              </View>
+              <View style={styles.lineStyles} />
             </View>
             {loading && <Circle size={60} color="#109BE7" animating />}
           </View>
@@ -182,8 +178,11 @@ const styles = StyleSheet.create({
   customTextInputColor: {
     color: BASIC_COLORS.FONT_PRIMARY,
   },
-  periodStyle: {
-    flexDirection: "row",
+  lineStyles: {
+    width: 180,
+    backgroundColor: BASIC_COLORS.PRIMARY,
+    borderWidth: 1,
+    marginBottom: 10,
   },
   textPrimary: {
     marginVertical: 20,
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "white",
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     width: "80%",
     height: "60%",
     justifyContent: "center",
