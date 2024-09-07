@@ -18,7 +18,10 @@ import {
   mealPreferenceOptions,
   mealTypeOptions,
 } from "../../../../data/mealPrefernces";
-import { getMealRecommendation } from "../../../../api/recommend";
+import {
+  getMealRecommendation,
+  getOtherMealRecommendations,
+} from "../../../../api/recommend";
 
 const MealInfoForm = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
@@ -28,6 +31,10 @@ const MealInfoForm = () => {
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
+
+  const [mealRecommendation, setMealRecommendation] = useState<any>(null);
+  const [otherMealRecommendations, setOtherMealRecommendations] =
+    useState<any>(null);
 
   const stateFunction = ({
     mealPreference,
@@ -117,7 +124,9 @@ const MealInfoForm = () => {
       exerciseLevel: string;
     },
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    setMealRecommendation: React.Dispatch<React.SetStateAction<any>>,
+    setOtherMealRecommendations: React.Dispatch<React.SetStateAction<any>>
   ) => {
     setLoading(true);
     setShowModal(true);
@@ -129,16 +138,30 @@ const MealInfoForm = () => {
     };
 
     try {
-      const { apiSuccess, apiError, activityNumber } =
+      const { apiSuccess: mealSuccess, apiError: mealError } =
         await getMealRecommendation(data);
 
-      if (apiSuccess) {
-        console.log("Meal Recommendation Success: ", apiSuccess);
+      const { apiSuccess: otherMealSuccess, apiError: otherMealError } =
+        await getOtherMealRecommendations({ state });
+
+      // Set meal recommendation state if API succeeds
+      if (mealSuccess) {
+        setMealRecommendation(mealSuccess);
+        console.log("Meal Recommendation Success: ", mealSuccess);
       } else {
-        console.error("Error fetching meal recommendation: ", apiError);
+        console.error("Error fetching meal recommendation: ", mealError);
       }
 
-      console.log("Activity Number: ", activityNumber);
+      // Set other meal recommendations state if API succeeds
+      if (otherMealSuccess) {
+        setOtherMealRecommendations(otherMealSuccess);
+        console.log("Other Meal Recommendations Success: ", otherMealSuccess);
+      } else {
+        console.error(
+          "Error fetching other meal recommendations: ",
+          otherMealError
+        );
+      }
     } catch (error) {
       console.error("Error in API Call: ", error);
     } finally {
@@ -160,7 +183,14 @@ const MealInfoForm = () => {
     },
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
-      handleSubmit(values, setLoading, setShowModal);
+      dispatch(updateUserData(values));
+      handleSubmit(
+        values,
+        setLoading,
+        setShowModal,
+        setMealRecommendation,
+        setOtherMealRecommendations
+      );
     },
   });
 

@@ -19,25 +19,23 @@ export const getMealRecommendation = async (data: {
       },
     });
 
-    activityNumber = response.data.activity;
-    apiSuccess = response.data;
+    apiSuccess = response.data.activity;
   } catch (error) {
     apiError = error;
   }
 
-  return { apiSuccess, apiError, activityNumber };
+  return { apiSuccess, apiError };
 };
 
 export const getOtherMealRecommendations = async (data: { state: number }) => {
   let apiSuccess = null;
   let apiError = null;
-  let activityNumbers: number[] = [];
 
   const { state } = data;
 
   try {
     const response = await axios.get(
-      `${RecommendAPI}/v3/recommendations/get_expert_1?state=2`,
+      `${RecommendAPI}/v3/recommendations/get_expert_1`,
       {
         params: {
           state,
@@ -45,11 +43,10 @@ export const getOtherMealRecommendations = async (data: { state: number }) => {
       }
     );
 
-    activityNumbers = response.data.actions;
-    apiSuccess = response.data;
+    apiSuccess = response.data.actions;
   } catch (error) {
     apiError = error;
   }
 
-  return { apiSuccess, apiError, activityNumbers };
+  return { apiSuccess, apiError };
 };
