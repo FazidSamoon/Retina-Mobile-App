@@ -1,5 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
-import React from "react";
+import { View, StyleSheet, Text, Modal } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import RPInputField from "../../../atoms/RPInputField/RPInputField";
@@ -11,29 +11,19 @@ import { updateUserData } from "../../../../store/slices/recommondationSlice";
 import { mealFormValidationSchema } from "../../../../utils/validations";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { AuthScreensParamList } from "../../../../navigators/RootNavigator/types";
-
-const mealPreferenceOptions = [
-  { label: "Vegetarian", value: "Vegetarian" },
-  { label: "Non-Vegetarian", value: "Non-Vegetarian" },
-  { label: "Vegan", value: "Vegan" },
-];
-
-const mealTypeOptions = [
-  { label: "Breakfast", value: "Breakfast" },
-  { label: "Lunch", value: "Lunch" },
-  { label: "Dinner", value: "Dinner" },
-];
-
-const exerciseLevelOptions = [
-  { label: "Low", value: "Low" },
-  { label: "Medium", value: "Medium" },
-  { label: "High", value: "High" },
-];
+import CompletionIcon from "../../../../assets/CompletionIcon";
+import { Circle } from "react-native-animated-spinkit";
+import {
+  exerciseLevelOptions,
+  mealPreferenceOptions,
+  mealTypeOptions,
+} from "../../../../data/mealPrefernces";
 
 const MealInfoForm = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
-
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
@@ -49,9 +39,24 @@ const MealInfoForm = () => {
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
       dispatch(updateUserData(values));
-      navigation.navigate("MyRecommondation");
+      setLoading(true);
+      setShowModal(true);
     },
   });
+
+  useEffect(() => {
+    if (showModal) {
+      const timeout = setTimeout(() => {
+        setLoading(false);
+        setShowModal(false);
+        navigation.navigate("MyRecommondation");
+      }, 3000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [showModal]);
 
   return (
     <View style={styles.container}>
@@ -115,10 +120,29 @@ const MealInfoForm = () => {
         <RPPrimaryButton
           buttonTitle={"Recommend Meal"}
           onPress={formik.handleSubmit}
-          disabled={formik.isSubmitting || !formik.isValid}
+          disabled={!formik.isValid}
           buttonStyle={{ height: 60 }}
         />
       </View>
+
+      <Modal animationType="slide" transparent={true} visible={showModal}>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalContainer}>
+            <CompletionIcon />
+            <View style={styles.modalContent}>
+              <Text style={styles.textPrimary}>
+                Preparing your meal Recommendation!
+              </Text>
+              <View style={styles.periodStyle}>
+                {Array.from({ length: 60 }).map((_, index) => (
+                  <Text key={index}>.</Text>
+                ))}
+              </View>
+            </View>
+            {loading && <Circle size={60} color="#109BE7" animating />}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -157,5 +181,38 @@ const styles = StyleSheet.create({
   },
   customTextInputColor: {
     color: BASIC_COLORS.FONT_PRIMARY,
+  },
+  periodStyle: {
+    flexDirection: "row",
+  },
+  textPrimary: {
+    marginVertical: 20,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    height: "60%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    marginTop: 20,
+    gap: 10,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
   },
 });
