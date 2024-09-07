@@ -141,20 +141,20 @@ const MealInfoForm = () => {
       const { apiSuccess: otherMealSuccess, apiError: otherMealError } =
         await getOtherMealRecommendations({ state });
 
-      if (mealSuccess) {
-        return;
-      } else {
-        console.error("Error fetching meal recommendation: ", mealError);
-      }
+      // if (mealSuccess) {
+      //   return;
+      // } else {
+      //   console.error("Error fetching meal recommendation: ", mealError);
+      // }
 
-      if (otherMealSuccess) {
-        return;
-      } else {
-        console.error(
-          "Error fetching other meal recommendations: ",
-          otherMealError
-        );
-      }
+      // if (otherMealSuccess) {
+      //   return;
+      // } else {
+      //   console.error(
+      //     "Error fetching other meal recommendations: ",
+      //     otherMealError
+      //   );
+      // }
 
       dispatch(
         setRecommondedActions({
