@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text, Modal } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import RPInputField from "../../../atoms/RPInputField/RPInputField";
@@ -7,7 +7,10 @@ import RPPickerInput from "../../../atoms/RPPickerInput/RPPickerInput";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import { RootState } from "../../../../store/store";
 import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
-import { updateUserData } from "../../../../store/slices/recommondationSlice";
+import {
+  setRecommondedActions,
+  updateUserData,
+} from "../../../../store/slices/recommondationSlice";
 import { mealFormValidationSchema } from "../../../../utils/validations";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { AuthScreensParamList } from "../../../../navigators/RootNavigator/types";
@@ -31,10 +34,6 @@ const MealInfoForm = () => {
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
-
-  const [mealRecommendation, setMealRecommendation] = useState<any>(null);
-  const [otherMealRecommendations, setOtherMealRecommendations] =
-    useState<any>(null);
 
   const stateFunction = ({
     mealPreference,
@@ -124,9 +123,7 @@ const MealInfoForm = () => {
       exerciseLevel: string;
     },
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    setMealRecommendation: React.Dispatch<React.SetStateAction<any>>,
-    setOtherMealRecommendations: React.Dispatch<React.SetStateAction<any>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     setLoading(true);
     setShowModal(true);
@@ -145,23 +142,29 @@ const MealInfoForm = () => {
         await getOtherMealRecommendations({ state });
 
       // Set meal recommendation state if API succeeds
-      if (mealSuccess) {
-        setMealRecommendation(mealSuccess);
-        console.log("Meal Recommendation Success: ", mealSuccess);
-      } else {
-        console.error("Error fetching meal recommendation: ", mealError);
-      }
+      // if (mealSuccess) {
+      //   console.log("Meal Recommendation Success: ", mealSuccess);
+      // } else {
+      //   console.error("Error fetching meal recommendation: ", mealError);
+      // }
 
       // Set other meal recommendations state if API succeeds
-      if (otherMealSuccess) {
-        setOtherMealRecommendations(otherMealSuccess);
-        console.log("Other Meal Recommendations Success: ", otherMealSuccess);
-      } else {
-        console.error(
-          "Error fetching other meal recommendations: ",
-          otherMealError
-        );
-      }
+      // if (otherMealSuccess) {
+      //   console.log("Other Meal Recommendations Success: ", otherMealSuccess);
+      // } else {
+      //   console.error(
+      //     "Error fetching other meal recommendations: ",
+      //     otherMealError
+      //   );
+      // }
+
+      dispatch(
+        setRecommondedActions({
+          state,
+          mainMealAction: mealSuccess,
+          otherMealsActions: otherMealSuccess,
+        })
+      );
     } catch (error) {
       console.error("Error in API Call: ", error);
     } finally {
@@ -184,13 +187,7 @@ const MealInfoForm = () => {
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
       dispatch(updateUserData(values));
-      handleSubmit(
-        values,
-        setLoading,
-        setShowModal,
-        setMealRecommendation,
-        setOtherMealRecommendations
-      );
+      handleSubmit(values, setLoading, setShowModal);
     },
   });
 

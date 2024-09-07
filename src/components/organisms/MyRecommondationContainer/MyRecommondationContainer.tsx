@@ -11,36 +11,46 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import { AuthScreensParamList } from "../../../navigators/RootNavigator/types";
-import {
-  RecommendedMeal,
-  setMainMeal,
-  setOtherMeals,
-} from "../../../store/slices/recommondationSlice";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import RNSlider from "../../atoms/RNSlider/RNSlider";
 import { BottomSheet } from "@rneui/themed";
 import { Feather } from "@expo/vector-icons";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import { Formik } from "formik";
+import { recommendationActions } from "../../../utils/types/data";
+
+interface RecommendedMeal {
+  _id: number;
+  action_name: string;
+}
 
 const MyRecommondationContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
   const dispatch = useDispatch();
-  const { mainMeal, otherMeals } = useSelector(
+  const { recommendedActions } = useSelector(
     (state: RootState) => state.recommondationReducer
   );
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [mainMeal, setMainMeal] = useState<RecommendedMeal | null>(null);
+  const [otherMeals, setOtherMeals] = useState<RecommendedMeal[]>([]);
   const [selectedMeal, setSelectedMeal] = useState<RecommendedMeal | null>(
     null
   );
 
   useEffect(() => {
-    const defaultMainMealId = 6;
-    const defaultOtherMealsIds = [14, 13, 11, 16];
+    const defaultMainMealId = recommendedActions.mainMealAction;
+    const defaultOtherMealsIds = recommendedActions.otherMealsActions;
 
-    dispatch(setMainMeal(defaultMainMealId));
-    dispatch(setOtherMeals(defaultOtherMealsIds));
-  }, [dispatch]);
+    setMainMeal(
+      recommendationActions.find((meal) => meal._id === defaultMainMealId)
+    );
+
+    setOtherMeals(
+      defaultOtherMealsIds
+        .filter((id) => id !== defaultMainMealId)
+        .map((id) => recommendationActions.find((meal) => meal._id === id)!)
+    );
+  }, [recommendedActions]);
 
   const navigateTo = () => {
     navigation.navigate("MealsRecommend");

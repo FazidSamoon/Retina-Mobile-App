@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { recommendationActions } from "../../utils/types/data";
 
 interface UserData {
   mealPreference: string;
@@ -9,17 +8,15 @@ interface UserData {
   exerciseLevel: string;
 }
 
-export interface RecommendedMeal {
-  _id: number;
-  action_name: string;
+export interface RecommendedActions {
+  state: number;
+  mainMealAction: number;
+  otherMealsActions: number[];
 }
 
 interface RecommondationState {
   userData: UserData;
-  mainMeal: RecommendedMeal | null;
-  otherMeals: RecommendedMeal[];
-  loading: boolean;
-  error: string | null;
+  recommendedActions: RecommendedActions;
 }
 
 const initialState: RecommondationState = {
@@ -30,10 +27,11 @@ const initialState: RecommondationState = {
     mealType: "Breakfast",
     exerciseLevel: "Low",
   },
-  mainMeal: null,
-  otherMeals: [],
-  loading: false,
-  error: null,
+  recommendedActions: {
+    state: 0,
+    mainMealAction: 0,
+    otherMealsActions: [],
+  },
 };
 
 const RecommondationSlice = createSlice({
@@ -43,21 +41,15 @@ const RecommondationSlice = createSlice({
     updateUserData: (state, action: PayloadAction<UserData>) => {
       state.userData = { ...state.userData, ...action.payload };
     },
-    setMainMeal: (state, action: PayloadAction<number>) => {
-      const mainMeal = recommendationActions.find(
-        (meal) => meal._id === action.payload
-      );
-      state.mainMeal = mainMeal || null;
-    },
-    setOtherMeals: (state, action: PayloadAction<number[]>) => {
-      const otherMeals = action.payload.map(
-        (id) => recommendationActions.find((meal) => meal._id === id)!
-      );
-      state.otherMeals = otherMeals;
+    setRecommondedActions: (
+      state,
+      action: PayloadAction<RecommendedActions>
+    ) => {
+      state.recommendedActions = action.payload;
     },
   },
 });
 
-export const { updateUserData, setMainMeal, setOtherMeals } =
+export const { updateUserData, setRecommondedActions } =
   RecommondationSlice.actions;
 export default RecommondationSlice.reducer;
