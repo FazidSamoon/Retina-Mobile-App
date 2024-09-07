@@ -15,3 +15,17 @@ export const getAverageTestScore = async (userId: string) => {
   return { apiSuccess, apiError };
 };
 
+export const getAverageTestScoreNear = async (userId: string) => {
+  let apiSuccess = null;
+  let apiError = null;
+  try {
+    const response = await axios.get(`${API_URL}/test-results/average-user-near/${userId}`);
+    apiSuccess = response.data;
+  } catch (error) {
+    apiError = error;
+  }
+
+  return { apiSuccess, apiError };
+};
+
+

@@ -5,7 +5,8 @@ export const AuthSlice = createSlice({
     initialState: {
         authenticated: false,
         verificationCode: "",
-        email: ""
+        email: "",
+        userId: "",
     },
     reducers: {
         setAuthenticated: (state, action) => {
@@ -16,13 +17,17 @@ export const AuthSlice = createSlice({
         },
         setEmail: (state, action) => {
             state.email = action.payload
+        },
+        setUserId: (state, action) => {
+            state.userId = action.payload
         }
     },
 });
 
-export const { setAuthenticated, setVerificationCode, setEmail } = AuthSlice.actions;
+export const { setAuthenticated, setVerificationCode, setEmail, setUserId } = AuthSlice.actions;
 
 export const selectAuthenticated = (state) => state.auth.authenticated;
 export const selectVerificationCode = (state) => state?.auth?.verificationCode;
 export const selectEmail = (state) => state.auth.email;
+export const selectUserId = (state) => state.auth.userId;
 export default AuthSlice.reducer;

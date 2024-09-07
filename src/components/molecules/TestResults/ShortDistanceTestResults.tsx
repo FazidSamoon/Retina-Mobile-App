@@ -1,5 +1,5 @@
 import { Dimensions, Modal, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 import { ShortDistanceVisionTestStateType } from "../../organisms/ShortDistanceVisionTestContainer/ShortDistanceVisionTestTypes";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
@@ -8,27 +8,103 @@ import { LinearProgress } from "react-native-elements";
 import CompletionLogo from "../../../assets/CompletionLogo";
 import DetailedOverview from "./DetailedOverview";
 import { useNavigation } from "@react-navigation/native";
-import { calculateVisualAcuityScoreUsingSLMAformulaNearVision } from "../../../utils/common/scoreCalculations";
+import {
+  calculateGainedXp,
+  calculateVisualAcuityScoreUsingSLMAformulaNearVision,
+} from "../../../utils/common/scoreCalculations";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../../api/axiosConfig";
 import { API_URL } from "../../../api/config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import {
+  UserType,
+  VisionTestChallenge,
+} from "../../../utils/types/commonTypes";
+import Voice from "@react-native-voice/voice";
+import {
+  updateUserChallengesCompletion,
+  updateUserLevels,
+} from "../../../api/challanges";
+import { showToastWithGravityAndOffset } from "../../../utils/common/commonUtil";
 
 const ShortDistanceTestResults = ({
   visionTestResults,
   setSteps,
+  user,
 }: {
   visionTestResults: ShortDistanceVisionTestStateType;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+  user: UserType;
 }) => {
   const navigation = useNavigation<any>();
   const [showModal, setShowModal] = useState(false);
+  const [pendingChallenges, setPendingChallenges] = useState<
+    VisionTestChallenge[]
+  >([]);
+  const [completedTaskIds, setCompletedTaskIds] = useState([]);
+  const [gainedXP, setGainedXP] = useState(5);
+  const [gainedPoints, setGainedPoints] = useState(0);
 
-  const { xpGained } = useSelector((state: RootState) => ({
+  useEffect(() => {
+    stopSpeechToText();
+  }, []);
+
+  const stopSpeechToText = async () => {
+    try {
+      await Voice.stop();
+      await Voice.destroy();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const { xpGained, globalChalleges } = useSelector((state: RootState) => ({
     xpGained: state.challengesReducer.userLevels.xpGained,
+    globalChalleges: state?.challengesReducer?.challenges,
   }));
-  const onNextButtonPressed = () => {};
+
+  useEffect(() => {
+    if (globalChalleges && globalChalleges?.length > 0) {
+      setPendingChallenges(
+        globalChalleges.filter((challenges) => challenges.status === "PENDING")
+      );
+    }
+  }, [globalChalleges]);
+
+  const onNextButtonPressed = () => {
+    mutate(user?.data?.otherDetails?._id);
+
+    const pendingLongDistanceTasksList = pendingChallenges.filter(
+      (challenge) =>
+        challenge.identification.includes("shortDistanceVisionTest") &&
+        challenge.status === "PENDING"
+    );
+
+    const listOfCompletedTasks = [];
+    pendingLongDistanceTasksList.forEach((element) => {
+      setCompletedTaskIds((prev) => [...prev, element._id]);
+      listOfCompletedTasks.push(element._id);
+      setGainedPoints(gainedPoints + element.scorePoints);
+      setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
+    });
+
+    if (listOfCompletedTasks.length > 0)
+      handleUploadCompletion(listOfCompletedTasks);
+  };
+
+  const handleUploadCompletion = async (taskIds: string[]) => {
+    const { apiError, apiSuccess } = await updateUserChallengesCompletion(
+      user?.data?.otherDetails?._id,
+      taskIds
+    );
+
+    if (apiSuccess) {
+      console.log(apiSuccess);
+    } else if (apiError) {
+      console.log(apiError);
+    }
+  };
 
   const calculateLeftEyeLogmarScore = (): string => {
     const sortedResultsLeftEye: [string, number][] = Object.entries(
@@ -92,6 +168,7 @@ const ShortDistanceTestResults = ({
         `${API_URL}/test-results`,
         payload
       );
+      console.log("ssss ", response);
       return response;
     },
     onSuccess: () => {
@@ -99,6 +176,20 @@ const ShortDistanceTestResults = ({
     },
     onError: () => {},
   });
+
+  const handleUploadExperience = async () => {
+    const { apiError, apiSuccess } = await updateUserLevels(
+      user?.data?.otherDetails?._id,
+      gainedXP
+    );
+
+    if (apiSuccess) {
+      showToastWithGravityAndOffset("Successfully updated the level");
+    } else if (apiError) {
+      showToastWithGravityAndOffset("Something went wrong with updating level");
+    }
+    navigation.navigate("Home");
+  };
   return (
     <View
       style={{
@@ -168,7 +259,7 @@ const ShortDistanceTestResults = ({
                 maxWidth: "80%",
               }}
             >
-              You have Successfully Performed the Long Distance Test
+              You have Successfully Performed the Near Distance Test
             </Text>
 
             <View
@@ -179,19 +270,29 @@ const ShortDistanceTestResults = ({
                 alignItems: "center",
               }}
             >
+              <View
+                style={{
+                  marginTop: 20,
+                  alignItems: "flex-end",
+                }}
+              >
+                <Text>+{gainedXP}</Text>
+              </View>
               <LinearProgress
-                value={xpGained / 100}
+                value={gainedXP / 100}
                 trackColor="#F4F6F9"
                 color={BASIC_COLORS.PRIMARY}
                 style={{
                   height: 10,
                   borderRadius: 5,
-                  marginTop: 20,
+
                   marginBottom: 5,
                 }}
               />
 
-              <Text style={{ color: BASIC_COLORS.PRIMARY }}>1/4</Text>
+              <Text style={{ color: BASIC_COLORS.PRIMARY }}>
+                {gainedXP}/100
+              </Text>
             </View>
 
             <View
@@ -204,7 +305,7 @@ const ShortDistanceTestResults = ({
                 onPress={() => {
                   setSteps(VisionTestFlows.TEST_FLOW_SELECTOR);
                   setShowModal(false);
-                  //   handleUploadExperience();
+                  handleUploadExperience();
                 }}
                 buttonTitle={"Go to home"}
                 buttonStyle={{ borderRadius: 30 }}

@@ -34,6 +34,7 @@ export type UserType = {
       phone: string;
       updatedAt: string;
       username: string;
+      image?: string;
     };
     token: string;
   };

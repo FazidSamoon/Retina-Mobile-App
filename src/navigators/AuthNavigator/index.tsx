@@ -10,6 +10,9 @@ import ShortDistanceVisionTestScreen from "../../screens/AuthScreens/ShortDistan
 import MonthlyChallengesView from "../../screens/AuthScreens/MonthlyChallengesScreen/MonthlyChallengesView";
 import LeaderboardScreen from "../../screens/AuthScreens/LeaderboardScreen/LeaderboardScreen";
 import ChannelDoctorsScreen from "../../screens/AuthScreens/ChannelDoctors/ChannelDoctorsScreen";
+import StatScreen from "../../screens/AuthScreens/StatScreen/StatScreen";
+import ShortDistanceStat from "../../screens/AuthScreens/StatScreen/ShortDistanceStat";
+import LongDistanceStat from "../../screens/AuthScreens/StatScreen/LongDistanceStat";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -43,6 +46,9 @@ const index = () => {
         <DrawerNav.Screen name="MonthlyChallenges" component={MonthlyChallengesView} />
         <DrawerNav.Screen name="Leaderboard" component={LeaderboardScreen} />
         <DrawerNav.Screen name="ChannelDoctorsScreen" component={ChannelDoctorsScreen} />
+        <DrawerNav.Screen name="StatScreen" component={StatScreen} />
+        <DrawerNav.Screen name="ShortDistanceStat" component={ShortDistanceStat} />
+        <DrawerNav.Screen name="LongDistanceStat" component={LongDistanceStat} />
       </DrawerNav.Navigator>
     </>
   );

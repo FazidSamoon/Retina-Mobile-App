@@ -122,7 +122,7 @@ const ShortDistanceVIsionTestContainer = () => {
           testType={testType}
         />
       ) : steps === VisionTestFlows.TEST_RESULT ? (
-        <ShortDistanceTestResults  visionTestResults={visionTestStates} setSteps={setSteps}/>
+        <ShortDistanceTestResults  visionTestResults={visionTestStates} setSteps={setSteps} user={user} />
       ) : (
         <VisionTestTestTypeSelector
           setSteps={setSteps}
