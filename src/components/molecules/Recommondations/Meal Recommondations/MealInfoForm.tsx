@@ -28,7 +28,6 @@ const MealInfoForm = () => {
   const userData = useSelector(
     (state: RootState) => state.recommondationReducer.userData
   );
-  const user_id: string = "IO25";
 
   const stateFunction = ({
     mealPreference,
@@ -109,31 +108,46 @@ const MealInfoForm = () => {
     return state;
   };
 
-  const handleSubmit = async (values: {
-    mealPreference: string;
-    weight: number;
-    height: number;
-    mealType: string;
-    exerciseLevel: string;
-  }) => {
-    dispatch(updateUserData(values));
-    const state = stateFunction(values) || 1;
+  const handleSubmit = async (
+    values: {
+      mealPreference: string;
+      weight: number;
+      height: number;
+      mealType: string;
+      exerciseLevel: string;
+    },
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    setLoading(true);
+    setShowModal(true);
 
+    const state = stateFunction(values) || 1;
     const data = {
-      user_id: "I017",
+      user_id: "I025",
       state: state,
     };
 
-    const { apiSuccess, apiError, activityNumber } =
-      await getMealRecommendation(data);
+    try {
+      const { apiSuccess, apiError, activityNumber } =
+        await getMealRecommendation(data);
 
-    if (apiSuccess) {
-      console.log("Meal Recommendation Success: ", apiSuccess);
-    } else {
-      console.error("Error fetching meal recommendation: ", apiError);
+      if (apiSuccess) {
+        console.log("Meal Recommendation Success: ", apiSuccess);
+      } else {
+        console.error("Error fetching meal recommendation: ", apiError);
+      }
+
+      console.log("Activity Number: ", activityNumber);
+    } catch (error) {
+      console.error("Error in API Call: ", error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+        setShowModal(false);
+        navigation.navigate("MyRecommondation");
+      }, 3000);
     }
-
-    console.log("Activity Number: ", activityNumber);
   };
 
   const formik = useFormik({
@@ -146,25 +160,9 @@ const MealInfoForm = () => {
     },
     validationSchema: mealFormValidationSchema,
     onSubmit: (values) => {
-      handleSubmit(values);
-      setLoading(true);
-      setShowModal(true);
+      handleSubmit(values, setLoading, setShowModal);
     },
   });
-
-  useEffect(() => {
-    if (showModal) {
-      const timeout = setTimeout(() => {
-        setLoading(false);
-        setShowModal(false);
-        //navigation.navigate("MyRecommondation");
-      }, 1000);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [showModal]);
 
   return (
     <View style={styles.container}>
