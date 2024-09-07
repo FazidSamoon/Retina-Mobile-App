@@ -8,18 +8,20 @@ interface UserData {
   exerciseLevel: string;
 }
 
-export interface RecommendedActions {
+interface RecommendedActions {
   state: number;
   mainMealAction: number;
   otherMealsActions: number[];
 }
 
 interface RecommondationState {
+  user_id: string;
   userData: UserData;
   recommendedActions: RecommendedActions;
 }
 
 const initialState: RecommondationState = {
+  user_id: "I029",
   userData: {
     mealPreference: "Vegetarian",
     weight: 40,

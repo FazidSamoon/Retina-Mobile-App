@@ -4,10 +4,11 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import { AuthScreensParamList } from "../../../navigators/RootNavigator/types";
@@ -18,6 +19,7 @@ import { Feather } from "@expo/vector-icons";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import { Formik } from "formik";
 import { recommendationActions } from "../../../utils/types/data";
+import { updateQValue } from "../../../api/recommend";
 
 interface RecommendedMeal {
   _id: number;
@@ -26,8 +28,7 @@ interface RecommendedMeal {
 
 const MyRecommondationContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
-  const dispatch = useDispatch();
-  const { recommendedActions } = useSelector(
+  const { recommendedActions, user_id } = useSelector(
     (state: RootState) => state.recommondationReducer
   );
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -61,11 +62,40 @@ const MyRecommondationContainer = () => {
     setBottomSheetVisible(true);
   };
 
-  const onPressRateMeal = (values: { rating: number }) => {
-    console.log("Meal Rated:", selectedMeal?.action_name);
-    console.log("Rating:", values.rating);
+  const onPressRateMeal = async (values: { reward: number }) => {
+    try {
+      const formattedReward = parseFloat(values.reward.toFixed(2));
 
-    setBottomSheetVisible(false);
+      const { apiSuccess, apiError } = await updateQValue({
+        state: recommendedActions.state,
+        action: selectedMeal!._id,
+        reward: formattedReward,
+        user_id: user_id,
+      });
+
+      if (apiSuccess) {
+        showToastWithGravityAndOffset("Rating submitted successfully");
+        navigation.navigate("Home");
+        return;
+      } else {
+        showToastWithGravityAndOffset("Error occurred while submitting rating");
+        console.error("Error in updating Q value:", apiError);
+      }
+    } catch (error) {
+      console.error("Error occurred during update q value:", error);
+    } finally {
+      setBottomSheetVisible(false);
+    }
+  };
+
+  const showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
   };
 
   return (
@@ -132,7 +162,7 @@ const MyRecommondationContainer = () => {
             </TouchableOpacity>
           </View>
 
-          <Formik initialValues={{ rating: 0 }} onSubmit={onPressRateMeal}>
+          <Formik initialValues={{ reward: 0 }} onSubmit={onPressRateMeal}>
             {({ values, handleSubmit, setFieldValue }) => (
               <View style={{ height: "100%" }}>
                 <Text style={styles.questionText}>
@@ -141,9 +171,9 @@ const MyRecommondationContainer = () => {
 
                 <View style={{ marginBottom: 60, marginTop: 20 }}>
                   <RNSlider
-                    value={values.rating}
+                    value={values.reward}
                     onValueChange={(value: number) =>
-                      setFieldValue("rating", value)
+                      setFieldValue("reward", value)
                     }
                   />
                 </View>
