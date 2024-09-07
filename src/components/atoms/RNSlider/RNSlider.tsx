@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Slider, Text, Icon } from "@rneui/themed";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 
-type SlidersComponentProps = {
+type RNSliderProps = {
+  value: number;
+  onValueChange: (value: number) => void;
   showValue?: boolean;
 };
 
-const RNSlider = ({ showValue = false }: SlidersComponentProps) => {
-  const [value, setValue] = useState(0);
-
+const RNSlider = ({
+  value,
+  onValueChange,
+  showValue = false,
+}: RNSliderProps) => {
   return (
     <>
       <View style={[styles.contentView]}>
         <Slider
           value={value}
-          onValueChange={setValue}
-          maximumValue={5}
+          onValueChange={onValueChange}
+          maximumValue={1}
           minimumValue={0}
-          step={1}
+          step={0.1}
           allowTouchTrack
           maximumTrackTintColor={BASIC_COLORS.LIGHT_GRAY}
           minimumTrackTintColor={BASIC_COLORS.PRIMARY}

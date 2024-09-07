@@ -198,7 +198,7 @@ export const recommendationActions = [
   },
   {
     _id: 2,
-    action_name: "Brown rice with TOFU , and carrot salad",
+    action_name: "Brown rice with Tofu , and carrot salad",
   },
   {
     _id: 3,

@@ -21,6 +21,7 @@ import RNSlider from "../../atoms/RNSlider/RNSlider";
 import { BottomSheet } from "@rneui/themed";
 import { Feather } from "@expo/vector-icons";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
+import { Formik } from "formik";
 
 const MyRecommondationContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
@@ -29,7 +30,9 @@ const MyRecommondationContainer = () => {
     (state: RootState) => state.recommondationReducer
   );
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
-  const [selectedMeal, setSelectedMeal] = useState<RecommendedMeal>();
+  const [selectedMeal, setSelectedMeal] = useState<RecommendedMeal | null>(
+    null
+  );
 
   useEffect(() => {
     const defaultMainMealId = 6;
@@ -48,7 +51,10 @@ const MyRecommondationContainer = () => {
     setBottomSheetVisible(true);
   };
 
-  const onPressRateMeal = () => {
+  const onPressRateMeal = (values: { rating: number }) => {
+    console.log("Meal Rated:", selectedMeal?.action_name);
+    console.log("Rating:", values.rating);
+
     setBottomSheetVisible(false);
   };
 
@@ -90,6 +96,7 @@ const MyRecommondationContainer = () => {
         />
       </View>
 
+      {/* Bottom Sheet for Meal Rating */}
       <BottomSheet
         isVisible={bottomSheetVisible}
         backdropStyle={styles.backdropStyle}
@@ -115,29 +122,32 @@ const MyRecommondationContainer = () => {
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{
-              height: "100%",
-            }}
-          >
-            <Text style={styles.questionText}>
-              How much do you like this meal?
-            </Text>
+          <Formik initialValues={{ rating: 0 }} onSubmit={onPressRateMeal}>
+            {({ values, handleSubmit, setFieldValue }) => (
+              <View style={{ height: "100%" }}>
+                <Text style={styles.questionText}>
+                  How much do you like this meal?
+                </Text>
 
-            <View style={{ marginBottom: 60, marginTop: 20 }}>
-              <RNSlider />
-            </View>
+                <View style={{ marginBottom: 60, marginTop: 20 }}>
+                  <RNSlider
+                    value={values.rating}
+                    onValueChange={(value: number) =>
+                      setFieldValue("rating", value)
+                    }
+                  />
+                </View>
 
-            <RPPrimaryButton
-              buttonTitle={"Continue"}
-              buttonStyle={{
-                borderRadius: 30,
-              }}
-              onPress={() => {
-                onPressRateMeal();
-              }}
-            />
-          </View>
+                <RPPrimaryButton
+                  buttonTitle={"Submit Rating"}
+                  buttonStyle={{
+                    borderRadius: 30,
+                  }}
+                  onPress={handleSubmit}
+                />
+              </View>
+            )}
+          </Formik>
         </View>
       </BottomSheet>
     </View>
