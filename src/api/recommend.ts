@@ -72,7 +72,6 @@ export const updateQValue = async (data: {
     );
 
     apiSuccess = response?.data?.["update Response"]?.Attributes?.q;
-    console.log("API Success - Q Value:", apiSuccess);
   } catch (error) {
     apiError = error;
     console.error("Error in API Call:", apiError);
