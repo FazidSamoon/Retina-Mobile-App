@@ -20,6 +20,7 @@ import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import { Formik } from "formik";
 import { recommendationActions } from "../../../utils/types/data";
 import { updateQValue } from "../../../api/recommend";
+import { Circle } from "react-native-animated-spinkit";
 
 interface RecommendedMeal {
   _id: number;
@@ -31,6 +32,7 @@ const MyRecommondationContainer = () => {
   const { recommendedActions, user_id } = useSelector(
     (state: RootState) => state.recommondationReducer
   );
+  const [loading, setLoading] = useState(false);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [mainMeal, setMainMeal] = useState<RecommendedMeal | null>(null);
   const [otherMeals, setOtherMeals] = useState<RecommendedMeal[]>([]);
@@ -53,7 +55,7 @@ const MyRecommondationContainer = () => {
     );
   }, [recommendedActions]);
 
-  const navigateTo = () => {
+  const navigateBack = () => {
     navigation.navigate("MealsRecommend");
   };
 
@@ -62,27 +64,85 @@ const MyRecommondationContainer = () => {
     setBottomSheetVisible(true);
   };
 
+  const formatReward = (reward: number) => {
+    return parseFloat(reward.toFixed(2));
+  };
+
   const onPressRateMeal = async (values: { reward: number }) => {
     try {
-      const formattedReward = parseFloat(values.reward.toFixed(2));
+      setLoading(true);
+      const formattedReward = formatReward(values.reward);
 
-      const { apiSuccess, apiError } = await updateQValue({
-        state: recommendedActions.state,
-        action: selectedMeal!._id,
-        reward: formattedReward,
-        user_id: user_id,
-      });
+      // If the selected meal is the main meal
+      if (selectedMeal?._id === mainMeal?._id) {
+        // Call the API only for the main meal
+        const { apiSuccess, apiError } = await updateQValue({
+          state: recommendedActions.state,
+          action: selectedMeal!._id,
+          reward: formattedReward,
+          user_id: user_id,
+        });
 
-      if (apiSuccess) {
-        showToastWithGravityAndOffset("Rating submitted successfully");
-        navigation.navigate("Home");
-        return;
+        if (apiSuccess) {
+          setLoading(false);
+          showToastWithGravityAndOffset("Rating submitted successfully");
+          navigation.navigate("Home");
+        } else {
+          setLoading(false);
+          showToastWithGravityAndOffset(
+            "Error occurred while submitting rating"
+          );
+          console.error("Error in updating Q value:", apiError);
+        }
       } else {
-        showToastWithGravityAndOffset("Error occurred while submitting rating");
-        console.error("Error in updating Q value:", apiError);
+        // If the selected meal is an other meal
+        // First, update the other meal with the selected reward
+        const { apiSuccess: otherMealSuccess, apiError: otherMealError } =
+          await updateQValue({
+            state: recommendedActions.state,
+            action: selectedMeal!._id,
+            reward: formattedReward,
+            user_id: user_id,
+          });
+
+        if (otherMealSuccess) {
+          // Second, update the main meal with a reward of -0.5
+          const { apiSuccess: mainMealSuccess, apiError: mainMealError } =
+            await updateQValue({
+              state: recommendedActions.state,
+              action: mainMeal!._id,
+              reward: -0.5,
+              user_id: user_id,
+            });
+
+          if (mainMealSuccess) {
+            setLoading(false);
+            showToastWithGravityAndOffset("Rating submitted successfully");
+            navigation.navigate("Home");
+          } else {
+            setLoading(false);
+            showToastWithGravityAndOffset(
+              "Error occurred while submitting rating for main meal"
+            );
+            console.error(
+              "Error in updating Q value for main meal:",
+              mainMealError
+            );
+          }
+        } else {
+          setLoading(false);
+          showToastWithGravityAndOffset(
+            "Error occurred while submitting rating for other meal"
+          );
+          console.error(
+            "Error in updating Q value for other meal:",
+            otherMealError
+          );
+        }
       }
     } catch (error) {
       console.error("Error occurred during update q value:", error);
+      showToastWithGravityAndOffset("Error occurred during rating submission");
     } finally {
       setBottomSheetVisible(false);
     }
@@ -102,7 +162,7 @@ const MyRecommondationContainer = () => {
     <View>
       <VisionHomeScreenTopAppBar
         header="My Recommondation"
-        navigateTo={navigateTo}
+        navigateTo={navigateBack}
       />
 
       {/* Main Recommendation */}
@@ -162,32 +222,38 @@ const MyRecommondationContainer = () => {
             </TouchableOpacity>
           </View>
 
-          <Formik initialValues={{ reward: 0 }} onSubmit={onPressRateMeal}>
-            {({ values, handleSubmit, setFieldValue }) => (
-              <View style={{ height: "100%" }}>
-                <Text style={styles.questionText}>
-                  How much do you like this meal?
-                </Text>
+          {loading ? (
+            <View style={{ marginVertical: 80, marginHorizontal: 120 }}>
+              <Circle size={100} color="#109BE7" animating />
+            </View>
+          ) : (
+            <Formik initialValues={{ reward: 0 }} onSubmit={onPressRateMeal}>
+              {({ values, handleSubmit, setFieldValue }) => (
+                <View style={{ height: "100%" }}>
+                  <Text style={styles.questionText}>
+                    How much do you like this meal?
+                  </Text>
 
-                <View style={{ marginBottom: 60, marginTop: 20 }}>
-                  <RNSlider
-                    value={values.reward}
-                    onValueChange={(value: number) =>
-                      setFieldValue("reward", value)
-                    }
+                  <View style={{ marginBottom: 60, marginTop: 20 }}>
+                    <RNSlider
+                      value={values.reward}
+                      onValueChange={(value: number) =>
+                        setFieldValue("reward", value)
+                      }
+                    />
+                  </View>
+
+                  <RPPrimaryButton
+                    buttonTitle={"Submit Rating"}
+                    buttonStyle={{
+                      borderRadius: 30,
+                    }}
+                    onPress={handleSubmit}
                   />
                 </View>
-
-                <RPPrimaryButton
-                  buttonTitle={"Submit Rating"}
-                  buttonStyle={{
-                    borderRadius: 30,
-                  }}
-                  onPress={handleSubmit}
-                />
-              </View>
-            )}
-          </Formik>
+              )}
+            </Formik>
+          )}
         </View>
       </BottomSheet>
     </View>
