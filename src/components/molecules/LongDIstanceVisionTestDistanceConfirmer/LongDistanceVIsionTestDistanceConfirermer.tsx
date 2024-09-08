@@ -99,7 +99,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
                 textAlign: "center",
               }}
             >
-              Please maintain required distance
+              Please close your RIGHT eye
             </Text>
             <Image
               source={require("../../../assets/CloseRightEye.png")}
