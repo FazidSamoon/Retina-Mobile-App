@@ -13,6 +13,7 @@ import ChannelDoctorsScreen from "../../screens/AuthScreens/ChannelDoctors/Chann
 import StatScreen from "../../screens/AuthScreens/StatScreen/StatScreen";
 import ShortDistanceStat from "../../screens/AuthScreens/StatScreen/ShortDistanceStat";
 import LongDistanceStat from "../../screens/AuthScreens/StatScreen/LongDistanceStat";
+import MySubscriptions from "../../screens/AuthScreens/MySubscriptions/MySubscriptions";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -49,6 +50,7 @@ const index = () => {
         <DrawerNav.Screen name="StatScreen" component={StatScreen} />
         <DrawerNav.Screen name="ShortDistanceStat" component={ShortDistanceStat} />
         <DrawerNav.Screen name="LongDistanceStat" component={LongDistanceStat} />
+        <DrawerNav.Screen name="MySubscriptions" component={MySubscriptions} />
       </DrawerNav.Navigator>
     </>
   );

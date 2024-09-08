@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import VisionSimulation from "../VisionSimulation/VisionSimulation";
 import { getAverageTestScore } from "../../../api/tests";
+import { API_URL } from "../../../api/config";
 
 const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
   const windowWidth = Dimensions.get("window").width;
@@ -98,7 +99,7 @@ const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
   } = useQuery({
     queryFn: async () => {
       if (user?.data?.otherDetails?._id || userId) {
-        const queryUrl = `http://192.168.8.138:3005/api/v1/test-results/user-stats/${
+        const queryUrl = `${API_URL}/test-results/user-stats/${
           user?.data?.otherDetails?._id ?? userId
         }?month=${month}&year=${year}`;
         // const response = await axiosInstance.get(queryUrl);
@@ -157,7 +158,6 @@ const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
     }
   };
 
-  // console.log(lineChartDataToShow.datasets);
   return (
     <View>
       <Text
@@ -205,7 +205,7 @@ const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
               </View>
             ))}
         </View>
-        {lineChartDataToShow.datasets.length > 0 ? (
+        {lineChartDataToShow.datasets.length > 0 && lineChartDataToShow.datasets[0].data.length > 0 && lineChartDataToShow.datasets[1].data.length ? (
           <LineChart
             data={chartData(lineChartDataToShow) || []}
             width={windowWidth - 60}

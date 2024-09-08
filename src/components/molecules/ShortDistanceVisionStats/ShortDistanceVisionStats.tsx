@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import {API_URL} from "../../../api/config"
 
 const ShortDistanceVisionStats = ({ user }: { user: UserType }) => {
   const windowWidth = Dimensions.get("window").width;
@@ -91,7 +92,7 @@ const ShortDistanceVisionStats = ({ user }: { user: UserType }) => {
   } = useQuery({
     queryFn: async () => {
       if (user?.data?.otherDetails?._id || userId) {
-        const queryUrl = `http://192.168.8.138:3005/api/v1/test-results/user-stats-near/${
+        const queryUrl = `${API_URL}/test-results/user-stats-near/${
           user?.data?.otherDetails?._id ?? userId
         }?month=${month}&year=${year}&testType=NEAR_VISION`;
         // const response = await axiosInstance.get(queryUrl);
@@ -101,12 +102,6 @@ const ShortDistanceVisionStats = ({ user }: { user: UserType }) => {
       }
     },
     queryKey: ["stats", month, year],
-    // enabled:
-    //   user?.data?.otherDetails?._id !== null ||
-    //   user?.data?.otherDetails?._id === undefined ||
-    //   userId !== "" ||
-    //   userId !== undefined ||
-    //   userId !== null,
   });
 
   useEffect(() => {
@@ -203,7 +198,7 @@ const ShortDistanceVisionStats = ({ user }: { user: UserType }) => {
               </View>
             ))}
         </View>
-        {lineChartDataToShow.datasets.length > 0 ? (
+        {lineChartDataToShow.datasets.length > 0 && lineChartDataToShow.datasets[0].data.length > 0 && lineChartDataToShow.datasets[1].data.length ? (
           <LineChart
             data={chartData(lineChartDataToShow) || []}
             width={windowWidth - 60}

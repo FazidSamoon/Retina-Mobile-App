@@ -15,11 +15,11 @@ const VisionSimulation = ({ logmarValue = 0.18 }: { logmarValue: number }) => {
   };
 
   const getBlurAmountForLogmar = (logmarValue) => {
-    if (logmarValue >= -0.1 && logmarValue <= 0.2) return 0;
-    if (logmarValue >= 0.3 && logmarValue <= 0.5) return 3;
-    if (logmarValue >= 0.6 && logmarValue <= 1.0) return 8;
-    if (logmarValue >= 1.1 && logmarValue <= 1.3) return 13;
-    if (logmarValue >= 1.4 && logmarValue <= 2.0) return 18;
+    if (logmarValue >= -0.1 && logmarValue <= 0.3) return 0;
+    if (logmarValue > 0.3 && logmarValue <= 0.6) return 3;
+    if (logmarValue > 0.6 && logmarValue <= 1.1) return 8;
+    if (logmarValue > 1.1 && logmarValue <= 1.4) return 13;
+    if (logmarValue > 1.4 && logmarValue <= 2.0) return 18;
     if (logmarValue > 2.0) return 23;
     return 0;
   };
@@ -27,6 +27,7 @@ const VisionSimulation = ({ logmarValue = 0.18 }: { logmarValue: number }) => {
     () => getBlurAmountForLogmar(logmarValue),
     [logmarValue]
   );
+
   return (
     <View style={{ display: "flex", flexDirection: "row" }}>
       <ImageBackground

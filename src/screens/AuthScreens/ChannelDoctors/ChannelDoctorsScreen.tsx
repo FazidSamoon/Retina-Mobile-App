@@ -2,11 +2,19 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { VisionTestChallenge } from "../../../utils/types/commonTypes";
 import RPPrimaryButton from "../../../components/atoms/RPPrimaryButton/RPPrimaryButton";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
+import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
+import AllDoctorsCard from "../../../components/molecules/AllDoctorsCard/AllDoctorsCard";
 
 const ChannelDoctorsScreen = () => {
+  const navigation = useNavigation<any>();
   return (
     <SafeAreaView style={styles.container}>
-      <Text>ChannelDoctorsScreen</Text>
+      <VisionHomeScreenTopAppBar header={"Find Doctors"} />
+
+      <AllDoctorsCard />
+
     </SafeAreaView>
   );
 };

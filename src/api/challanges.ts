@@ -39,14 +39,16 @@ export const updateUserChallengesCompletion = async (
   let apiSuccess = null;
   let apiError = null;
   try {
-    const response = await axios.post(
+    const response = await axios.patch(
       `${API_URL}/challanges/update-completion/${userId}`,
       {
         challengesIds: challengesList,
       }
     );
     apiSuccess = response.data;
+    console.log("ssffsff");
   } catch (error) {
+    console.log("errorrrr ");
     apiError = error;
   }
 
@@ -73,6 +75,19 @@ export const updateUserLevels = async (userId: string, changeValue: number) => {
     const response = await axios.patch(`${API_URL}/level/user/${userId}`, {
       changeValue,
     });
+    apiSuccess = response.data;
+  } catch (error) {
+    apiError = error;
+  }
+
+  return { apiSuccess, apiError };
+};
+
+export const getUserSubscriptions = async (userId: string) => {
+  let apiSuccess = null;
+  let apiError = null;
+  try {
+    const response = await axios.get(`${API_URL}/doctor/get-user-subscription/${userId}`);
     apiSuccess = response.data;
   } catch (error) {
     apiError = error;

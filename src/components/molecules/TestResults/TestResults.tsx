@@ -170,7 +170,6 @@ const TestResults = ({
           "SpeechIdentificationTest" || "gestureIdentificationTest"
         )
     );
-
     const listOfCompletedTasks = [];
     const sizes = [
       "202.6",
@@ -184,15 +183,18 @@ const TestResults = ({
       "20",
       "12",
     ];
-    pendingLongDistanceTasksList.forEach((element) => {
+
+    pendingLongDistanceTasksList.map((element, index) => {
       const includesSize = sizes.some((size) =>
         element.identification.includes(size)
       );
+
       if (includesSize) {
         const shouldIdentify = element.task.split(" ")[1];
         const availableSizes = sizes.filter((size) =>
           element.identification.includes(size)
         );
+
         const sortedResultsLeftEye: [string, number][] = Object.entries(
           visionTestResults.testResults.leftEye.result
         ).sort((a, b) => {
@@ -214,11 +216,11 @@ const TestResults = ({
         const filteredRightEyeResults = rightEye.filter(([key]) =>
           availableSizes.includes(key)
         );
-
         if (
-          (filteredLeftEyeResults[0][1] > Number(shouldIdentify) ||
-            filteredRightEyeResults[0][1] > Number(shouldIdentify)) &&
-          element.minDistanceRequirement >= personalizedDistanceGlobal
+          filteredLeftEyeResults.length > 0 &&
+          (filteredLeftEyeResults[0][1] >= Number(shouldIdentify) ||
+            filteredRightEyeResults[0][1] >= Number(shouldIdentify)) &&
+          element.minDistanceRequirement <= personalizedDistanceGlobal
         ) {
           setCompletedTaskIds((prev) => [...prev, element._id]);
           listOfCompletedTasks.push(element._id);
@@ -232,7 +234,6 @@ const TestResults = ({
         setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
       }
     });
-
     if (listOfCompletedTasks.length > 0)
       handleUploadCompletion(listOfCompletedTasks);
   };
