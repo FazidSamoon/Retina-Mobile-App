@@ -190,3 +190,70 @@ export const nearVisionTestParagraphs = [
   "The cake is sweet and soft. We eat it at parties.",
   "The chair is big and comfortable. We sit in it to relax.",
 ];
+
+export const recommendationActions = [
+  {
+    _id: 1,
+    action_name: "Rotti with lunu miris",
+  },
+  {
+    _id: 2,
+    action_name: "Brown rice with Tofu , and carrot salad",
+  },
+  {
+    _id: 3,
+    action_name: "Sweet potato and coconut scrapes",
+  },
+  {
+    _id: 4,
+    action_name: "Brown beans with onion mixture",
+  },
+  {
+    _id: 5,
+    action_name: "Egg White omelette  with bread",
+  },
+  {
+    _id: 6,
+    action_name: "1 cup of brown rice with sausages and dahl curry",
+  },
+  {
+    _id: 7,
+    action_name: "Vegetable - mixed noodles with salmon",
+  },
+  {
+    _id: 8,
+    action_name: "String Hoppers and Chicken curry",
+  },
+  {
+    _id: 9,
+    action_name: "Egg Hoppers",
+  },
+  {
+    _id: 10,
+    action_name: "Oats - meal",
+  },
+  {
+    _id: 11,
+    action_name: "Sweet corn soup with mint salad",
+  },
+  {
+    _id: 12,
+    action_name: "Butter bean pasta with tomato sauce",
+  },
+  {
+    _id: 13,
+    action_name: "Lean Chicken and vegetable lettuce wraps",
+  },
+  {
+    _id: 14,
+    action_name: "Spicy BBQ pork",
+  },
+  {
+    _id: 15,
+    action_name: "Rice, soya meat and potatoes",
+  },
+  {
+    _id: 16,
+    action_name: "Smoked markerel with banana bread",
+  },
+];

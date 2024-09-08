@@ -53,3 +53,17 @@ export const loginValidationSchema = Yup.object().shape({
     ),
   password: Yup.string().required("Password is required"),
 });
+
+export const mealFormValidationSchema = Yup.object().shape({
+  mealPreference: Yup.string().required("Please select a meal preference"),
+  weight: Yup.number()
+    .required("Weight is required")
+    .positive("Weight must be a positive number")
+    .typeError("Weight must be a valid number"),
+  height: Yup.number()
+    .required("Height is required")
+    .positive("Height must be a positive number")
+    .typeError("Height must be a valid number"),
+  mealType: Yup.string().required("Please select a meal type"),
+  exerciseLevel: Yup.string().required("Please select your exercise level"),
+});

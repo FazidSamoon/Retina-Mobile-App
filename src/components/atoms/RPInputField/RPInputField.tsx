@@ -15,7 +15,8 @@ const RPInputField = ({
   value,
   editable,
   secureTextEntry,
-  labelStyles
+  labelStyles,
+  inputTextStyles,
 }: RPSInputFieldProps) => {
   return (
     <View>
@@ -55,6 +56,7 @@ const RPInputField = ({
           style={{
             width: "90%",
             color: BASIC_COLORS.FONT_SECONDARY,
+            ...inputTextStyles,
           }}
           onChangeText={onChangeText}
           editable={editable}

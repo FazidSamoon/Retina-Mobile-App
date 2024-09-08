@@ -7,4 +7,5 @@ export const BASIC_COLORS = {
   FONT_SECONDARY: "#677294",
   ERROR: "#FF0000",
   DESCRIPTION: "#342F2F",
+  LIGHT_GRAY: "#D3D3D3",
 };
