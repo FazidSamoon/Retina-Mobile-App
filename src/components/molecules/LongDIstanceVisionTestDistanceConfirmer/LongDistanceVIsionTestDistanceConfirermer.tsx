@@ -11,21 +11,24 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
   personalizedDistance: PersonalizedDistance;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
 }) => {
-  const [inRange, setInRange] = useState(true);
-  const [showConfirmModal, setShowConfirmModal] = useState(true);
+  console.log("personalizedDistance ", personalizedDistance);
+  const [inRange, setInRange] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const handleInRange = () => {
-    // if(!inRange) setInRange(true)
+    if (!inRange) {
+      setInRange(true);
+      setShowConfirmModal(true)
+    }
   };
 
   const handleNotInRange = () => {
-    // if (inRange) setInRange(false);
+    if (inRange) setInRange(false);
   };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     if (inRange && showConfirmModal) {
-      console.log("hey")
       timer = setTimeout(() => {
         setSteps(VisionTestFlows.TEST_SCREEN);
       }, 10000);
@@ -55,7 +58,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
         <FaceDetectorComponenet
           handleInRange={handleInRange}
           handleNotInRange={handleNotInRange}
-          distanceToMaintain={PersonalizedDistance.FOURMETER}
+          distanceToMaintain={Number(personalizedDistance)}
         />
       </View>
 
@@ -96,7 +99,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
                 textAlign: "center",
               }}
             >
-              Please close your RIGHT eye
+              Please maintain required distance
             </Text>
             <Image
               source={require("../../../assets/CloseRightEye.png")}

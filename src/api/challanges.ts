@@ -60,7 +60,7 @@ export const getUserLevels = async (userId: string) => {
   let apiError = null;
   try {
     const response = await axios.get(`${API_URL}/level/user/${userId}`);
-    apiSuccess = response.data;
+    apiSuccess = response.data.data;
   } catch (error) {
     apiError = error;
   }
@@ -88,6 +88,20 @@ export const getUserSubscriptions = async (userId: string) => {
   let apiError = null;
   try {
     const response = await axios.get(`${API_URL}/doctor/get-user-subscription/${userId}`);
+    apiSuccess = response.data;
+  } catch (error) {
+    apiError = error;
+  }
+
+  return { apiSuccess, apiError };
+};
+
+
+export const getLeaderboard = async (userId: string) => {
+  let apiSuccess = null;
+  let apiError = null;
+  try {
+    const response = await axios.get(`${API_URL}/level/leaderboard/${userId}`);
     apiSuccess = response.data;
   } catch (error) {
     apiError = error;

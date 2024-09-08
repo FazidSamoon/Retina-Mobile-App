@@ -178,6 +178,7 @@ const LongDistanceVisionTestContainer = () => {
           setResults={setVisionTestStates}
           testType={testType}
           personalizedTestSize={personalizedTestSize}
+          personalizedDistance={personalizedDistance}
         />
       ) : steps === VisionTestFlows.TEST_RESULT ? (
         <TestResults
@@ -193,6 +194,8 @@ const LongDistanceVisionTestContainer = () => {
           setSteps={setSteps}
           setResults={setVisionTestStates}
           testType={testType}
+          personalizedDistance={personalizedDistance}
+          personalizedTestSize={personalizedTestSize}
         />
       ) : steps === VisionTestFlows.TEST_DISTANCE_MEASURER ? (
         <LongDistanceVIsionTestDistanceConfirermer

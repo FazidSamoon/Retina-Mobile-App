@@ -4,6 +4,7 @@ import * as Brightness from "expo-brightness";
 import { getCurrentWeek } from "../../../utils/common/commonUtil";
 import {
   LongDIstanceVisionTestSteps,
+  PersonalizedDistance,
   ResultStatus,
   VisionTestStateType,
 } from "./LongDistanceVIsionTestTypes";
@@ -34,12 +35,14 @@ const LongDinstanceVisionTest = ({
   setResults,
   testType,
   personalizedTestSize,
+  personalizedDistance
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
   setResults: React.Dispatch<React.SetStateAction<VisionTestStateType>>;
   personalizedTestSize: LongDIstanceVisionTestSteps;
   testType: TestTypes;
+  personalizedDistance: PersonalizedDistance;
 }) => {
   const [startedListning, setStartedListning] = useState<boolean>(false);
   const [letterRecognitionResult, setLetterRecognitionResult] = useState([]);
@@ -507,6 +510,7 @@ const LongDinstanceVisionTest = ({
               handleInRange={handleInRange}
               handleNotInRange={handleNotInRange}
               fullScreenEnabled={false}
+              distanceToMaintain={Number(personalizedDistance) * 2}
             />
           </View>
         </View>

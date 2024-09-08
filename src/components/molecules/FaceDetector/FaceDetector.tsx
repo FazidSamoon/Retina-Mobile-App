@@ -27,6 +27,8 @@ const FaceDetectorComponenet = ({
   handleNotInRange: () => void;
   handleInRange: () => void;
 }) => {
+
+  console.log(distanceToMaintain)
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.front);
   const cameraRef = useRef(null);
@@ -34,14 +36,14 @@ const FaceDetectorComponenet = ({
 
   const estimateDistance = (face) => {
     const faceWidth = face.bounds.size.width;
-    const focalLength = 500; // Assumed focal length (needs calibration)
-    const realFaceWidth = 0.16; // Average real face width in meters (16 cm)
+    const focalLength = 500;
+    const realFaceWidth = 0.16;
 
     const distance = (realFaceWidth * focalLength) / faceWidth;
-    console.log(distance.toFixed(2) < distanceToMaintain.toFixed(2))
     if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
     else handleInRange();
-    return distance.toFixed(2); // Distance in meters
+    // console.log(distance.toFixed(2))
+    return distance.toFixed(2);
   };
 
   const handleFacesDetected = ({ faces }) => {

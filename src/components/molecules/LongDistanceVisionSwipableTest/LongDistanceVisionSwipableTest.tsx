@@ -16,6 +16,7 @@ import {
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 import {
   LongDIstanceVisionTestSteps,
+  PersonalizedDistance,
   ResultStatus,
   VisionTestStateType,
 } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
@@ -36,11 +37,15 @@ const LongDistanceVisionSwipableTest = ({
   setSteps,
   setResults,
   testType,
+  personalizedTestSize,
+  personalizedDistance,
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
   setResults: React.Dispatch<React.SetStateAction<VisionTestStateType>>;
   testType: TestTypes;
+  personalizedDistance: PersonalizedDistance;
+  personalizedTestSize: LongDIstanceVisionTestSteps;
 }) => {
   const [visionTestStates, setVisionTestStates] = useState<VisionTestStateType>(
     {
@@ -84,9 +89,8 @@ const LongDistanceVisionSwipableTest = ({
     }
   );
 
-  const [currentStep, setCurrentStep] = useState<LongDIstanceVisionTestSteps>(
-    LongDIstanceVisionTestSteps.SIZE_202_6
-  );
+  const [currentStep, setCurrentStep] =
+    useState<LongDIstanceVisionTestSteps>(personalizedTestSize);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(1);
 
   const [showStepChangeModal, setShowStepChangeModal] =
@@ -112,6 +116,7 @@ const LongDistanceVisionSwipableTest = ({
   const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
   const handleInRange = () => {
+    console.log("hey")
     setInRange(true);
     if (showNotInRangeModal) setShowEyeChangeModal(false);
   };
@@ -528,6 +533,7 @@ const LongDistanceVisionSwipableTest = ({
               handleInRange={handleInRange}
               handleNotInRange={handleNotInRange}
               fullScreenEnabled={false}
+              distanceToMaintain={Number(personalizedDistance) * 2}
             />
           </View>
         </View>
@@ -540,7 +546,6 @@ const LongDistanceVisionSwipableTest = ({
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
- 
           }}
         >
           <View
@@ -724,10 +729,10 @@ const LongDistanceVisionSwipableTest = ({
                 textAlign: "center",
               }}
             >
-              Please close your LEFT eye
+              Please maintain required distance
             </Text>
             <Image
-              source={require("../../../assets/CloseLeftEye.png")}
+              source={require("../../../assets/doctor1.jpg")}
               style={{
                 width: Dimensions.get("window").width * 0.6,
                 height: Dimensions.get("window").height * 0.4,

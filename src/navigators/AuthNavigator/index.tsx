@@ -53,9 +53,28 @@ const index = () => {
           component={EyeExerciseHome}
         />
         <DrawerNav.Screen
+          name="MonthlyChallenges"
+          component={MonthlyChallengesView}
+        />
+        <DrawerNav.Screen
           name="LongDistanceVisionTest"
           component={LongDistanceVisionTestScreen}
         />
+        <DrawerNav.Screen name="Leaderboard" component={LeaderboardScreen} />
+        <DrawerNav.Screen
+          name="ChannelDoctorsScreen"
+          component={ChannelDoctorsScreen}
+        />
+        <DrawerNav.Screen name="StatScreen" component={StatScreen} />
+        <DrawerNav.Screen
+          name="ShortDistanceStat"
+          component={ShortDistanceStat}
+        />
+        <DrawerNav.Screen
+          name="LongDistanceStat"
+          component={LongDistanceStat}
+        />
+        <DrawerNav.Screen name="MySubscriptions" component={MySubscriptions} />
         <DrawerNav.Screen
           name="ShortDistanceVisionTest"
           component={ShortDistanceVisionTestScreen}
