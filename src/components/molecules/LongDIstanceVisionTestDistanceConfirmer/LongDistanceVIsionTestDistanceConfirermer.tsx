@@ -13,16 +13,19 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
 }) => {
   const [inRange, setInRange] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(true);
-  const handleInRange = () => {};
+  const handleInRange = () => {
+    // if(!inRange) setInRange(true)
+  };
 
   const handleNotInRange = () => {
-    if (inRange) setInRange(false);
+    // if (inRange) setInRange(false);
   };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     if (inRange && showConfirmModal) {
+      console.log("hey")
       timer = setTimeout(() => {
         setSteps(VisionTestFlows.TEST_SCREEN);
       }, 10000);
@@ -41,7 +44,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
           fontWeight: "800",
         }}
       >
-        Maintaing {personalizedDistance}m with device to continue with the test
+        Maintain {personalizedDistance}m with device to continue with the test
       </Text>
       <View
         style={{
@@ -52,6 +55,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
         <FaceDetectorComponenet
           handleInRange={handleInRange}
           handleNotInRange={handleNotInRange}
+          distanceToMaintain={PersonalizedDistance.FOURMETER}
         />
       </View>
 

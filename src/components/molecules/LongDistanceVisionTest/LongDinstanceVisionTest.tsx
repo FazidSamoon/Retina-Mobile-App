@@ -49,6 +49,7 @@ const LongDinstanceVisionTest = ({
       week: getCurrentWeek(),
       year: new Date().getFullYear(),
       testCompleted: false,
+      testType: "LONG_DISTANCE",
       testResults: {
         leftEye: {
           result: {

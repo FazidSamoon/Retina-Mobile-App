@@ -7,6 +7,13 @@ import VisionTestHomeScreen from "../../screens/AuthScreens/VisionTestHomeScreen
 import EyeExerciseHome from "../../screens/AuthScreens/EyeExerciseHome/EyeExerciseHome";
 import LongDistanceVisionTestScreen from "../../screens/AuthScreens/LongDistanceVisionTestScreen/LongDistanceVisionTestScreen";
 import ShortDistanceVisionTestScreen from "../../screens/AuthScreens/ShortDistanceVisionTestScreen/ShortDistanceVisionTestScreen";
+import MonthlyChallengesView from "../../screens/AuthScreens/MonthlyChallengesScreen/MonthlyChallengesView";
+import LeaderboardScreen from "../../screens/AuthScreens/LeaderboardScreen/LeaderboardScreen";
+import ChannelDoctorsScreen from "../../screens/AuthScreens/ChannelDoctors/ChannelDoctorsScreen";
+import StatScreen from "../../screens/AuthScreens/StatScreen/StatScreen";
+import ShortDistanceStat from "../../screens/AuthScreens/StatScreen/ShortDistanceStat";
+import LongDistanceStat from "../../screens/AuthScreens/StatScreen/LongDistanceStat";
+import MySubscriptions from "../../screens/AuthScreens/MySubscriptions/MySubscriptions";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -37,6 +44,13 @@ const index = () => {
         <DrawerNav.Screen name="EyeExercisiseHome" component={EyeExerciseHome} />
         <DrawerNav.Screen name="LongDistanceVisionTest" component={LongDistanceVisionTestScreen} />
         <DrawerNav.Screen name="ShortDistanceVisionTest" component={ShortDistanceVisionTestScreen} />
+        <DrawerNav.Screen name="MonthlyChallenges" component={MonthlyChallengesView} />
+        <DrawerNav.Screen name="Leaderboard" component={LeaderboardScreen} />
+        <DrawerNav.Screen name="ChannelDoctorsScreen" component={ChannelDoctorsScreen} />
+        <DrawerNav.Screen name="StatScreen" component={StatScreen} />
+        <DrawerNav.Screen name="ShortDistanceStat" component={ShortDistanceStat} />
+        <DrawerNav.Screen name="LongDistanceStat" component={LongDistanceStat} />
+        <DrawerNav.Screen name="MySubscriptions" component={MySubscriptions} />
       </DrawerNav.Navigator>
     </>
   );

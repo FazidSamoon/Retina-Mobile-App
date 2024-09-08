@@ -1,8 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { UserType } from "../../../utils/types/commonTypes";
+import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
+import { useDispatch } from "react-redux";
+import { setUserId } from "../../../store/slices/authSlice";
 
 const Greetings = () => {
-  const username = "Fazid";
+  const [user, setUser] = useState<UserType>();
+  const dispatch = useDispatch()
+  const getUser = async () => {
+    const userObj = await getDataFromAsyncStorage("user");
+    dispatch(setUserId(user?.data?.otherDetails?._id))
+    setUser(userObj);
+  };
+  useEffect(() => {
+    void getUser();
+  }, []);
+  const username = user?.data?.otherDetails?.username;
 
   const date = new Date();
   const greetText =
@@ -16,7 +30,7 @@ const Greetings = () => {
       <Text
         style={{
           fontSize: 28,
-          fontWeight: "800"
+          fontWeight: "800",
         }}
       >
         Hello {username}!

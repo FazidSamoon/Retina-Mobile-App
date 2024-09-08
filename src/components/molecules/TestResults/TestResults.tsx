@@ -1,4 +1,11 @@
-import { Dimensions, Modal, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Voice from "@react-native-voice/voice";
 import DetailedOverview from "./DetailedOverview";
@@ -16,8 +23,20 @@ import { useMutation } from "@tanstack/react-query";
 import { API_URL } from "../../../api/config";
 import axiosInstance from "../../../api/axiosConfig";
 import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
-import { calculateVisualAcuityScoreUsingSLMAformula } from "../../../utils/common/scoreCalculations";
-import { UserType } from "../../../utils/types/commonTypes";
+import {
+  calculateGainedXp,
+  calculateVisualAcuityScoreUsingSLMAformula,
+} from "../../../utils/common/scoreCalculations";
+import {
+  UserType,
+  VisionTestChallenge,
+} from "../../../utils/types/commonTypes";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import {
+  updateUserChallengesCompletion,
+  updateUserLevels,
+} from "../../../api/challanges";
 
 const TestResults = ({
   visionTestResults,
@@ -32,10 +51,32 @@ const TestResults = ({
 }) => {
   const navigation = useNavigation<any>();
   const [showModal, setShowModal] = useState(false);
+  const [pendingChallenges, setPendingChallenges] = useState<
+    VisionTestChallenge[]
+  >([]);
+  const {
+    personalizedDistanceGlobal,
+    personalizedStartLineGLobal,
+    globalChalleges,
+  } = useSelector((state: RootState) => ({
+    personalizedDistanceGlobal: state?.challengesReducer?.personalizedDistance,
+    personalizedStartLineGLobal: state?.challengesReducer?.startLine,
+    globalChalleges: state?.challengesReducer?.challenges,
+  }));
+  const [gainedXP, setGainedXP] = useState(5);
+  const [gainedPoints, setGainedPoints] = useState(0);
+  const [completedTaskIds, setCompletedTaskIds] = useState([]);
   useEffect(() => {
     stopSpeechToText();
   }, []);
 
+  useEffect(() => {
+    if (globalChalleges && globalChalleges?.length > 0) {
+      setPendingChallenges(
+        globalChalleges.filter((challenges) => challenges.status === "PENDING")
+      );
+    }
+  }, [globalChalleges]);
   const stopSpeechToText = async () => {
     try {
       await Voice.stop();
@@ -44,7 +85,6 @@ const TestResults = ({
       console.error(error);
     }
   };
-
   const calculateLeftEyeLogmarScore = (): string => {
     const sortedResultsLeftEye: [string, number][] = Object.entries(
       visionTestResults.testResults.leftEye.result
@@ -52,7 +92,6 @@ const TestResults = ({
       return parseFloat(b[0]) - parseFloat(a[0]);
     });
     const leftEye = sortedResultsLeftEye.filter((item) => item[1] > 0);
-
     if (leftEye.length === 0) {
       const rightEyeLogmarScore = calculateVisualAcuityScoreUsingSLMAformula(
         "202.6",
@@ -108,9 +147,10 @@ const TestResults = ({
           rightEye: Number(calculateRightEyeLogmarScore()),
         },
         distance: personalizedDistance,
+        testType: "LONG_DISTANCE",
       };
       const response = await axiosInstance.post(
-        `http://192.168.8.138:3005/api/v1/test-results`,
+        `${API_URL}/test-results`,
         payload
       );
       return response;
@@ -118,12 +158,121 @@ const TestResults = ({
     onSuccess: () => {
       setShowModal(true);
     },
-    onError: () => {
-
-    }
+    onError: () => {},
   });
   const onNextButtonPressed = async () => {
     mutate(user?.data?.otherDetails?._id);
+    const pendingLongDistanceTasksList = pendingChallenges.filter(
+      (challenge) =>
+        challenge.identification.includes("LongDistanceVisionTest") &&
+        challenge.status === "PENDING" &&
+        challenge.identification.includes(
+          "SpeechIdentificationTest" || "gestureIdentificationTest"
+        )
+    );
+    const listOfCompletedTasks = [];
+    const sizes = [
+      "202.6",
+      "173.3",
+      "144",
+      "116",
+      "86.6",
+      "57.3",
+      "44",
+      "28",
+      "20",
+      "12",
+    ];
+
+    pendingLongDistanceTasksList.map((element, index) => {
+      const includesSize = sizes.some((size) =>
+        element.identification.includes(size)
+      );
+
+      if (includesSize) {
+        const shouldIdentify = element.task.split(" ")[1];
+        const availableSizes = sizes.filter((size) =>
+          element.identification.includes(size)
+        );
+
+        const sortedResultsLeftEye: [string, number][] = Object.entries(
+          visionTestResults.testResults.leftEye.result
+        ).sort((a, b) => {
+          return parseFloat(b[0]) - parseFloat(a[0]);
+        });
+        const sortedResultsRightEye: [string, number][] = Object.entries(
+          visionTestResults.testResults.rightEye.result
+        ).sort((a, b) => {
+          return parseFloat(b[0]) - parseFloat(a[0]);
+        });
+
+        const leftEye = sortedResultsLeftEye.filter((item) => item[1] > 0);
+        const rightEye = sortedResultsRightEye.filter((item) => item[1] > 0);
+
+        const filteredLeftEyeResults = leftEye.filter(([key]) =>
+          availableSizes.includes(key)
+        );
+
+        const filteredRightEyeResults = rightEye.filter(([key]) =>
+          availableSizes.includes(key)
+        );
+        if (
+          filteredLeftEyeResults.length > 0 &&
+          (filteredLeftEyeResults[0][1] >= Number(shouldIdentify) ||
+            filteredRightEyeResults[0][1] >= Number(shouldIdentify)) &&
+          element.minDistanceRequirement <= personalizedDistanceGlobal
+        ) {
+          setCompletedTaskIds((prev) => [...prev, element._id]);
+          listOfCompletedTasks.push(element._id);
+          setGainedPoints(gainedPoints + element.scorePoints);
+          setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
+        }
+      } else {
+        setCompletedTaskIds((prev) => [...prev, element._id]);
+        listOfCompletedTasks.push(element._id);
+        setGainedPoints(gainedPoints + element.scorePoints);
+        setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
+      }
+    });
+    if (listOfCompletedTasks.length > 0)
+      handleUploadCompletion(listOfCompletedTasks);
+  };
+
+  const handleUploadCompletion = async (taskIds: string[]) => {
+    const { apiError, apiSuccess } = await updateUserChallengesCompletion(
+      user?.data?.otherDetails?._id,
+      taskIds
+    );
+
+    if (apiSuccess) {
+      console.log(apiSuccess);
+    } else if (apiError) {
+      console.log(apiError);
+    }
+  };
+
+  const handleUploadExperience = async () => {
+    const { apiError, apiSuccess } = await updateUserLevels(
+      user?.data?.otherDetails?._id,
+      gainedXP
+    );
+
+    if (apiSuccess) {
+      showToastWithGravityAndOffset("Successfully updated the level");
+    } else if (apiError) {
+      showToastWithGravityAndOffset("Something went wrong with updating level");
+    }
+    navigation.navigate("Home");
+  };
+
+  const showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
   };
   return (
     <View
@@ -134,11 +283,9 @@ const TestResults = ({
     >
       <DetailedOverview
         visionTestResults={visionTestResults}
-        personalizedDistance={personalizedDistance}
         leftEyeScore={calculateLeftEyeLogmarScore()}
-        rightEyeScore={calculateLeftEyeLogmarScore()}
+        rightEyeScore={calculateRightEyeLogmarScore()}
       />
-      {/* <WeeklyTasksAchieved /> */}
 
       <View
         style={{
@@ -208,7 +355,7 @@ const TestResults = ({
               }}
             >
               <LinearProgress
-                value={1 / 4}
+                value={1 / 100}
                 trackColor="#F4F6F9"
                 color={BASIC_COLORS.PRIMARY}
                 style={{
@@ -232,7 +379,7 @@ const TestResults = ({
                 onPress={() => {
                   setSteps(VisionTestFlows.TEST_FLOW_SELECTOR);
                   setShowModal(false);
-                  navigation.navigate("Home");
+                  handleUploadExperience();
                 }}
                 buttonTitle={"Go to home"}
                 buttonStyle={{ borderRadius: 30 }}
