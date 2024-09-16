@@ -50,7 +50,7 @@ export default function DiabaticResult({ route, navigation }) {
             <Text style={styles.paymentText}>Check Retinopathy </Text>
           </View>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Check Eye Blindness")}
+            onPress={() => navigation.navigate("Retinopathy")}
           >
             <Text style={styles.changeText}>View Retinopathy</Text>
           </TouchableOpacity>

@@ -26,8 +26,8 @@ export default function RetinopathyResult({ route, navigation }) {
 
   // Select the gif image based on the speedometer value or prediction
   const riskGif = isPositive
-    ? require("../../assets/negative.gif") // Path to high-risk gif
-    : require("../../assets/positive.gif"); // Path to low-risk gif
+    ? require("../../../assets/negative.gif") // Path to high-risk gif
+    : require("../../../assets/positive.gif"); // Path to low-risk gif
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

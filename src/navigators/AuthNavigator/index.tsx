@@ -11,6 +11,9 @@ import Diabatic from "../../screens/RetinopathyScreens/Diabatic/Diabatic";
 import Retinopathy from "../../screens/RetinopathyScreens/Retinopathy/Retinopathy";
 import HealthTips from "../../screens/RetinopathyScreens/AfterPrediction/HealthTips";
 import RetinClinicLoc from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
+import DiabaticResult from "../../screens/RetinopathyScreens/Diabatic/DiabaticResult";
+import RetinopathyResult from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyResult";
+import NextScreeningInterval from "../../screens/RetinopathyScreens/AfterPrediction/NextScreeningPositive";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -45,9 +48,15 @@ const index = () => {
 
 
         <DrawerNav.Screen name="Diabatic" component={Diabatic} />
+        <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
         <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />
         <DrawerNav.Screen name="HealthTips" component={HealthTips} />
         <DrawerNav.Screen name="RetinClinicLoc" component={RetinClinicLoc} />
+        <DrawerNav.Screen name="RetinopathyResult" component={RetinopathyResult} />
+
+
+        
+        <DrawerNav.Screen name="NextScreening" component={NextScreeningInterval} />
       
 
 
