@@ -6,6 +6,11 @@ import HomeScreen from "../../screens/AuthScreens/HomeScreen/HomeScreen";
 import VisionTestHomeScreen from "../../screens/AuthScreens/VisionTestHomeScreen/VisionTestHomeScreen";
 import EyeExerciseHome from "../../screens/AuthScreens/EyeExerciseHome/EyeExerciseHome";
 import LongDistanceVisionTestScreen from "../../screens/AuthScreens/LongDistanceVisionTestScreen/LongDistanceVisionTestScreen";
+import TestHomeScreen from "../../screens/RetinopathyScreens/Diabatic/Diabatic";
+import Diabatic from "../../screens/RetinopathyScreens/Diabatic/Diabatic";
+import Retinopathy from "../../screens/RetinopathyScreens/Retinopathy/Retinopathy";
+import HealthTips from "../../screens/RetinopathyScreens/AfterPrediction/HealthTips";
+import RetinClinicLoc from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -35,6 +40,21 @@ const index = () => {
         <DrawerNav.Screen name="VisionTestHome" component={VisionTestHomeScreen} />
         <DrawerNav.Screen name="EyeExercisiseHome" component={EyeExerciseHome} />
         <DrawerNav.Screen name="LongDistanceVisionTest" component={LongDistanceVisionTestScreen} />
+
+
+
+
+        <DrawerNav.Screen name="Diabatic" component={Diabatic} />
+        <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />
+        <DrawerNav.Screen name="HealthTips" component={HealthTips} />
+        <DrawerNav.Screen name="RetinClinicLoc" component={RetinClinicLoc} />
+      
+
+
+
+
+
+
       </DrawerNav.Navigator>
     </>
   );
