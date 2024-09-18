@@ -28,7 +28,8 @@ const VisionHomeScreenTopAppBar = ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 30,
+        backgroundColor:"white",
+        marginBottom: 10,
       }}
     >
       <TouchableOpacity
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderRadius: 25,
     borderColor: "#E9F1FF",
+
     borderWidth: 1,
   },
 });

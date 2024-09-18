@@ -16,7 +16,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-//import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 

@@ -15,7 +15,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow Retina mobile app to access your photos",
+        "NSCameraUsageDescription": "Allow Retina mobile app to access your camera",
+        "NSMicrophoneUsageDescription": "Allow Retina mobile app to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +29,12 @@
       },
       "package": "com.anonymous.RetinaMobileApp",
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
       ]
     },
     "web": {
@@ -36,6 +46,14 @@
         {
           "microphonePermission": "Allow Retina mobile app to access your microphone",
           "speechRecognitionPermission": "Allow Retina mobile app to access your speech recognition"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Retina mobile app to access your photos",
+          "cameraPermission": "Allow Retina mobile app to open the camera",
+          "microphonePermission": false
         }
       ]
     ],

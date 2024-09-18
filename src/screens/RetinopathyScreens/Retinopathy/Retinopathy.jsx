@@ -14,8 +14,8 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-//import * as ImagePicker from "expo-image-picker";
-import InfoButton from "../../../assets/InfoIcon";
+import * as ImagePicker from "expo-image-picker";
+import RetinopathyInfo from "./RetinopathyComponents/RetinopathyInfo";
 
 export default function Retinopathy() {
   const navigation = useNavigation();
@@ -111,19 +111,6 @@ export default function Retinopathy() {
         console.error("Error:", error);
         Alert.alert("Error", "An error occurred while performing OCR");
       });
-  };
-
-  const clearFormData = () => {
-    setGender("");
-    setDiabetesType("Type 2");
-    setSystolicBP("");
-    setDiastolicBP("");
-    setHbA1c("");
-    setAvgGlucose("");
-    setDiagnosisYear("");
-    setImage(null);
-    setExtractedText("");
-    setScanCount(0);
   };
 
   const simulateOcrProgress = () => {
@@ -231,396 +218,260 @@ export default function Retinopathy() {
     }
   };
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0); // New state for the current step
-
-  const steps = [
-    {
-      title: "Step 1: Take the Clinical Report",
-      image: require("../../../assets/1.gif"), // Replace with appropriate image
-      instructions: [
-        "Make sure you have the clinical data report ready.",
-        "Place the report in good lighting for the next steps.",
-      ],
-    },
-    {
-      title: "Step 2: Focus on the Text",
-      image: require("../../../assets/2.gif"), // Replace with appropriate image
-      instructions: [
-        "Ensure the text on the report is in focus for a clear capture.",
-        "Adjust the angle and distance if necessary for a sharp image.",
-      ],
-    },
-    {
-      title: "Step 3: Capture the Image",
-      image: require("../../../assets/3.gif"), // Replace with appropriate image
-      instructions: [
-        "Press the shutter button to take the photo of the report.",
-        "Make sure the entire report is captured clearly.",
-      ],
-    },
-    {
-      title: "Step 4: Check the Form Fields",
-      image: require("../../../assets/4.gif"), // Replace with appropriate image
-      instructions: [
-        "Ensure that the form fields have fetched the data correctly.",
-        "Review all the fields and make sure the extracted values match the report.",
-      ],
-    },
-    {
-      title: "Step 5: Look for Error Messages",
-      image: require("../../../assets/5.gif"), // Replace with appropriate image
-      instructions: [
-        "Check if there are any error messages or warnings on the form.",
-        "If errors are found, correct them and retry capturing the report.",
-      ],
-    },
-    {
-      title: "Step 6: Predict the Results",
-      image: require("../../../assets/6.gif"), // Replace with appropriate image
-      instructions: [
-        "Once all fields are filled correctly and no errors are present, click the 'Predict' button.",
-        "Wait for the results and review the predictions.",
-      ],
-    },
-    // Add more steps as needed
-  ];
-
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const renderPageIndicator = () => {
-    return (
-      <View style={styles.pageIndicatorContainer}>
-        {steps.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.pageIndicatorDot,
-              currentStep === index && styles.pageIndicatorDotActive,
-            ]}
-          />
-        ))}
-      </View>
-    );
-  };
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <View style={styles.container}>
-        <View style={styles.headerButtons}>
-          {/* Info Button */}
+    <>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <RetinopathyInfo />
 
+        <View style={styles.container}>
+          {/* Image Picker UI */}
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
-            style={styles.topButton}
+            style={styles.imagePicker}
+            onPress={pickImageGallery}
           >
-            <FontAwesome name="info-circle" size={24} color="#D3D3D3" />
+            <View style={styles.imagePlaceholder}>
+              {image ? (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Text style={styles.imagePickerText}>
+                  <FontAwesome name="photo" size={24} color="#ccc" /> Select
+                  file
+                </Text>
+              )}
+            </View>
           </TouchableOpacity>
 
-          {/* Modal for Displaying Information */}
+          <Text style={styles.orText}>or</Text>
+
+          <TouchableOpacity
+            style={styles.cameraButton}
+            onPress={pickImageCamera}
+          >
+            <Text style={styles.cameraButtonText}>
+              <FontAwesome name="camera" size={20} color="#109BE7" /> Open
+              Camera & Take Photo
+            </Text>
+          </TouchableOpacity>
+
+          {/* OCR Progress Indicator */}
+          {ocrLoading && (
+            <View style={styles.progressContainer}>
+              <Text style={styles.progressText}>Processing {ocrProgress}%</Text>
+            </View>
+          )}
+
+          {/* General Loading Indicator */}
+          {loading && (
+            <ActivityIndicator
+              style={styles.loadingIndicator}
+              size="large"
+              color="#0000ff"
+            />
+          )}
+
+          {/* Display Extracted Text */}
+          {extractedText !== "" && (
+            <TouchableOpacity
+              style={styles.transparentButton}
+              onPress={() => setShowExtractedTextModal(true)}
+            >
+              <Text style={styles.transparentButtonText}>
+                View full Extracted Text
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          <View style={styles.inputContainer}>
+            {/* Form Inputs */}
+            {/* Gender and Diabetes Type */}
+            <View style={styles.row}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Gender</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Gender"
+                  value={gender}
+                  onChangeText={setGender}
+                />
+                {errors.gender && (
+                  <Text style={styles.error}>{errors.gender}</Text>
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Diabetes Type</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Diabetes Type"
+                  value={diabetesType}
+                  onChangeText={setDiabetesType}
+                  editable={false} // Make it non-editable
+                />
+              </View>
+            </View>
+
+            {/* BP Inputs */}
+            <View style={styles.row}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Systolic (60-200) </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Systolic BP"
+                  value={systolicBP}
+                  onChangeText={setSystolicBP}
+                  keyboardType="numeric"
+                />
+                {errors.systolicBP && (
+                  <Text style={styles.error}>{errors.systolicBP}</Text>
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Diastolic (40-200) </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Diastolic BP"
+                  value={diastolicBP}
+                  onChangeText={setDiastolicBP}
+                  keyboardType="numeric"
+                />
+                {errors.diastolicBP && (
+                  <Text style={styles.error}>{errors.diastolicBP}</Text>
+                )}
+              </View>
+            </View>
+
+            {/* HbA1c and Avg Glucose Inputs */}
+            <View style={styles.row}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>HbA1c (0.0-12.0%) (mmol/mol)</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="HbA1c (mmol/mol)"
+                  value={hbA1c}
+                  onChangeText={setHbA1c}
+                  keyboardType="numeric"
+                />
+                {errors.hbA1c && (
+                  <Text style={styles.error}>{errors.hbA1c}</Text>
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Estimated Avg Glucose (mg/dL)</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Glucose"
+                  value={avgGlucose}
+                  onChangeText={setAvgGlucose}
+                  keyboardType="numeric"
+                />
+                {errors.avgGlucose && (
+                  <Text style={styles.error}>{errors.avgGlucose}</Text>
+                )}
+              </View>
+            </View>
+
+            {/* Diagnosis Year Input */}
+
+            <View>
+              <Text style={styles.label}>Diabetes Diagnosis Year</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Diagnosis Year"
+                value={diagnosisYear}
+                onChangeText={setDiagnosisYear}
+                keyboardType="numeric"
+              />
+              {errors.diagnosisYear && (
+                <Text style={styles.error}>{errors.diagnosisYear}</Text>
+              )}
+            </View>
+          </View>
+
+          {/* Modal for Extracted Text */}
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
+            visible={showExtractedTextModal}
+            onRequestClose={() => setShowExtractedTextModal(false)}
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>
-                  {steps[currentStep].title}
-                </Text>
-                <Image
-                  source={steps[currentStep].image}
-                  style={styles.stepImage}
-                />
+                <ScrollView style={styles.modalContent}>
+                  {/* Review Summary Component */}
+                  <View style={styles.reviewSummaryContainer}>
+                    <View style={styles.header}>
+                      <Text style={styles.headerText}>Extracted Text</Text>
+                    </View>
 
-                <View style={styles.instructionContainer}>
-                  {steps[currentStep].instructions.map((instruction, index) => (
-                    <Text key={index} style={styles.instructionText}>
-                      {index + 1}. {instruction}
-                    </Text>
-                  ))}
-                </View>
+                    <View style={styles.profileSection}>
+                      <Image
+                        source={{
+                          uri: "https://pics.craiyon.com/2023-10-19/ebd05cc8b06f4c439bccef6994f74fc1.webp",
+                        }} // Replace with actual image
+                        style={styles.profileImage}
+                      />
+                      <View>
+                        <Text style={styles.doctorName}>Dr. Jonny Wilson</Text>
+                        <View style={styles.verifiedSection}>
+                          <Text style={styles.specialization}>
+                            Ophthalmologist
+                          </Text>
+                          <FontAwesome
+                            name="check-circle"
+                            size={18}
+                            color="#007bff"
+                            style={styles.iconVerified}
+                          />
+                        </View>
+                        <View style={styles.locationSection}>
+                          <FontAwesome
+                            name="map-marker"
+                            size={18}
+                            color="#777"
+                          />
+                          <Text style={styles.location}>
+                            Colombo, Sri Lanka
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
 
-                {/* Render Page Indicator */}
-                {renderPageIndicator()}
-
-                <View style={styles.buttonRow}>
-                  <TouchableOpacity
-                    style={[
-                      styles.circleButton,
-                      { opacity: currentStep === 0 ? 0.5 : 1 },
-                    ]}
-                    disabled={currentStep === 0}
-                    onPress={handlePrevious}
-                  >
-                    <FontAwesome name="chevron-left" size={20} color="#fff" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[
-                      styles.circleButton,
-                      { opacity: currentStep === steps.length - 1 ? 0.5 : 1 },
-                    ]}
-                    disabled={currentStep === steps.length - 1}
-                    onPress={handleNext}
-                  >
-                    <FontAwesome name="chevron-right" size={20} color="#fff" />
-                  </TouchableOpacity>
-                </View>
+                    <View style={styles.hr} />
+                    <Text style={styles.extractedText}>{extractedText}</Text>
+                    <View style={styles.hr} />
+                  </View>
+                </ScrollView>
 
                 <TouchableOpacity
                   style={styles.closeButton}
-                  onPress={() => setModalVisible(false)}
+                  onPress={() => setShowExtractedTextModal(false)}
                 >
                   <Text style={styles.closeButtonText}>Done</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
-        </View>
 
-        {/* Image Picker UI */}
-        <TouchableOpacity style={styles.imagePicker} onPress={pickImageGallery}>
-          <View style={styles.imagePlaceholder}>
-            {image ? (
-              <Image
-                source={{ uri: image }}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="cover"
-              />
-            ) : (
-              <Text style={styles.imagePickerText}>
-                <FontAwesome name="photo" size={24} color="#ccc" /> Select file
-              </Text>
-            )}
-          </View>
-        </TouchableOpacity>
-
-        <Text style={styles.orText}>or</Text>
-
-        <TouchableOpacity style={styles.cameraButton} onPress={pickImageCamera}>
-          <Text style={styles.cameraButtonText}>
-            <FontAwesome name="camera" size={20} color="#109BE7" /> Open Camera
-            & Take Photo
-          </Text>
-        </TouchableOpacity>
-
-        {/* OCR Progress Indicator */}
-        {ocrLoading && (
-          <View style={styles.progressContainer}>
-            <Text style={styles.progressText}>Processing {ocrProgress}%</Text>
-          </View>
-        )}
-
-        {/* General Loading Indicator */}
-        {loading && (
-          <ActivityIndicator
-            style={styles.loadingIndicator}
-            size="large"
-            color="#0000ff"
-          />
-        )}
-
-        {/* Display Extracted Text */}
-        {extractedText !== "" && (
           <TouchableOpacity
-            style={styles.transparentButton}
-            onPress={() => setShowExtractedTextModal(true)}
+            style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
+            disabled={!isFormValid}
+            onPress={handlePrediction}
           >
-            <Text style={styles.transparentButtonText}>
-              View full Extracted Text
-            </Text>
+            <Text style={styles.buttonText}>Predict Eye Blindness</Text>
           </TouchableOpacity>
-        )}
 
-        <View style={styles.inputContainer}>
-          {/* Form Inputs */}
-          {/* Gender and Diabetes Type */}
-          <View style={styles.row}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Gender</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Gender"
-                value={gender}
-                onChangeText={setGender}
-              />
-              {errors.gender && (
-                <Text style={styles.error}>{errors.gender}</Text>
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Diabetes Type</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Diabetes Type"
-                value={diabetesType}
-                onChangeText={setDiabetesType}
-                editable={false} // Make it non-editable
-              />
-            </View>
-          </View>
-
-          {/* BP Inputs */}
-          <View style={styles.row}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Systolic (60-200) </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Systolic BP"
-                value={systolicBP}
-                onChangeText={setSystolicBP}
-                keyboardType="numeric"
-              />
-              {errors.systolicBP && (
-                <Text style={styles.error}>{errors.systolicBP}</Text>
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Diastolic (40-200) </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Diastolic BP"
-                value={diastolicBP}
-                onChangeText={setDiastolicBP}
-                keyboardType="numeric"
-              />
-              {errors.diastolicBP && (
-                <Text style={styles.error}>{errors.diastolicBP}</Text>
-              )}
-            </View>
-          </View>
-
-          {/* HbA1c and Avg Glucose Inputs */}
-          <View style={styles.row}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>HbA1c (0.0-12.0%) (mmol/mol)</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="HbA1c (mmol/mol)"
-                value={hbA1c}
-                onChangeText={setHbA1c}
-                keyboardType="numeric"
-              />
-              {errors.hbA1c && <Text style={styles.error}>{errors.hbA1c}</Text>}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Estimated Avg Glucose (mg/dL)</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Glucose"
-                value={avgGlucose}
-                onChangeText={setAvgGlucose}
-                keyboardType="numeric"
-              />
-              {errors.avgGlucose && (
-                <Text style={styles.error}>{errors.avgGlucose}</Text>
-              )}
-            </View>
-          </View>
-
-          {/* Diagnosis Year Input */}
-
-          <View>
-            <Text style={styles.label}>Diabetes Diagnosis Year</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Diagnosis Year"
-              value={diagnosisYear}
-              onChangeText={setDiagnosisYear}
-              keyboardType="numeric"
-            />
-            {errors.diagnosisYear && (
-              <Text style={styles.error}>{errors.diagnosisYear}</Text>
-            )}
-          </View>
-        </View>
-
-        {/* Modal for Extracted Text */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showExtractedTextModal}
-          onRequestClose={() => setShowExtractedTextModal(false)}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalView}>
-              <ScrollView style={styles.modalContent}>
-                {/* Review Summary Component */}
-                <View style={styles.reviewSummaryContainer}>
-                  <View style={styles.header}>
-                    <Text style={styles.headerText}>Extracted Text</Text>
-                  </View>
-
-                  <View style={styles.profileSection}>
-                    <Image
-                      source={{
-                        uri: "https://pics.craiyon.com/2023-10-19/ebd05cc8b06f4c439bccef6994f74fc1.webp",
-                      }} // Replace with actual image
-                      style={styles.profileImage}
-                    />
-                    <View>
-                      <Text style={styles.doctorName}>Dr. Jonny Wilson</Text>
-                      <View style={styles.verifiedSection}>
-                        <Text style={styles.specialization}>
-                          Ophthalmologist
-                        </Text>
-                        <FontAwesome
-                          name="check-circle"
-                          size={18}
-                          color="#007bff"
-                          style={styles.iconVerified}
-                        />
-                      </View>
-                      <View style={styles.locationSection}>
-                        <FontAwesome name="map-marker" size={18} color="#777" />
-                        <Text style={styles.location}>Colombo, Sri Lanka</Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View style={styles.hr} />
-                  <Text style={styles.extractedText}>{extractedText}</Text>
-                  <View style={styles.hr} />
-                </View>
-              </ScrollView>
-
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setShowExtractedTextModal(false)}
-              >
-                <Text style={styles.closeButtonText}>Done</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
-        <TouchableOpacity
-          style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
-          disabled={!isFormValid}
-          onPress={handlePrediction}
-        >
-          <Text style={styles.buttonText}>Predict Eye Blindness</Text>
-        </TouchableOpacity>
-
-        {/* <View style={styles.predictionContainer}>
+          {/* <View style={styles.predictionContainer}>
           <Text style={styles.predictionText}>Prediction: {prediction}</Text>
         </View> */}
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
@@ -816,70 +667,13 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 20,
   },
-  instructionContainer: {
-    width: "100%",
-    marginBottom: 20,
-  },
-  instructionText: {
-    fontSize: 16,
-    marginVertical: 5,
-    textAlign: "left",
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "70%",
-    marginVertical: 20,
-  },
-  circleButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: "#109BE7",
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "#109BE7", // For active state
-    borderWidth: 1,
-  },
-  closeButton: {
-    backgroundColor: "#2196F3",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    alignContent: "center",
-    height: 45,
-  },
-  closeButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+
   buttonText: {
     color: "white",
     fontWeight: "bold",
   },
   scrollViewContainer: {
     flexGrow: 1,
-  },
-  pageIndicatorContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  pageIndicatorDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: "#ccc",
-    marginHorizontal: 5,
-  },
-  pageIndicatorDotActive: {
-    backgroundColor: "#109BE7",
   },
 
   // Styles for ReviewSummary component
