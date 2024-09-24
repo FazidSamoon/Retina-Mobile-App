@@ -25,6 +25,60 @@ const cards: CategoriesCardType[] = [
     ontapLink: "ChannelDoctorsScreen",
     backgroundColor: "#FFBF9B",
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    title: "Check Diabetes",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "Diabatic",
+    backgroundColor: "#8FAAFF",
+  },
+  {
+    title: "Find Nearby Clinics",
+    description: "Do some eye exercises to improve your vision.",
+    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+    ontapLink: "RetinClinicLoc",
+    backgroundColor: "#FFA0D0",
+  },
+  {
+    title: "Check Retinopathy",
+    description: "Consult with our doctors for better vision.",
+    imageSrc: require("../../../assets/channelDoctorCardImg.png"),
+    ontapLink: "Retinopathy",
+    backgroundColor: "#FFAA99",
+  },
+  {
+    title: "Health Tips",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "HealthTips",
+    backgroundColor: "#8FAAFF",
+  },
+
+  {
+    title: "Survay",
+    description: "Do some eye exercise to improve your vision.",
+    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+    ontapLink: "EyeExercisiseHome",
+    backgroundColor: "#FF9BE3",
+  },
+
+
+  
+  
 ];
 
 const CategoriesContainer = () => {

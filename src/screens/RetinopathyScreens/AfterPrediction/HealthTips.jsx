@@ -7,9 +7,14 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
 
 export default function HealthTips({ navigation }) {
   return (
+    <>
+    
+              <RetinopathyHomeScreenTopAppBar header={"Check For Retinopathy"} />
+
     <ScrollView style={styles.container}>
       {/* Header Section */}
       <View style={styles.headerSection}>
@@ -72,6 +77,7 @@ export default function HealthTips({ navigation }) {
 
       {/* Add more tips as needed */}
     </ScrollView>
+    </>
   );
 }
 

@@ -19,6 +19,8 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
+import RetinopathyHomeScreenTopAppBar from "../../../../src/screens/RetinopathyScreens/TopBar/RetinopathyHomeScreenTopAppBar";
+import RetinopathyInfo from "../Retinopathy/RetinopathyComponents/RetinopathyInfo";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);
@@ -232,285 +234,294 @@ export default function Diabatic({ navigation }) {
   };
 
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerButtons}>
-          {/* Skip Button */}
+    <>
+
+      <RetinopathyHomeScreenTopAppBar header={"Check For Diabetes"} />
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.headerButtons}>
+            {/* Skip Button */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Retinopathy")}
+              style={styles.topButton}
+            >
+              <Text style={styles.skipText}>Skip this step</Text>
+            </TouchableOpacity>
+
+
+            <RetinopathyInfo/>
+        
+          </View>
+
+          {/* Image Picker UI */}
           <TouchableOpacity
-            onPress={() => navigation.navigate("Check Eye Blindness")}
-            style={styles.topButton}
+            style={styles.imagePicker}
+            onPress={pickImageGallery}
           >
-            <Text style={styles.skipText}>Skip this step</Text>
+            <View style={styles.imagePlaceholder}>
+              {image ? (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Text style={styles.imagePickerText}>
+                  <FontAwesome name="photo" size={24} color="#ccc" /> Select
+                  file
+                </Text>
+              )}
+            </View>
           </TouchableOpacity>
 
-          {/* Info Button */}
+          <Text style={styles.orText}>or</Text>
+
           <TouchableOpacity
-            onPress={() => Alert.alert("Info", "This is an info button.")}
-            style={styles.topButton}
+            style={styles.cameraButton}
+            onPress={pickImageCamera}
           >
-            <FontAwesome name="info-circle" size={24} color="#717171" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Image Picker UI */}
-        <TouchableOpacity style={styles.imagePicker} onPress={pickImageGallery}>
-          <View style={styles.imagePlaceholder}>
-            {image ? (
-              <Image
-                source={{ uri: image }}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="cover"
-              />
-            ) : (
-              <Text style={styles.imagePickerText}>
-                <FontAwesome name="photo" size={24} color="#ccc" /> Select file
-              </Text>
-            )}
-          </View>
-        </TouchableOpacity>
-
-        <Text style={styles.orText}>or</Text>
-
-        <TouchableOpacity style={styles.cameraButton} onPress={pickImageCamera}>
-          <Text style={styles.cameraButtonText}>
-            <FontAwesome name="camera" size={20} color="007BFF" /> Open Camera &
-            Take Photo
-          </Text>
-        </TouchableOpacity>
-
-        {/* Image Loading Progress */}
-        {imageLoading && (
-          <View style={styles.progressContainer}>
-            <ActivityIndicator size="large" />
-            <Text style={styles.progressText}>Processing {ocrProgress}%</Text>
-          </View>
-        )}
-        {/* Display Extracted Text */}
-        {extractedText !== "" && (
-          <TouchableOpacity
-            style={styles.transparentButton}
-            onPress={() => setIsModalVisible(true)}
-          >
-            <Text style={styles.transparentButtonText}>
-              View Extracted Text
+            <Text style={styles.cameraButtonText}>
+              <FontAwesome name="camera" size={20} color="007BFF" /> Open Camera
+              & Take Photo
             </Text>
           </TouchableOpacity>
-        )}
 
-        {/* Modal for Displaying Extracted Text */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isModalVisible}
-          onRequestClose={() => setIsModalVisible(false)}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Extracted Text</Text>
-
-              <ScrollView style={styles.modalScrollView}>
-                <Text style={styles.modalText}>{extractedText}</Text>
-              </ScrollView>
-              <Pressable
-                style={styles.closeButton}
-                onPress={() => setIsModalVisible(false)}
-              >
-                <Text style={styles.closeButtonText}>Close</Text>
-              </Pressable>
+          {/* Image Loading Progress */}
+          {imageLoading && (
+            <View style={styles.progressContainer}>
+              <ActivityIndicator size="large" />
+              <Text style={styles.progressText}>Processing {ocrProgress}%</Text>
             </View>
-          </View>
-        </Modal>
+          )}
+          {/* Display Extracted Text */}
+          {extractedText !== "" && (
+            <TouchableOpacity
+              style={styles.transparentButton}
+              onPress={() => setIsModalVisible(true)}
+            >
+              <Text style={styles.transparentButtonText}>
+                View Extracted Text
+              </Text>
+            </TouchableOpacity>
+          )}
 
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          <View style={styles.container}>
-            {loading && (
-              <View style={styles.progressContainer}>
-                <ActivityIndicator
-                  style={styles.loadingIndicator}
-                  size="large"
-                  color="#0000ff"
-                />
-                <Text style={styles.progressText}>
-                  fetchProgress{fetchProgress}%
-                </Text>
+          {/* Modal for Displaying Extracted Text */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={isModalVisible}
+            onRequestClose={() => setIsModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Extracted Text</Text>
+
+                <ScrollView style={styles.modalScrollView}>
+                  <Text style={styles.modalText}>{extractedText}</Text>
+                </ScrollView>
+                <Pressable
+                  style={styles.closeButton}
+                  onPress={() => setIsModalVisible(false)}
+                >
+                  <Text style={styles.closeButtonText}>Close</Text>
+                </Pressable>
               </View>
-            )}
+            </View>
+          </Modal>
 
-            <ScrollView>
-              <View style={styles.container}>
-                <View style={styles.inputContainer}>
-                  <View style={styles.row}>
-                    <View style={styles.inputGroup}>
-                      <Text style={styles.label}>Pregnancies</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Pregnancies"
-                        keyboardType="numeric"
-                        onChangeText={(text) =>
-                          handleInputChange("pregnancies", text)
-                        }
-                        value={formData.pregnancies}
-                      />
-                      {errors.pregnancies && (
-                        <Text style={styles.errorText}>
-                          {errors.pregnancies}
-                        </Text>
-                      )}
-                    </View>
+          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            <View style={styles.container}>
+              {loading && (
+                <View style={styles.progressContainer}>
+                  <ActivityIndicator
+                    style={styles.loadingIndicator}
+                    size="large"
+                    color="#0000ff"
+                  />
+                  <Text style={styles.progressText}>
+                    fetchProgress{fetchProgress}%
+                  </Text>
+                </View>
+              )}
 
-                    <View style={styles.inputGroup}>
-                      <View>
-                        <Text style={styles.label}>Glucose (mg/dL)</Text>
+              <ScrollView>
+                <View style={styles.container}>
+                  <View style={styles.inputContainer}>
+                    <View style={styles.row}>
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Pregnancies</Text>
                         <TextInput
                           style={styles.input}
-                          placeholder="Glucose"
+                          placeholder="Pregnancies"
                           keyboardType="numeric"
                           onChangeText={(text) =>
-                            handleInputChange("glucose", text)
+                            handleInputChange("pregnancies", text)
                           }
-                          value={formData.glucose}
+                          value={formData.pregnancies}
                         />
-                        {errors.glucose && (
-                          <Text style={styles.errorText}>{errors.glucose}</Text>
-                        )}
-                      </View>
-                    </View>
-                  </View>
-
-                  <View style={styles.row}>
-                    <View style={styles.inputGroup}>
-                      <Text style={styles.label}>Blood Pressure (mm Hg)</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Blood Pressure"
-                        keyboardType="numeric"
-                        onChangeText={(text) =>
-                          handleInputChange("bloodPressure", text)
-                        }
-                        value={formData.bloodPressure}
-                      />
-                      {errors.bloodPressure && (
-                        <Text style={styles.errorText}>
-                          {errors.bloodPressure}
-                        </Text>
-                      )}
-                    </View>
-
-                    <View style={styles.inputGroup}>
-                      <View>
-                        <Text style={styles.label}>Skin Thickness (mm)</Text>
-                        <TextInput
-                          style={styles.input}
-                          placeholder="Skin Thickness"
-                          keyboardType="numeric"
-                          onChangeText={(text) =>
-                            handleInputChange("skinThickness", text)
-                          }
-                          value={formData.skinThickness}
-                        />
-                        {errors.skinThickness && (
+                        {errors.pregnancies && (
                           <Text style={styles.errorText}>
-                            {errors.skinThickness}
+                            {errors.pregnancies}
                           </Text>
                         )}
                       </View>
-                    </View>
-                  </View>
 
-                  <View style={styles.lab}>
-                    <Text style={styles.label}>Diabetes Pedigree</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Diabetes Pedigree"
-                      keyboardType="numeric"
-                      onChangeText={(text) =>
-                        handleInputChange("diabetesPedigree", text)
-                      }
-                      value={formData.diabetesPedigree}
-                    />
-                    {errors.diabetesPedigree && (
-                      <Text style={styles.errorText}>
-                        {errors.diabetesPedigree}
-                      </Text>
-                    )}
-                  </View>
-                  <View style={styles.row}>
-                    <View style={styles.inputGroup}>
-                      <Text style={styles.label}>Insulin  (µU/mL)</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Insulin"
-                        keyboardType="numeric"
-                        onChangeText={(text) =>
-                          handleInputChange("insulin", text)
-                        }
-                        value={formData.insulin}
-                      />
-                      {errors.insulin && (
-                        <Text style={styles.errorText}>{errors.insulin}</Text>
-                      )}
-                    </View>
-
-                    <View style={styles.inputGroup}>
-                      <View>
-                        <Text style={styles.label}>BMI (kg/m²)</Text>
-                        <TextInput
-                          style={styles.input}
-                          placeholder="BMI"
-                          keyboardType="numeric"
-                          onChangeText={(text) =>
-                            handleInputChange("bmi", text)
-                          }
-                          value={formData.bmi}
-                        />
-                        {errors.bmi && (
-                          <Text style={styles.errorText}>{errors.bmi}</Text>
-                        )}
+                      <View style={styles.inputGroup}>
+                        <View>
+                          <Text style={styles.label}>Glucose (mg/dL)</Text>
+                          <TextInput
+                            style={styles.input}
+                            placeholder="Glucose"
+                            keyboardType="numeric"
+                            onChangeText={(text) =>
+                              handleInputChange("glucose", text)
+                            }
+                            value={formData.glucose}
+                          />
+                          {errors.glucose && (
+                            <Text style={styles.errorText}>
+                              {errors.glucose}
+                            </Text>
+                          )}
+                        </View>
                       </View>
                     </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Blood Pressure (mm Hg)</Text>
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Blood Pressure"
+                          keyboardType="numeric"
+                          onChangeText={(text) =>
+                            handleInputChange("bloodPressure", text)
+                          }
+                          value={formData.bloodPressure}
+                        />
+                        {errors.bloodPressure && (
+                          <Text style={styles.errorText}>
+                            {errors.bloodPressure}
+                          </Text>
+                        )}
+                      </View>
+
+                      <View style={styles.inputGroup}>
+                        <View>
+                          <Text style={styles.label}>Skin Thickness (mm)</Text>
+                          <TextInput
+                            style={styles.input}
+                            placeholder="Skin Thickness"
+                            keyboardType="numeric"
+                            onChangeText={(text) =>
+                              handleInputChange("skinThickness", text)
+                            }
+                            value={formData.skinThickness}
+                          />
+                          {errors.skinThickness && (
+                            <Text style={styles.errorText}>
+                              {errors.skinThickness}
+                            </Text>
+                          )}
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={styles.lab}>
+                      <Text style={styles.label}>Diabetes Pedigree</Text>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Diabetes Pedigree"
+                        keyboardType="numeric"
+                        onChangeText={(text) =>
+                          handleInputChange("diabetesPedigree", text)
+                        }
+                        value={formData.diabetesPedigree}
+                      />
+                      {errors.diabetesPedigree && (
+                        <Text style={styles.errorText}>
+                          {errors.diabetesPedigree}
+                        </Text>
+                      )}
+                    </View>
+                    <View style={styles.row}>
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Insulin (µU/mL)</Text>
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Insulin"
+                          keyboardType="numeric"
+                          onChangeText={(text) =>
+                            handleInputChange("insulin", text)
+                          }
+                          value={formData.insulin}
+                        />
+                        {errors.insulin && (
+                          <Text style={styles.errorText}>{errors.insulin}</Text>
+                        )}
+                      </View>
+
+                      <View style={styles.inputGroup}>
+                        <View>
+                          <Text style={styles.label}>BMI (kg/m²)</Text>
+                          <TextInput
+                            style={styles.input}
+                            placeholder="BMI"
+                            keyboardType="numeric"
+                            onChangeText={(text) =>
+                              handleInputChange("bmi", text)
+                            }
+                            value={formData.bmi}
+                          />
+                          {errors.bmi && (
+                            <Text style={styles.errorText}>{errors.bmi}</Text>
+                          )}
+                        </View>
+                      </View>
+                    </View>
+
+                    <View>
+                      <Text style={styles.label}>Age</Text>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Age"
+                        keyboardType="numeric"
+                        onChangeText={(text) => handleInputChange("age", text)}
+                        value={formData.age}
+                      />
+                      {errors.age && (
+                        <Text style={styles.errorText}>{errors.age}</Text>
+                      )}
+                    </View>
                   </View>
 
+                  {loading && (
+                    <View style={styles.progressContainer}>
+                      <ActivityIndicator
+                        style={styles.loadingIndicator}
+                        size="large"
+                        color="#0000ff"
+                      />
+                      <Text style={styles.progressText}>{fetchProgress}%</Text>
+                    </View>
+                  )}
 
-                  <View>
-                    <Text style={styles.label}>Age</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Age"
-                      keyboardType="numeric"
-                      onChangeText={(text) => handleInputChange("age", text)}
-                      value={formData.age}
-                    />
-                    {errors.age && (
-                      <Text style={styles.errorText}>{errors.age}</Text>
-                    )}
-                  </View>
-
-                  
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSubmit}
+                  >
+                    <Text style={styles.buttonText}>
+                      Predict Diabetic Retinopathy
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-
-                {loading && (
-                  <View style={styles.progressContainer}>
-                    <ActivityIndicator
-                      style={styles.loadingIndicator}
-                      size="large"
-                      color="#0000ff"
-                    />
-                    <Text style={styles.progressText}>{fetchProgress}%</Text>
-                  </View>
-                )}
-
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>
-                    Predict Diabetic Retinopathy
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
-        </ScrollView>
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    </ScrollView>
+              </ScrollView>
+            </View>
+          </ScrollView>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+      </ScrollView>
+    </>
   );
 }
 
@@ -572,9 +583,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   lab: {
-   
     marginBottom: 15,
-  
   },
   input: {
     height: 40,

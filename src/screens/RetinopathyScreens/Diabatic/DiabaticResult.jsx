@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome"; // Importing FontAwesome
+import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
 
 export default function DiabaticResult({ route, navigation }) {
   const { responseData, formData } = route.params; // Destructure formData from route.params
@@ -19,8 +20,11 @@ export default function DiabaticResult({ route, navigation }) {
   const emoji = predictionResult === "Diabetes positive" ? "⚠️" : "✅"; // ⚠️ for positive diabetes, ✅ for negative
 
   return (
+
+    <>
+    
+      <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.statusLabel}>Prediction Result</Text>
 
    {/* Emoji feedback based on prediction result */}
    <Text style={styles.emojiResult}>
@@ -67,6 +71,7 @@ export default function DiabaticResult({ route, navigation }) {
         </View>
       )}
     </ScrollView>
+    </>
   );
 }
 

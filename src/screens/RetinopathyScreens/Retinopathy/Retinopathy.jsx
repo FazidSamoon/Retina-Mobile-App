@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import RetinopathyInfo from "./RetinopathyComponents/RetinopathyInfo";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
 
 export default function Retinopathy() {
   const navigation = useNavigation();
@@ -220,6 +221,9 @@ export default function Retinopathy() {
 
   return (
     <>
+    
+          <RetinopathyHomeScreenTopAppBar header={"Check For Retinopathy"} />
+
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <RetinopathyInfo />
 

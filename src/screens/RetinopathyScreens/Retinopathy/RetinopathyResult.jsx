@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome"; // Importing FontAwesome
+import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
 
 export default function RetinopathyResult({ route, navigation }) {
   const { prediction, responseData } = route.params;
@@ -30,12 +31,14 @@ export default function RetinopathyResult({ route, navigation }) {
     : require("../../../assets/positive.gif"); // Path to low-risk gif
 
   return (
+
+    <>
+          <RetinopathyHomeScreenTopAppBar header={"Review Summary "} />
+
     <ScrollView contentContainerStyle={styles.container}>
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Review Summary</Text>
-          </View>
+        
 
           <View style={styles.predictionSection}>
             {/* Display the prediction, isPositive, and speedometerValue */}
@@ -110,6 +113,7 @@ export default function RetinopathyResult({ route, navigation }) {
         </View>
       </ScrollView>
     </ScrollView>
+    </>
   );
 }
 

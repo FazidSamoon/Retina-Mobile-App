@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
 
 const NextScreeningIntervalNeg = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -78,6 +79,10 @@ const NextScreeningIntervalNeg = () => {
   const { days, hours, minutes, secs } = formatTimeLeft(timeLeft);
 
   return (
+    <>
+    
+          <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
+
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>Next Screening Interval</Text>
@@ -121,6 +126,7 @@ const NextScreeningIntervalNeg = () => {
         <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 };
 
