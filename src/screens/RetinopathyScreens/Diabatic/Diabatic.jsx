@@ -21,6 +21,8 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import RetinopathyHomeScreenTopAppBar from "../../../../src/screens/RetinopathyScreens/TopBar/RetinopathyHomeScreenTopAppBar";
 import RetinopathyInfo from "../Retinopathy/RetinopathyComponents/RetinopathyInfo";
+import DiabetesRiskPrediction from "../Instruction/DiabetesPedigree";
+import BMICalculator from "../Instruction/BMICalculator";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);
@@ -235,8 +237,7 @@ export default function Diabatic({ navigation }) {
 
   return (
     <>
-
-      <RetinopathyHomeScreenTopAppBar header={"Check For Diabetes"} />
+      <RetinopathyHomeScreenTopAppBar header={"Current Diabetes Status"} />
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.headerButtons}>
@@ -248,9 +249,7 @@ export default function Diabatic({ navigation }) {
               <Text style={styles.skipText}>Skip this step</Text>
             </TouchableOpacity>
 
-
-            <RetinopathyInfo/>
-        
+            <RetinopathyInfo />
           </View>
 
           {/* Image Picker UI */}
@@ -428,7 +427,9 @@ export default function Diabatic({ navigation }) {
                     </View>
 
                     <View style={styles.lab}>
-                      <Text style={styles.label}>Diabetes Pedigree</Text>
+                      
+                      <Text style={styles.label}>Diabetes Pedigree  <DiabetesRiskPrediction/></Text>
+                     
                       <TextInput
                         style={styles.input}
                         placeholder="Diabetes Pedigree"
@@ -444,6 +445,7 @@ export default function Diabatic({ navigation }) {
                         </Text>
                       )}
                     </View>
+                    
                     <View style={styles.row}>
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Insulin (µU/mL)</Text>
@@ -463,7 +465,7 @@ export default function Diabatic({ navigation }) {
 
                       <View style={styles.inputGroup}>
                         <View>
-                          <Text style={styles.label}>BMI (kg/m²)</Text>
+                          <Text style={styles.label}>BMI (kg/m²)<BMICalculator/></Text>
                           <TextInput
                             style={styles.input}
                             placeholder="BMI"

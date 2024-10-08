@@ -67,7 +67,7 @@ const cards: CategoriesCardType[] = [
     ontapLink: "HealthTips",
     backgroundColor: "#8FAAFF",
   },
-
+  
   {
     title: "Survay",
     description: "Do some eye exercise to improve your vision.",
@@ -75,8 +75,35 @@ const cards: CategoriesCardType[] = [
     ontapLink: "EyeExercisiseHome",
     backgroundColor: "#FF9BE3",
   },
-
-
+  {
+    title: "Diabatic Info",
+    description: "Do some eye exercises to improve your vision.",
+    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+    ontapLink: "DiabaticInfo",
+    backgroundColor: "#FFA0D0",
+  },
+  {
+    title: "Retinopathy info",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "RetinopathyInfo",
+    backgroundColor: "#8FAAFF",
+  },
+  {
+    title: "DiabetesPedigree checker",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "DiabetesPedigree",
+    backgroundColor: "#8FAAFF",
+  },
+  {
+    title: "BMICalculator",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "BMICalculator",
+    backgroundColor: "#8FAAFF",
+  },
+  
   
   
 ];

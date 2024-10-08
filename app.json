@@ -34,6 +34,7 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.VIBRATE",
         "android.permission.ACCESS_COARSE_LOCATION"
       ]
     },
@@ -53,6 +54,7 @@
         {
           "photosPermission": "Allow Retina mobile app to access your photos",
           "cameraPermission": "Allow Retina mobile app to open the camera",
+          
           "microphonePermission": false
         }
       ]

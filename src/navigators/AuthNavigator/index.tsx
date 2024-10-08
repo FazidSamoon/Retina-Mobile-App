@@ -14,6 +14,10 @@ import RetinClinicLoc from "../../screens/RetinopathyScreens/RetinopathyMaps/Ret
 import DiabaticResult from "../../screens/RetinopathyScreens/Diabatic/DiabaticResult";
 import RetinopathyResult from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyResult";
 import NextScreeningInterval from "../../screens/RetinopathyScreens/AfterPrediction/NextScreeningPositive";
+import DiabaticInfo from "../../screens/RetinopathyScreens/Instruction/DiabaticInfo";
+import RetinopathyInfo from "../../screens/RetinopathyScreens/Instruction/RetinopathyInfo";
+import DiabetesPedigree from "../../screens/RetinopathyScreens/Instruction/DiabetesPedigree";
+import BMICalculator from "../../screens/RetinopathyScreens/Instruction/BMICalculator";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -53,10 +57,18 @@ const index = () => {
         <DrawerNav.Screen name="HealthTips" component={HealthTips} />
         <DrawerNav.Screen name="RetinClinicLoc" component={RetinClinicLoc} />
         <DrawerNav.Screen name="RetinopathyResult" component={RetinopathyResult} />
+        <DrawerNav.Screen name="DiabaticInfo" component={DiabaticInfo} />
+        <DrawerNav.Screen name="RetinopathyInfo" component={RetinopathyInfo} />
+        <DrawerNav.Screen name="DiabetesPedigree" component={DiabetesPedigree} />
+        <DrawerNav.Screen name="BMICalculator" component={BMICalculator} />
 
 
         
         <DrawerNav.Screen name="NextScreening" component={NextScreeningInterval} />
+
+
+
+      
       
 
 
