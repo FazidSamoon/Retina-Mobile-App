@@ -17,6 +17,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import RetinopathyInfo from "./RetinopathyComponents/RetinopathyInfo";
 import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import AvgGlucose from "./RetinopathyVariables/AvgGlucose";
+import DiabetesType from "./RetinopathyVariables/DiabetesType";
+import DiagnosisYear from "./RetinopathyVariables/DiagnosisYear";
+import DiastolicBp from "./RetinopathyVariables/DiastolicBp";
+import Hba1c from "./RetinopathyVariables/Hba1c";
+import SystolicBp from "./RetinopathyVariables/SystolicBp";
 
 export default function Retinopathy() {
   const navigation = useNavigation();
@@ -221,8 +227,7 @@ export default function Retinopathy() {
 
   return (
     <>
-    
-          <RetinopathyHomeScreenTopAppBar header={"Check For Retinopathy"} />
+      <RetinopathyHomeScreenTopAppBar header={"Check For Retinopathy"} />
 
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <RetinopathyInfo />
@@ -307,7 +312,9 @@ export default function Retinopathy() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Diabetes Type</Text>
+                <Text style={styles.label}>
+                  Diabetes Type <DiabetesType />
+                </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Diabetes Type"
@@ -321,7 +328,10 @@ export default function Retinopathy() {
             {/* BP Inputs */}
             <View style={styles.row}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Systolic (60-200) </Text>
+                <Text style={styles.label}>
+                  Systolic (60-200)
+                  <SystolicBp />{" "}
+                </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Systolic BP"
@@ -335,7 +345,9 @@ export default function Retinopathy() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Diastolic (40-200) </Text>
+                <Text style={styles.label}>
+                  Diastolic Bp (40-200) <DiastolicBp />
+                </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Diastolic BP"
@@ -352,7 +364,9 @@ export default function Retinopathy() {
             {/* HbA1c and Avg Glucose Inputs */}
             <View style={styles.row}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>HbA1c (0.0-12.0%) (mmol/mol)</Text>
+                <Text style={styles.label}>
+                  HbA1c(0.0-12.0%) (mmol/mol) <Hba1c />{" "}
+                </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="HbA1c (mmol/mol)"
@@ -366,7 +380,9 @@ export default function Retinopathy() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Estimated Avg Glucose (mg/dL)</Text>
+                <Text style={styles.label}>
+                  Estimated Avg Glucose (mg/dL) <AvgGlucose />{" "}
+                </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Glucose"
@@ -383,7 +399,10 @@ export default function Retinopathy() {
             {/* Diagnosis Year Input */}
 
             <View>
-              <Text style={styles.label}>Diabetes Diagnosis Year</Text>
+              <Text style={styles.label}>
+                Diabetes Diagnosis Year
+                <DiagnosisYear />
+              </Text>
               <TextInput
                 style={styles.input}
                 placeholder="Diagnosis Year"

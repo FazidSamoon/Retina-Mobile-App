@@ -427,9 +427,10 @@ export default function Diabatic({ navigation }) {
                     </View>
 
                     <View style={styles.lab}>
-                      
-                      <Text style={styles.label}>Diabetes Pedigree  <DiabetesRiskPrediction/></Text>
-                     
+                      <Text style={styles.label}>
+                        Diabetes Pedigree <DiabetesRiskPrediction />
+                      </Text>
+
                       <TextInput
                         style={styles.input}
                         placeholder="Diabetes Pedigree"
@@ -445,7 +446,7 @@ export default function Diabatic({ navigation }) {
                         </Text>
                       )}
                     </View>
-                    
+
                     <View style={styles.row}>
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Insulin (µU/mL)</Text>
@@ -465,7 +466,10 @@ export default function Diabatic({ navigation }) {
 
                       <View style={styles.inputGroup}>
                         <View>
-                          <Text style={styles.label}>BMI (kg/m²)<BMICalculator/></Text>
+                          <Text style={styles.label}>
+                            BMI (kg/m²)
+                            <BMICalculator />
+                          </Text>
                           <TextInput
                             style={styles.input}
                             placeholder="BMI"
@@ -513,7 +517,7 @@ export default function Diabatic({ navigation }) {
                     onPress={handleSubmit}
                   >
                     <Text style={styles.buttonText}>
-                      Predict Diabetic Retinopathy
+                      Predict Diabetic 
                     </Text>
                   </TouchableOpacity>
                 </View>

@@ -54,8 +54,7 @@
         {
           "photosPermission": "Allow Retina mobile app to access your photos",
           "cameraPermission": "Allow Retina mobile app to open the camera",
-          
-          "microphonePermission": false
+          "microphonePermission": "Allow Retina mobile app to access your microphone if needed for video recording."
         }
       ]
     ],

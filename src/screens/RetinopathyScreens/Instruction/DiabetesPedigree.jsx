@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   View, 
   Text, 
   ScrollView, 
   StyleSheet, 
-  Button, 
   TouchableOpacity, 
   Modal, 
-  TouchableWithoutFeedback 
+  TouchableWithoutFeedback,
+  Animated,
+  SafeAreaView,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Ensure @expo/vector-icons is installed
 
-// Translations for English, Sinhala, and Tamil
+// Complete Translations for English, Sinhala, and Tamil
 const translations = {
   en: {
     title: "Diabetes Risk Prediction",
@@ -158,6 +160,26 @@ const DiabetesRiskPrediction = () => {
   // Modal visibility state
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // Handle modal animations
+  useEffect(() => {
+    if (modalVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [modalVisible]);
+
   // Function to calculate risk score based on inputs
   const calculateRisk = () => {
     let score = 0;
@@ -179,152 +201,198 @@ const DiabetesRiskPrediction = () => {
 
     // Determine risk level
     let riskLevel;
-    if (score >= 20) riskLevel = translations[language].results.riskLevel + " " + "Very High";
-    else if (score >= 16) riskLevel = translations[language].results.riskLevel + " " + "High";
-    else if (score >= 12) riskLevel = translations[language].results.riskLevel + " " + "Moderate";
-    else riskLevel = translations[language].results.riskLevel + " " + "Low";
+    if (score >= 20) riskLevel = "Very High";
+    else if (score >= 16) riskLevel = "High";
+    else if (score >= 12) riskLevel = "Moderate";
+    else riskLevel = "Low";
 
     // Create summary
     const summaryText = `
 ${translations[language].results.riskScore} ${score}
 ${translations[language].results.riskLevel} ${riskLevel}
 ${translations[language].results.summary}
-${translations[language].results.highRiskMessage.replace('{score}', score)}
+${score >= 12 ? translations[language].results.highRiskMessage.replace('{score}', score) : ''}
     `;
 
     setSummary(summaryText.trim());
   };
 
-  // Function to render dropdown options
-  const renderDropdown = (labelKey, optionsKey, setValue, currentValue) => (
+  // Function to render dropdown options with icons
+  const renderDropdown = (labelKey, optionsKey, setValue, currentValue, iconName) => (
     <View style={styles.dropdownContainer}>
-      <Text style={styles.questionText}>{translations[language].questions[labelKey]}</Text>
-      {translations[language].options[optionsKey].map(option => (
-        <TouchableOpacity
-          key={option}
-          style={[
-            styles.option,
-            currentValue === option && styles.selectedOption
-          ]}
-          onPress={() => setValue(option)}
-        >
-          <Text style={styles.optionText}>{option}</Text>
-        </TouchableOpacity>
-      ))}
-      {currentValue ? (
-        <Text style={styles.selectedText}>
-          {translations[language].results.summary} {currentValue}
-        </Text>
-      ) : null}
+      <View style={styles.questionContainer}>
+        <Ionicons name={iconName} size={24} color="#007BFF" style={styles.questionIcon} />
+        <Text style={styles.questionText}>{translations[language].questions[labelKey]}</Text>
+      </View>
+      <View style={styles.optionsWrapper}>
+        {translations[language].options[optionsKey].map(option => (
+          <TouchableOpacity
+            key={option}
+            style={[
+              styles.option,
+              currentValue === option && styles.selectedOption
+            ]}
+            onPress={() => setValue(option)}
+            activeOpacity={0.7}
+          >
+            <Text style={[
+              styles.optionText,
+              currentValue === option && styles.selectedOptionText
+            ]}>
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Info Icon Centered on Home Screen */}
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text style={styles.infoIcon}>ℹ️</Text>
-      </TouchableOpacity>
+      <View style={styles.infoIconContainer}>
+        <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7}>
+        
+          <Text style={styles.infoIcon}>ℹ️</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Modal containing all content */}
       <Modal
-        animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        animationType="none"
+        onRequestClose={() => setModalVisible(false)}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
-        <View style={styles.modalContent}>
-          <ScrollView>
+        <Animated.View style={[styles.modalContent, { opacity: fadeAnim }]}>
+          <ScrollView contentContainerStyle={styles.scrollViewContent}>
             {/* Modal Header with Title and Close Icon */}
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{translations[language].title}</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text style={styles.closeButton}>✖️</Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                <Ionicons name="close-circle" size={28} color="#FF5252" />
               </TouchableOpacity>
             </View>
 
             {/* Language Switch Buttons */}
             <View style={styles.languageContainer}>
-              <TouchableOpacity style={styles.langButton} onPress={() => setLanguage('en')}>
-                <Text style={styles.langButtonText}>English</Text>
+              <TouchableOpacity 
+                style={[
+                  styles.langButton, 
+                  language === 'en' && styles.selectedLangButton
+                ]} 
+                onPress={() => setLanguage('en')}
+                activeOpacity={0.7}
+              >
+                <Text style={[
+                  styles.langButtonText, 
+                  language === 'en' && styles.selectedLangButtonText
+                ]}>English</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.langButton} onPress={() => setLanguage('si')}>
-                <Text style={styles.langButtonText}>සිංහල</Text>
+              <TouchableOpacity 
+                style={[
+                  styles.langButton, 
+                  language === 'si' && styles.selectedLangButton
+                ]} 
+                onPress={() => setLanguage('si')}
+                activeOpacity={0.7}
+              >
+                <Text style={[
+                  styles.langButtonText, 
+                  language === 'si' && styles.selectedLangButtonText
+                ]}>සිංහල</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.langButton} onPress={() => setLanguage('ta')}>
-                <Text style={styles.langButtonText}>தமிழ்</Text>
+              <TouchableOpacity 
+                style={[
+                  styles.langButton, 
+                  language === 'ta' && styles.selectedLangButton
+                ]} 
+                onPress={() => setLanguage('ta')}
+                activeOpacity={0.7}
+              >
+                <Text style={[
+                  styles.langButtonText, 
+                  language === 'ta' && styles.selectedLangButtonText
+                ]}>தமிழ்</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Form Fields */}
-            {/* Age Group */}
-            {renderDropdown('ageGroup', 'ageGroup', setAgeGroup, ageGroup)}
-
-            {/* Gender */}
-            {renderDropdown('gender', 'gender', setGender, gender)}
-
-            {/* Ethnicity */}
-            {renderDropdown('ethnicity', 'ethnicity', setEthnicity, ethnicity)}
-
-            {/* Region of Birth */}
-            {renderDropdown('regionOfBirth', 'regionOfBirth', setRegionOfBirth, regionOfBirth)}
-
-            {/* Family History */}
-            {renderDropdown('familyHistory', 'familyHistory', setFamilyHistory, familyHistory)}
-
-            {/* High Blood Glucose */}
-            {renderDropdown('highBloodGlucose', 'highBloodGlucose', setHighBloodGlucose, highBloodGlucose)}
-
-            {/* High Blood Pressure */}
-            {renderDropdown('highBloodPressure', 'highBloodPressure', setHighBloodPressure, highBloodPressure)}
-
-            {/* Daily Tobacco Use */}
-            {renderDropdown('dailyTobacco', 'dailyTobacco', setDailyTobacco, dailyTobacco)}
-
-            {/* Healthy Diet */}
-            {renderDropdown('healthyDiet', 'healthyDiet', setHealthyDiet, healthyDiet)}
-
-            {/* Physical Activity */}
-            {renderDropdown('physicalActivity', 'physicalActivity', setPhysicalActivity, physicalActivity)}
-
-            {/* Waist Measurement */}
-            {renderDropdown('waistMeasurement', 'waistMeasurement', setWaistMeasurement, waistMeasurement)}
+            {/* Form Fields with Icons */}
+            {renderDropdown('ageGroup', 'ageGroup', setAgeGroup, ageGroup, 'person-outline')}
+            {renderDropdown('gender', 'gender', setGender, gender, 'male-female-outline')}
+            {renderDropdown('ethnicity', 'ethnicity', setEthnicity, ethnicity, 'people-outline')}
+            {renderDropdown('regionOfBirth', 'regionOfBirth', setRegionOfBirth, regionOfBirth, 'earth-outline')}
+            {renderDropdown('familyHistory', 'familyHistory', setFamilyHistory, familyHistory, 'family-outline')}
+            {renderDropdown('highBloodGlucose', 'highBloodGlucose', setHighBloodGlucose, highBloodGlucose, 'water-outline')}
+            {renderDropdown('highBloodPressure', 'highBloodPressure', setHighBloodPressure, highBloodPressure, 'heart-outline')}
+            {renderDropdown('dailyTobacco', 'dailyTobacco', setDailyTobacco, dailyTobacco, 'smoke-outline')}
+            {renderDropdown('healthyDiet', 'healthyDiet', setHealthyDiet, healthyDiet, 'leaf-outline')}
+            {renderDropdown('physicalActivity', 'physicalActivity', setPhysicalActivity, physicalActivity, 'fitness-outline')}
+            {renderDropdown('waistMeasurement', 'waistMeasurement', setWaistMeasurement, waistMeasurement, 'ribbon-outline')}
 
             {/* Calculate Button */}
             <View style={styles.buttonContainer}>
-              <Button
-                title={translations[language].buttons.calculateRisk}
-                onPress={calculateRisk}
-              />
+              <TouchableOpacity style={styles.calculateButton} onPress={calculateRisk} activeOpacity={0.7}>
+                <Ionicons name="calculator-outline" size={24} color="#FFFFFF" style={styles.calculateIcon} />
+                <Text style={styles.calculateButtonText}>
+                  {translations[language].buttons.calculateRisk}
+                </Text>
+              </TouchableOpacity>
             </View>
 
             {/* Display Results */}
             {riskScore !== null && (
               <View style={styles.resultContainer}>
-                <Text style={styles.resultText}>{translations[language].results.riskScore} {riskScore}</Text>
-                <Text style={styles.resultText}>{summary}</Text>
+                <View style={styles.resultHeader}>
+                  <Ionicons name="stats-chart-outline" size={24} color="#007BFF" />
+                  <Text style={styles.resultHeaderText}>{translations[language].results.riskScore} {riskScore}</Text>
+                </View>
+                <View style={styles.resultHeader}>
+                  <Ionicons name="warning-outline" size={24} color="#FFC107" />
+                  <Text style={styles.resultHeaderText}>{translations[language].results.riskLevel} 
+                    {" "}
+                    <Text style={[
+                      styles.riskLevelText, 
+                      riskScore >= 20 ? styles.veryHigh :
+                      riskScore >= 16 ? styles.high :
+                      riskScore >= 12 ? styles.moderate :
+                      styles.low
+                    ]}>
+                      {riskScore >= 20 ? "Very High" :
+                       riskScore >= 16 ? "High" :
+                       riskScore >= 12 ? "Moderate" :
+                       "Low"}
+                    </Text>
+                  </Text>
+                </View>
+                {summary && (
+                  <View style={styles.summaryContainer}>
+                    <Ionicons name="document-text-outline" size={24} color="#4CAF50" />
+                    <Text style={styles.summaryText}>{summary}</Text>
+                  </View>
+                )}
               </View>
             )}
           </ScrollView>
-        </View>
+        </Animated.View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
- 
     backgroundColor: '#fff',
+
+
   },
   infoIcon: {
     fontSize: 12,
+    color: '#007BFF',
   },
   modalOverlay: {
     flex: 1,
@@ -336,79 +404,173 @@ const styles = StyleSheet.create({
     left: '5%',
     right: '5%',
     bottom: '5%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     padding: 20,
-    elevation: 5,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  scrollViewContent: {
+    paddingBottom: 20,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   modalTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#333333',
     flex: 1,
     textAlign: 'center',
+    marginRight: 10,
   },
   closeButton: {
-    fontSize: 24,
-    color: '#007BFF',
     marginLeft: 10,
   },
   languageContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     marginBottom: 20,
   },
   langButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
+    backgroundColor: '#e0e0e0',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 25,
     marginHorizontal: 5,
-    borderRadius: 5,
+    minWidth: 90,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  selectedLangButton: {
+    backgroundColor: '#4CAF50',
   },
   langButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: '#333333',
+    fontWeight: '600',
+    fontSize: 14,
+    marginLeft: 5,
+  },
+  selectedLangButtonText: {
+    color: '#FFFFFF',
   },
   dropdownContainer: {
-    marginBottom: 15,
+    marginBottom: 20,
+  },
+  questionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  questionIcon: {
+    marginRight: 10,
   },
   questionText: {
     fontSize: 16,
-    marginBottom: 5,
+    fontWeight: '600',
+    color: '#555555',
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  optionsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   option: {
-    padding: 10,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
+    backgroundColor: '#E0E0E0',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
     marginVertical: 5,
+    width: '48%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   selectedOption: {
     backgroundColor: '#007BFF',
   },
   optionText: {
-    color: '#000',
+    color: '#333333',
+    textAlign: 'center',
+    fontWeight: '500',
   },
-  selectedText: {
-    marginTop: 5,
-    fontStyle: 'italic',
-    color: '#555',
+  selectedOptionText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
   },
   buttonContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  calculateButton: {
+    flexDirection: 'row',
+    backgroundColor: '#28A745',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 30,
+    alignItems: 'center',
+  },
+  calculateButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    marginLeft: 10,
+  },
+  calculateIcon: {
+    marginRight: 5,
   },
   resultContainer: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
+    marginTop: 25,
+    padding: 20,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 15,
+    elevation: 2,
   },
-  resultText: {
+  resultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  resultHeaderText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333333',
+    marginLeft: 10,
+  },
+  riskLevelText: {
+    fontWeight: '700',
+  },
+  veryHigh: {
+    color: '#DC3545',
+  },
+  high: {
+    color: '#FFC107',
+  },
+  moderate: {
+    color: '#17A2B8',
+  },
+  low: {
+    color: '#28A745',
+  },
+  summaryContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 15,
+  },
+  summaryText: {
     fontSize: 16,
-    marginBottom: 5,
+    color: '#555555',
+    flex: 1,
+    textAlign: 'justify',
+    marginLeft: 10,
   },
 });
 

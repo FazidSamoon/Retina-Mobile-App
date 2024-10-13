@@ -105,7 +105,7 @@ export default function RetinopathyResult({ route, navigation }) {
               <Text style={styles.paymentText}>Next screen</Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate("NextScreening")}
+              onPress={() => navigation.navigate("NextScreeningInterval")}
             >
               <Text style={styles.changeText}>View Next Screening</Text>
             </TouchableOpacity>
