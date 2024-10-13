@@ -10,7 +10,7 @@ import {
   Animated,
   SafeAreaView,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Ensure @expo/vector-icons is installed
+import { FontAwesome, Ionicons } from '@expo/vector-icons'; // Ensure @expo/vector-icons is installed
 
 // Complete Translations for English, Sinhala, and Tamil
 const translations = {
@@ -249,11 +249,12 @@ ${score >= 12 ? translations[language].results.highRiskMessage.replace('{score}'
 
   return (
     <SafeAreaView style={styles.container}>
+  
       {/* Info Icon Centered on Home Screen */}
       <View style={styles.infoIconContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7}>
-        
-          <Text style={styles.infoIcon}>ℹ️</Text>
+        <FontAwesome name="calculator" size={18} color="#D3D3D3" />
+         
         </TouchableOpacity>
       </View>
 

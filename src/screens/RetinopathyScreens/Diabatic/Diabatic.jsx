@@ -23,6 +23,9 @@ import RetinopathyHomeScreenTopAppBar from "../../../../src/screens/RetinopathyS
 import RetinopathyInfo from "../Retinopathy/RetinopathyComponents/RetinopathyInfo";
 import DiabetesRiskPrediction from "../Instruction/DiabetesPedigree";
 import BMICalculator from "../Instruction/BMICalculator";
+import BloodPressureComponent from "./DiabaticVariables/BloodPressureComponent";
+import SkinThicknessComponent from "./DiabaticVariables/SkinThicknessComponent";
+import GlucoseComponent from "./DiabaticVariables/GlucoseComponent";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);
@@ -178,7 +181,6 @@ export default function Diabatic({ navigation }) {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      Alert.alert("Validation Error", "Please correct the errors in the form");
       return;
     }
 
@@ -367,7 +369,9 @@ export default function Diabatic({ navigation }) {
 
                       <View style={styles.inputGroup}>
                         <View>
-                          <Text style={styles.label}>Glucose (mg/dL)</Text>
+                          <Text style={styles.label}>
+                            Glucose (mg/dL) <GlucoseComponent />
+                          </Text>
                           <TextInput
                             style={styles.input}
                             placeholder="Glucose"
@@ -388,7 +392,9 @@ export default function Diabatic({ navigation }) {
 
                     <View style={styles.row}>
                       <View style={styles.inputGroup}>
-                        <Text style={styles.label}>Blood Pressure (mm Hg)</Text>
+                        <Text style={styles.label}>
+                          Blood Pressure (mm Hg) <BloodPressureComponent />
+                        </Text>
                         <TextInput
                           style={styles.input}
                           placeholder="Blood Pressure"
@@ -407,7 +413,9 @@ export default function Diabatic({ navigation }) {
 
                       <View style={styles.inputGroup}>
                         <View>
-                          <Text style={styles.label}>Skin Thickness (mm)</Text>
+                          <Text style={styles.label}>
+                            Skin Thickness (mm) <SkinThicknessComponent />
+                          </Text>
                           <TextInput
                             style={styles.input}
                             placeholder="Skin Thickness"
@@ -516,9 +524,7 @@ export default function Diabatic({ navigation }) {
                     style={styles.button}
                     onPress={handleSubmit}
                   >
-                    <Text style={styles.buttonText}>
-                      Predict Diabetic 
-                    </Text>
+                    <Text style={styles.buttonText}>Predict Diabetic</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>

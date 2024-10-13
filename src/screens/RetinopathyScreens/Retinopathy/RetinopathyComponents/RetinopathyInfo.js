@@ -131,10 +131,8 @@ export default function RetinopathyInfo() {
                   ))}
                 </View>
 
-                {/* Render Page Indicator */}
-                {renderPageIndicator()}
-
-                <View style={styles.buttonRow}>
+                {/* Combined Page Indicator and Buttons */}
+                <View style={styles.navigationRow}>
                   <TouchableOpacity
                     style={[
                       styles.circleButton,
@@ -145,6 +143,8 @@ export default function RetinopathyInfo() {
                   >
                     <FontAwesome name="chevron-left" size={20} color="#fff" />
                   </TouchableOpacity>
+
+                  {renderPageIndicator()}
 
                   <TouchableOpacity
                     style={[
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    textAlign: "center",
   },
   instructionContainer: {
     width: "100%",
@@ -223,22 +224,21 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     textAlign: "left",
   },
-  buttonRow: {
+  navigationRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    width: "70%",
+    justifyContent: "space-between",
+    width: "100%",
     marginVertical: 20,
   },
   circleButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "#109BE7",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#109BE7", // For active state
-    borderWidth: 1,
+    // Removed borderColor and borderWidth as they are not needed
   },
   closeButton: {
     backgroundColor: "#2196F3",
@@ -260,16 +260,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    // marginHorizontal: 10,
   },
   pageIndicatorDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: "#ccc",
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   pageIndicatorDotActive: {
     backgroundColor: "#109BE7",
+  },
+  stepImage: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
+    marginVertical: 10,
   },
 });

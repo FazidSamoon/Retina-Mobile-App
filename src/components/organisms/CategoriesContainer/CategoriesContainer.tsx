@@ -62,77 +62,13 @@ const cards: CategoriesCardType[] = [
     backgroundColor: "#AAF0D1",
   },
   {
-    title: "Diabatic Info",
-    description: "Do some eye exercises to improve your vision.",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "DiabaticInfo",
-    backgroundColor: "#AAF0D1",
-  },
-  {
     title: "Retinopathy info",
     description: "Check your vision and complete the task.",
     imageSrc: require("../../../assets/visionTestcardImg.png"),
     ontapLink: "RetinopathyInfo",
     backgroundColor: "#AAF0D1",
   },
-  {
-    title: "DiabetesPedigree checker",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "DiabetesPedigree",
-    backgroundColor: "#AAF0D1",
-  },
 
-  {
-    title: "BMICalculator",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "BMICalculator",
-    backgroundColor: "#AAF0D1",
-  },
-
-  {
-    title: "AvgGlucose",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "AvgGlucose",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "DiabetesType",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "DiabetesType",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "DiagnosisYear",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "DiagnosisYear",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "DiastolicBp",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "DiastolicBp",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "Hba1c",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "Hba1c",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "SystolicBp",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "SystolicBp",
-    backgroundColor: "#AAF0D1",
-  },
 ];
 
 const CategoriesContainer = () => {

@@ -24,6 +24,10 @@ import DiagnosisYear from "../../screens/RetinopathyScreens/Retinopathy/Retinopa
 import DiastolicBp from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/DiastolicBp";
 import Hba1c from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/Hba1c";
 import SystolicBp from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/SystolicBp";
+import GlucoseComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/GlucoseComponent";
+import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/BloodPressureComponent";
+import InsulinComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/InsulinComponent";
+import SkinThicknessComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/SkinThicknessComponent";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -63,7 +67,6 @@ const index = () => {
         <DrawerNav.Screen name="HealthTips" component={HealthTips} />
         <DrawerNav.Screen name="RetinClinicLoc" component={RetinClinicLoc} />
         <DrawerNav.Screen name="RetinopathyResult" component={RetinopathyResult} />
-        <DrawerNav.Screen name="DiabaticInfo" component={DiabaticInfo} />
         <DrawerNav.Screen name="RetinopathyInfo" component={RetinopathyInfo} />
         <DrawerNav.Screen name="DiabetesPedigree" component={DiabetesPedigree} />
         <DrawerNav.Screen name="BMICalculator" component={BMICalculator} />
@@ -77,6 +80,15 @@ const index = () => {
         <DrawerNav.Screen name="DiastolicBp" component={DiastolicBp} />
         <DrawerNav.Screen name="Hba1c" component={Hba1c} />
         <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
+
+
+
+
+
+        <DrawerNav.Screen name="GlucoseComponent" component={GlucoseComponent} />
+        <DrawerNav.Screen name="BloodPressureComponent" component={BloodPressureComponent} />
+        <DrawerNav.Screen name="InsulinComponent" component={InsulinComponent} />
+        <DrawerNav.Screen name="SkinThicknessComponent" component={SkinThicknessComponent} />
 
 
 
