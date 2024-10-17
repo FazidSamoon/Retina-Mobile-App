@@ -55,8 +55,8 @@ const ShortDistaneTestGuidence = ({
       step: 3,
       title: "Step 3",
       description:
-        "Once you identified the letter pronounce the letter loud and clear before clocks ticks out",
-      image: require("../../../assets/voicepng.png"),
+        "Once you identified the letter swipe to the direction letter is pointing",
+      image: require("../../../assets/4.png"),
     },
   ];
   return (

@@ -11,9 +11,8 @@ import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import RPInputField from "../../atoms/RPInputField/RPInputField";
 import { useNavigation } from "@react-navigation/native";
 
-
 const AllDoctorsCard = () => {
-    const navigation = useNavigation<any>()
+  const navigation = useNavigation<any>();
   const [doctors, setDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading } = useQuery({
@@ -41,8 +40,6 @@ const AllDoctorsCard = () => {
 
   return (
     <View>
-
-
       <Pressable
         style={{
           backgroundColor: "#DBEAFE",
@@ -54,9 +51,8 @@ const AllDoctorsCard = () => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          gap: 10
+          gap: 10,
         }}
-
         onPress={() => navigation.navigate("MySubscriptions")}
       >
         <Text
@@ -71,16 +67,15 @@ const AllDoctorsCard = () => {
         <Icon name="arrow-forward" color={"#109BE7"} size={30} />
       </Pressable>
 
-
       <Text
-          style={{
-            fontSize: 20,
-            fontWeight: "800",
-            marginBottom: 20
-          }}
-        >
-          Find Doctors
-        </Text>
+        style={{
+          fontSize: 20,
+          fontWeight: "800",
+          marginBottom: 20,
+        }}
+      >
+        Find Doctors
+      </Text>
       <View
         style={{
           borderWidth: 2,

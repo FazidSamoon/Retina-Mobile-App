@@ -18,6 +18,7 @@ import RecommendHome from "../../screens/AuthScreens/RecommendHome/RecommendHome
 import MealsRecommend from "../../screens/AuthScreens/MealsRecommend/MealsRecommend";
 import ExerciseRecommend from "../../screens/AuthScreens/ExerciseRecommend/Exerciserecommend";
 import MyRecommondation from "../../screens/AuthScreens/MealsRecommend/MyRecommondation";
+import Packages from "../../screens/AuthScreens/Packages/Packages";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -88,6 +89,10 @@ const index = () => {
         <DrawerNav.Screen
           name="MyRecommondation"
           component={MyRecommondation}
+        />
+        <DrawerNav.Screen
+          name="ChannelingPackages"
+          component={Packages}
         />
       </DrawerNav.Navigator>
     </>

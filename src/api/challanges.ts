@@ -9,6 +9,7 @@ export const getMonthlyChallanges = async (userId: string) => {
     const response = await axios.get(
       `${API_URL}/challanges/monthly-challange/${userId}`
     );
+
     apiSuccess = response.data;
   } catch (error) {
     apiError = error;
@@ -24,9 +25,10 @@ export const checkChallangesAvailability = async (userId: string) => {
     const response = await axios.get(
       `${API_URL}/challanges/check-challange-availability/${userId}`
     );
-    apiSuccess = response.data;
+
+    apiSuccess = await response.data;
   } catch (error) {
-    apiError = error;
+    apiError = await error;
   }
 
   return { apiSuccess, apiError };

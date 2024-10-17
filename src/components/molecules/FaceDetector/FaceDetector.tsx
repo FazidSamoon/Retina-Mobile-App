@@ -28,7 +28,6 @@ const FaceDetectorComponenet = ({
   handleInRange: () => void;
 }) => {
 
-  console.log(distanceToMaintain)
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.front);
   const cameraRef = useRef(null);
@@ -42,7 +41,7 @@ const FaceDetectorComponenet = ({
     const distance = (realFaceWidth * focalLength) / faceWidth;
     if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
     else handleInRange();
-    // console.log(distance.toFixed(2))
+    console.log(distance.toFixed(2))
     return distance.toFixed(2);
   };
 
@@ -93,8 +92,8 @@ const FaceDetectorComponenet = ({
         faceDetectorSettings={{
           mode: FaceDetector.FaceDetectorMode.fast,
           detectLandmarks: FaceDetector.FaceDetectorLandmarks.all,
-          runClassifications: FaceDetector.FaceDetectorClassifications.all,
-          minDetectionInterval: 100,
+          runClassifications: FaceDetector.FaceDetectorClassifications.none,
+          minDetectionInterval: 500,
           tracking: true,
         }}
       >

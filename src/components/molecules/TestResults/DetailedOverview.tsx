@@ -1,24 +1,34 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
 import {
-  VisionTestStateType,
-} from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+  Dimensions,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import { VisionTestStateType } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestResultSingleCard from "../VisionTestResultSingleCard/VisionTestResultSingleCard";
 import { calculateVisualAcuityScoreUsingSLMAformula } from "../../../utils/common/scoreCalculations";
 import { useMutation } from "@tanstack/react-query";
 import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
 import axiosInstance from "../../../api/axiosConfig";
 import { API_URL } from "../../../api/config";
+import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
+import Doctor1 from "../../../assets/doctorMain.png";
+import * as Animatable from "react-native-animatable";
 
 const DetailedOverview = ({
   visionTestResults,
   leftEyeScore,
-  rightEyeScore
+  rightEyeScore,
 }: {
   visionTestResults: VisionTestStateType | any;
-  leftEyeScore: string,
-  rightEyeScore: string
+  leftEyeScore: string;
+  rightEyeScore: string;
 }) => {
+  const [modalVisible, setModalVisible] = useState(true);
   const getLabelsBasedOnLogmar = (logmar: number) => {
     if (logmar <= 0.1) {
       return "Normal";
@@ -51,6 +61,9 @@ const DetailedOverview = ({
     return "red";
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
   return (
     <View>
       <Text style={styles.titleText}>Detailed Overview</Text>
@@ -102,14 +115,10 @@ const DetailedOverview = ({
               Left Eye: {leftEyeScore} :{" "}
               <Text
                 style={{
-                  color: getLabelColor(
-                    parseFloat(leftEyeScore)
-                  ),
+                  color: getLabelColor(parseFloat(leftEyeScore)),
                 }}
               >
-                {getLabelsBasedOnLogmar(
-                  parseFloat(leftEyeScore)
-                )}
+                {getLabelsBasedOnLogmar(parseFloat(leftEyeScore))}
               </Text>
             </Text>
           </View>
@@ -124,14 +133,10 @@ const DetailedOverview = ({
             Right Eye: {rightEyeScore} :{" "}
             <Text
               style={{
-                color: getLabelColor(
-                  parseFloat(rightEyeScore)
-                ),
+                color: getLabelColor(parseFloat(rightEyeScore)),
               }}
             >
-              {getLabelsBasedOnLogmar(
-                parseFloat(rightEyeScore)
-              )}
+              {getLabelsBasedOnLogmar(parseFloat(rightEyeScore))}
             </Text>
           </Text>
 
@@ -159,6 +164,41 @@ const DetailedOverview = ({
           }
         )}
       </ScrollView>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={handleCloseModal}
+        >
+          <View style={styles.modalContent}>
+            <SpeechBubble
+              message={
+                parseFloat(leftEyeScore) <= 0.1
+                  ? "Your vision is really impressive! Keep it up!"
+                  : parseFloat(leftEyeScore) <= 0.3
+                  ? "Your vision is quite good, but there's a slight reduction. Let's continue monitoring it."
+                  : parseFloat(leftEyeScore) <= 0.5
+                  ? "There's a noticeable reduction in your vision. We should discuss corrective measures like glasses."
+                  : parseFloat(leftEyeScore) <= 1.0
+                  ? "Your vision shows significant impairment. It's important to schedule a thorough examination."
+                  : "Your vision has deteriorated substantially. We need to explore treatment options immediately."
+              }
+              position="left"
+            />
+            <Animatable.Image
+              animation="bounceIn"
+              duration={1500}
+              source={Doctor1}
+              style={styles.doctorImage}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -170,5 +210,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    height: 600,
+    borderRadius: 10,
+    alignItems: "center",
+    // backgroundColor: "#fff",
+  },
+  doctorImage: {
+    width: 300,
+    height: 500,
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginVertical: 10,
+    color: "#333",
   },
 });

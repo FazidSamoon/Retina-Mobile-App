@@ -21,7 +21,7 @@ const ChallengesListView = ({
       }}
     >
       <ScrollView style={styles.container}>
-        {challanges?.map((challenge) => (
+        {challanges&& challanges?.map((challenge) => (
           <View
             style={{
               display: "flex",

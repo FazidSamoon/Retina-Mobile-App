@@ -1,8 +1,19 @@
-import { Dimensions, Modal, StyleSheet, Text, View, Image } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 import { PersonalizedDistance } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
+import Doctor1 from "../../../assets/doctorMain.png";
+import * as Animatable from "react-native-animatable";
 
 const LongDistanceVIsionTestDistanceConfirermer = ({
   personalizedDistance,
@@ -14,10 +25,11 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
   console.log("personalizedDistance ", personalizedDistance);
   const [inRange, setInRange] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const handleInRange = () => {
     if (!inRange) {
       setInRange(true);
-      setShowConfirmModal(true)
+      setShowConfirmModal(true);
     }
   };
 
@@ -31,13 +43,28 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
     if (inRange && showConfirmModal) {
       timer = setTimeout(() => {
         setSteps(VisionTestFlows.TEST_SCREEN);
-      }, 10000);
+      }, 5000);
     }
 
     return () => {
       clearTimeout(timer);
     };
   }, [inRange, showConfirmModal]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (modalVisible) {
+      timer = setTimeout(() => {
+        setModalVisible(false);
+      }, 6000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [modalVisible]);
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
   return (
     <View style={styles.container}>
       <Text
@@ -111,6 +138,31 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
           </View>
         </View>
       </Modal>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={handleCloseModal}
+        >
+          <View style={styles.modalContent}>
+            <SpeechBubble
+              message={`Now keep your phone ${personalizedDistance} m away from you! And get ready!`}
+              position="left"
+            />
+            <Animatable.Image
+              animation="bounceIn"
+              duration={1500}
+              source={Doctor1}
+              style={styles.doctorImage}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -132,5 +184,30 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    height: 600,
+    borderRadius: 10,
+    alignItems: "center",
+    // backgroundColor: "#fff",
+  },
+  doctorImage: {
+    width: 300,
+    height: 500,
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginVertical: 10,
+    color: "#333",
   },
 });

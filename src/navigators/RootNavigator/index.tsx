@@ -18,7 +18,7 @@ const index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const isAuthenticatedD = useSelector(
     (state: RootState) => state.authenticatorReducer.authenticated
-  )
+  );
 
   useEffect(() => {
     const checkAuth = async () => {

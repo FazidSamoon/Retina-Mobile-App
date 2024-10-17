@@ -12,9 +12,7 @@ const ChannelDoctorsScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <VisionHomeScreenTopAppBar header={"Find Doctors"} />
-
       <AllDoctorsCard />
-
     </SafeAreaView>
   );
 };

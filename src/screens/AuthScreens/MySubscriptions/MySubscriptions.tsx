@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, ToastAndroid, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
@@ -7,13 +7,23 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
 import { UserType } from "../../../utils/types/commonTypes";
 import { getUserSubscriptions } from "../../../api/challanges";
+import RPPrimaryButton from "../../../components/atoms/RPPrimaryButton/RPPrimaryButton";
+import { getChannelingAvailability } from "../../../api/channeling";
+import { useDispatch } from "react-redux";
+import { setChannelingData } from "../../../store/slices/channelingSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const MySubscriptions = () => {
   const [selected, setSelected] = useState("");
   const [user, setUser] = useState<UserType>();
 
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
+
   const [availbleScheduling, setAvailableScheduling] = useState(false);
   const [doctor, setDoctor] = useState([]);
+  const [slots, setSlots] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState();
 
   const nameInitials = (name: string) => {
     const words = name?.split(" ");
@@ -31,7 +41,6 @@ const MySubscriptions = () => {
       userObj.data.otherDetails._id
     );
     if (apiSuccess) {
-      console.log("sssss ", apiSuccess.data);
       setDoctor(apiSuccess.data);
     }
   };
@@ -52,25 +61,25 @@ const MySubscriptions = () => {
     ];
     return days[day];
   };
+
   const checkAvailabililty = (date: string) => {
     const day = new Date(date).getDay();
     const dayStr = getDay(day);
 
-    // Assuming doctor[0].doctor.channelingSchedule contains the schedule
     const scheduleForDay = doctor[0].doctor.channelingSchedule[dayStr];
 
     if (!scheduleForDay || scheduleForDay.length === 0) {
-      setAvailableScheduling(false); // No slots available for this day
+      setAvailableScheduling(false);
     } else {
       setAvailableScheduling(true);
 
-      let startTime = new Date(`${date}T${scheduleForDay[0].start}`)
-      let endTime = new Date(`${date}T${scheduleForDay[0].end}`)
+      let startTime = new Date(`${date}T${scheduleForDay[0].start}`);
+      let endTime = new Date(`${date}T${scheduleForDay[0].end}`);
 
       startTime = new Date(startTime.getTime() + 330 * 60000);
       endTime = new Date(endTime.getTime() + 330 * 60000);
 
-      createTimeSlots(startTime, endTime)
+      setSlots(createTimeSlots(startTime, endTime));
     }
   };
 
@@ -86,9 +95,49 @@ const MySubscriptions = () => {
       start = nextSlot;
     }
 
-    console.log("fffff ", slots)
     return slots;
   }
+
+  const handleAddingChanneling = async () => {
+    const { apiError, apiSuccess } = await getChannelingAvailability({
+      doctorId: doctor[0]._id,
+      date: selected,
+      endTime: selectedSlot.end,
+      startTime: selectedSlot.start,
+    });
+
+    if (apiSuccess) {
+      if (apiSuccess.data.available) {
+        dispatch(
+          setChannelingData({
+            doctorId: doctor[0]._id,
+            date: selected,
+            slot: {
+              end: selectedSlot.end,
+              start: selectedSlot.start,
+            },
+            status: "PENDING",
+            type: "IN-HOUSE",
+            userId: user.data.otherDetails._id,
+          })
+        );
+
+        navigation.navigate("ChannelingPackages");
+      } else {
+        showToastWithGravityAndOffset("Selected time slot is not availble");
+      }
+    }
+  };
+
+  const showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -204,6 +253,7 @@ const MySubscriptions = () => {
           <View
             style={{
               marginTop: 10,
+              marginBottom: 10,
             }}
           >
             <Text
@@ -213,9 +263,55 @@ const MySubscriptions = () => {
                 marginTop: 10,
               }}
             >
-              Select Date
+              Select Time
             </Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 4,
+                flexWrap: "wrap",
+                marginTop: 10,
+              }}
+            >
+              {slots.map((slot) => (
+                <Pressable
+                  style={{
+                    backgroundColor:
+                      slot === selectedSlot
+                        ? BASIC_COLORS.PRIMARY
+                        : BASIC_COLORS.BACKGROUND,
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 50,
+                  }}
+                  onPress={() => {
+                    setSelectedSlot(slot);
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color:
+                        slot === selectedSlot
+                          ? BASIC_COLORS.WHITE
+                          : BASIC_COLORS.FONT_PRIMARY,
+                    }}
+                  >
+                    {slot.start}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
           </View>
+
+          {selected && selectedSlot && (
+            <RPPrimaryButton
+              buttonTitle={"Make Appointment"}
+              onPress={handleAddingChanneling}
+            />
+          )}
         </View>
       ) : (
         <View>

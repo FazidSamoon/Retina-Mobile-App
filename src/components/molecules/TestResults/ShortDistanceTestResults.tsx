@@ -168,7 +168,6 @@ const ShortDistanceTestResults = ({
         `${API_URL}/test-results`,
         payload
       );
-      console.log("ssss ", response);
       return response;
     },
     onSuccess: () => {
