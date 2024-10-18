@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Animated,
+  Image,
   ScrollView, // Import ScrollView
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -70,12 +71,10 @@ const InsulinComponent = () => {
 
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.infoContainer}>
-              <Ionicons
-                name="water-outline"
-                size={50}
-                color="#4CAF50"
-                style={styles.infoIcon}
-              />
+            <Image
+            source={require("../../../../assets/RetinoImages/24.png")} // Replace with your GIF path or URL
+            style={styles.gifImage}
+          />
               <Text style={styles.infoText}>
                 {translations[language].insulin.info}
               </Text>

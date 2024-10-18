@@ -10,6 +10,7 @@ import {
   Animated,
   SafeAreaView,
   TextInput,
+  Image,
 } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons'; // Ensure @expo/vector-icons is installed
 
@@ -249,11 +250,21 @@ const BMICalculator = () => {
 
             {/* Language Switch Buttons */}
             {renderLanguageButtons()}
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  <Image
+    source={require("../../../assets/RetinoImages/16.png")} // Replace with your image path or URL
+    style={{ width: 200, height: 200 }}
+  />
+</View>
 
             {/* Input Fields with Icons */}
             <View style={styles.inputContainer}>
               <View style={styles.questionContainer}>
-                <Ionicons name="body-outline" size={24} color="#007BFF" style={styles.questionIcon} />
+        
+
+
+
+
                 <Text style={styles.questionText}>{translations[language].questions.height}</Text>
               </View>
               <TextInput

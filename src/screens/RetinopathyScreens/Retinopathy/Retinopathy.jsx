@@ -381,7 +381,7 @@ export default function Retinopathy() {
 
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>
-                  Estimated Avg Glucose (mg/dL) {" "}<AvgGlucose />
+                  Estimated Avg Glucose (mg/dL) <AvgGlucose />
                 </Text>
                 <TextInput
                   style={styles.input}
@@ -430,39 +430,6 @@ export default function Retinopathy() {
                   <View style={styles.reviewSummaryContainer}>
                     <View style={styles.header}>
                       <Text style={styles.headerText}>Extracted Text</Text>
-                    </View>
-
-                    <View style={styles.profileSection}>
-                      <Image
-                        source={{
-                          uri: "https://pics.craiyon.com/2023-10-19/ebd05cc8b06f4c439bccef6994f74fc1.webp",
-                        }} // Replace with actual image
-                        style={styles.profileImage}
-                      />
-                      <View>
-                        <Text style={styles.doctorName}>Dr. Jonny Wilson</Text>
-                        <View style={styles.verifiedSection}>
-                          <Text style={styles.specialization}>
-                            Ophthalmologist
-                          </Text>
-                          <FontAwesome
-                            name="check-circle"
-                            size={18}
-                            color="#007bff"
-                            style={styles.iconVerified}
-                          />
-                        </View>
-                        <View style={styles.locationSection}>
-                          <FontAwesome
-                            name="map-marker"
-                            size={18}
-                            color="#777"
-                          />
-                          <Text style={styles.location}>
-                            Colombo, Sri Lanka
-                          </Text>
-                        </View>
-                      </View>
                     </View>
 
                     <View style={styles.hr} />

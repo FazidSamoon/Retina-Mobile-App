@@ -109,35 +109,25 @@ const index = () => {
           name="MyRecommondation"
           component={MyRecommondation}
         />
-        <DrawerNav.Screen
-          name="ChannelingPackages"
-          component={Packages}
-        />
+        <DrawerNav.Screen name="ChannelingPackages" component={Packages} />
 
-
-
-
-
-
-
-
-
-
-
-<DrawerNav.Screen name="Diabatic" component={Diabatic} />
+        <DrawerNav.Screen name="Diabatic" component={Diabatic} />
         <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
         <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />
         <DrawerNav.Screen name="HealthTips" component={HealthTips} />
         <DrawerNav.Screen name="RetinClinicLoc" component={RetinClinicLo} />
-        <DrawerNav.Screen name="RetinopathyResult" component={RetinopathyResult} />
+        <DrawerNav.Screen
+          name="RetinopathyResult"
+          component={RetinopathyResult}
+        />
         <DrawerNav.Screen name="RetinopathyInfo" component={RetinopathyInfo} />
         {/* <DrawerNav.Screen name="DiabetesPedigree" component={DiabetesPedigree} /> */}
         <DrawerNav.Screen name="BMICalculator" component={BMICalculator} />
-        <DrawerNav.Screen name="NextScreeningInterval" component={NextScreeningInterval} />
+        <DrawerNav.Screen
+          name="NextScreeningInterval"
+          component={NextScreeningInterval}
+        />
 
-
-
-        
         <DrawerNav.Screen name="AvgGlucose" component={AvgGlucose} />
         <DrawerNav.Screen name="DiabetesType" component={DiabetesType} />
         <DrawerNav.Screen name="DiagnosisYear" component={DiagnosisYear} />
@@ -145,19 +135,22 @@ const index = () => {
         <DrawerNav.Screen name="Hba1c" component={Hba1c} />
         <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
 
-
-
-
-
-        <DrawerNav.Screen name="GlucoseComponent" component={GlucoseComponent} />
-        <DrawerNav.Screen name="BloodPressureComponent" component={BloodPressureComponent} />
-        <DrawerNav.Screen name="InsulinComponent" component={InsulinComponent} />
-        <DrawerNav.Screen name="SkinThicknessComponent" component={SkinThicknessComponent} />
-
-
-
-
-
+        <DrawerNav.Screen
+          name="GlucoseComponent"
+          component={GlucoseComponent}
+        />
+        <DrawerNav.Screen
+          name="BloodPressureComponent"
+          component={BloodPressureComponent}
+        />
+        <DrawerNav.Screen
+          name="InsulinComponent"
+          component={InsulinComponent}
+        />
+        <DrawerNav.Screen
+          name="SkinThicknessComponent"
+          component={SkinThicknessComponent}
+        />
       </DrawerNav.Navigator>
     </>
   );

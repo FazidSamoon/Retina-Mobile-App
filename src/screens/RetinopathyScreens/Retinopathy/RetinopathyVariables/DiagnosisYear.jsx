@@ -1,21 +1,23 @@
-// DiagnosisYear.js
-import React, { useState, useRef, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  ScrollView, 
-  StyleSheet, 
-  TouchableOpacity, 
-  Modal, 
+import React, { useState, useRef, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
   TouchableWithoutFeedback,
   Animated,
-} from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { translations } from './translations'; // Adjust the path as necessary
+  Image,
+  ScrollView,
+} from "react-native";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { translations } from "./translations"; // Adjust the path as necessary
 
 const DiagnosisYear = () => {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState("en");
   const [modalVisible, setModalVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -26,10 +28,22 @@ const DiagnosisYear = () => {
     }).start();
   }, [modalVisible]);
 
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    setDropdownVisible(false);
+  };
+
+  const toggleReport = () => {
+    setShowReport(!showReport);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7}>
-      <FontAwesome name="question-circle" size={18} color="#D3D3D3" />
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        activeOpacity={0.7}
+      >
+        <FontAwesome name="question-circle" size={18} color="#D3D3D3" />
       </TouchableOpacity>
 
       <Modal
@@ -42,144 +56,130 @@ const DiagnosisYear = () => {
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <Animated.View style={[styles.modalContent, { opacity: fadeAnim }]}>
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{translations[language].diagnosisYear.title}</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Ionicons name="close-circle" size={28} color="#FF5252" />
-              </TouchableOpacity>
-            </View>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>
+              {translations[language].diagnosisYear.title}
+            </Text>
 
-            <View style={styles.languageContainer}>
-              <TouchableOpacity 
-                style={[
-                  styles.langButton, 
-                  language === 'en' && styles.selectedLangButton
-                ]} 
-                onPress={() => setLanguage('en')}
-                activeOpacity={0.7}
-              >
-                <Text style={[
-                  styles.langButtonText, 
-                  language === 'en' && styles.selectedLangButtonText
-                ]}>English</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={[
-                  styles.langButton, 
-                  language === 'si' && styles.selectedLangButton
-                ]} 
-                onPress={() => setLanguage('si')}
-                activeOpacity={0.7}
-              >
-                <Text style={[
-                  styles.langButtonText, 
-                  language === 'si' && styles.selectedLangButtonText
-                ]}>සිංහල</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={[
-                  styles.langButton, 
-                  language === 'ta' && styles.selectedLangButton
-                ]} 
-                onPress={() => setLanguage('ta')}
-                activeOpacity={0.7}
-              >
-                <Text style={[
-                  styles.langButtonText, 
-                  language === 'ta' && styles.selectedLangButtonText
-                ]}>தமிழ்</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.closeButton}
+            >
+              <Ionicons name="close-circle" size={28} color="#FF5252" />
+            </TouchableOpacity>
+          </View>
 
+          <ScrollView style={styles.scrollContainer}>
             <View style={styles.infoContainer}>
-              <Ionicons name="calendar-outline" size={50} color="#4CAF50" style={styles.infoIcon} />
-              <Text style={styles.infoText}>{translations[language].diagnosisYear.info}</Text>
+            <Image
+            source={require("../../../../assets/RetinoImages/23.png")} // Replace with your GIF path or URL
+            style={styles.gifImage}
+          />
+              <Text style={styles.infoText}>
+                {translations[language].diagnosisYear.info}
+              </Text>
+            </View>
+
+            <View style={styles.stepsContainer}>
+              <Text style={styles.stepsTitle}>
+                {translations[language].diagnosisYear.stepsTitle}
+              </Text>
+              {translations[language].diagnosisYear.steps.map((step, index) => (
+                <Text key={index} style={styles.stepText}>
+                  {`${index + 1}. ${step}`}
+                </Text>
+              ))}
+            </View>
+
+            <View style={styles.reportDetailsContainer}>
+              <Text style={styles.reportDetailsText}>
+                {translations[language].diagnosisYear.report}
+              </Text>
             </View>
           </ScrollView>
+
+          <View style={styles.iconContainer}>
+            <TouchableOpacity
+              onPress={() => setDropdownVisible(!dropdownVisible)}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="language" size={26} color="#676767" />
+            </TouchableOpacity>
+
+            {dropdownVisible && (
+              <View style={styles.dropdown}>
+                <TouchableOpacity
+                  style={styles.dropdownItem}
+                  onPress={() => handleLanguageChange("en")}
+                >
+                  <Text style={styles.dropdownItemText}>EN</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.dropdownItem}
+                  onPress={() => handleLanguageChange("si")}
+                >
+                  <Text style={styles.dropdownItemText}>සිං</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.dropdownItem}
+                  onPress={() => handleLanguageChange("ta")}
+                >
+                  <Text style={styles.dropdownItemText}>தமிழ்</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </Animated.View>
       </Modal>
     </View>
   );
 };
 
-// Reuse the same styles or customize as needed
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-
-
-  },
-  infoIcon: {
-    fontSize: 12,
-    color: '#007BFF',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: '#000000AA',
+    backgroundColor: "#000000AA",
   },
   modalContent: {
-    position: 'absolute',
-    top: '10%',
-    left: '5%',
-    right: '5%',
-    bottom: '10%',
-    backgroundColor: '#ffffff',
+    position: "absolute",
+    top: "10%",
+    left: "5%",
+    right: "5%",
+    bottom: "10%",
+    backgroundColor: "#ffffff",
     borderRadius: 20,
     padding: 20,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  scrollViewContent: {
-    paddingBottom: 20,
-  },
   modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#333333',
-    flex: 1,
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "#333333",
   },
   closeButton: {
     marginLeft: 10,
   },
-  languageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 25,
-  },
-  langButton: {
-    backgroundColor: '#e0e0e0',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginHorizontal: 5,
-    minWidth: 80,
-    alignItems: 'center',
-  },
-  selectedLangButton: {
-    backgroundColor: '#4CAF50',
-  },
-  langButtonText: {
-    color: '#333333',
-    fontWeight: '600',
-    fontSize: 13,
-  },
-  selectedLangButtonText: {
-    color: '#ffffff',
+  scrollContainer: {
+    maxHeight: "80%", // Limit the height to allow scrolling
   },
   infoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 10,
   },
   infoIcon: {
@@ -188,8 +188,60 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     lineHeight: 22,
-    color: '#555555',
-    textAlign: 'justify',
+    color: "#555555",
+    textAlign: "justify",
+  },
+  stepsContainer: {
+    marginTop: 20,
+  },
+  stepsTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 10,
+  },
+  stepText: {
+    fontSize: 14,
+    color: "#555",
+    marginVertical: 5,
+    lineHeight: 20,
+  },
+  reportDetailsContainer: {
+    marginTop: 15,
+    padding: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  reportDetailsText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  iconContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    zIndex: 10,
+  },
+  dropdown: {
+    position: "absolute",
+    top: -80,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    elevation: 5,
+    width: 60,
+  },
+  dropdownItem: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    alignItems: "center",
+  },
+  dropdownItemText: {
+    fontSize: 14,
+    color: "#333",
   },
 });
 

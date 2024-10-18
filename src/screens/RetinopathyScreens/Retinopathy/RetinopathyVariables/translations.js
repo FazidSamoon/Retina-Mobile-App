@@ -1,94 +1,230 @@
-// translations.js
 export const translations = {
-    en: {
-      buttons: {
-        language: "Language",
-        close: "Close"
-      },
-      avgGlucose: {
-        title: "Average Glucose Information",
-        info: "Maintaining an average blood glucose level within the recommended range is crucial for overall health. It helps in preventing complications related to diabetes, such as nerve damage, kidney issues, and vision problems. Regular monitoring and a balanced diet can aid in achieving optimal glucose levels."
-      },
-      diabetesType: {
-        title: "Type of Diabetes",
-        info: "There are mainly three types of diabetes: Type 1, Type 2, and Gestational Diabetes. Type 1 diabetes is an autoimmune condition where the body attacks insulin-producing cells. Type 2 diabetes is characterized by insulin resistance, and gestational diabetes occurs during pregnancy."
-      },
-      diagnosisYear: {
-        title: "Year of Diagnosis",
-        info: "The year you were diagnosed with diabetes is crucial for understanding your health journey. It helps in tracking the progression of the disease and managing treatment plans effectively."
-      },
-      diastolicBp: {
-        title: "Diastolic Blood Pressure",
-        info: "Diastolic blood pressure measures the pressure in your arteries when your heart rests between beats. Maintaining a healthy diastolic BP is essential to reduce the risk of heart disease and stroke."
-      },
-      hba1c: {
-        title: "HbA1c Levels",
-        info: "HbA1c reflects your average blood glucose levels over the past two to three months. It's a key indicator for diabetes management, helping to assess how well your blood sugar levels are controlled."
-      },
-      systolicBp: {
-        title: "Systolic Blood Pressure",
-        info: "Systolic blood pressure measures the pressure in your arteries when your heart beats. Keeping your systolic BP within the recommended range is vital for preventing cardiovascular complications."
-      }
+  en: {
+    buttons: {
+      language: "Language",
+      close: "Close",
     },
-    si: {
-      buttons: {
-        language: "භාෂාව",
-        close: "වසන්න"
-      },
-      avgGlucose: {
-        title: "මධ්‍යම ග්ලූකෝස් තොරතුරු",
-        info: "ශෛලික ලේ ග්ලූකෝස් මට්ටම නිර්දේශිත පරාසය තුළ පවත්වාගෙන යාම සමස්ත සෞඛ්‍යය සඳහා මහඟු වේ. මෙය දියබීටිස් සම්බන්ධ ගැටළු, උදාහරණයක් ලෙස, සැලවේ සිටින්නන්, වෘකීය ගැටළු සහ දෘෂ්ටී ගැටළු වළක්වීමට උපකාරී වේ. නියමිත පරීක්ෂණ සහ සමතුලිත ආහාරය මධ්‍යම ග්ලූකෝස් මට්ටම ප්‍රවේශමෙන්ම පවත්වාගෙන යාමට උපකාරී වේ."
-      },
-      diabetesType: {
-        title: "දිabetes වර්ගය",
-        info: "දියබීටිස් වල ප්‍රධාන වශයෙන් වර්ග 3ක් ඇත: වර්ග 1, වර්ග 2, සහ ගර්භණී දියබීටිස්. වර්ග 1 දියබීටිස් යනු ආතම ප්‍රතික්‍රියාවක් වන අතර ශරීරය ඉන්සූලින් නිෂ්පාදන සෛලවලට ප‍්‍රහාර කරයි. වර්ග 2 දියබීටිස් නම් ඉන්සූලින් ප්‍රතිරෝධතාවයක් සහිතය, සහ ගර්භණී දියබීටිස් ගර්භණී කාලයේදී සිදුවේ."
-      },
-      diagnosisYear: {
-        title: "නියමය වසර",
-        info: "දියබීටිස් හඳුනාගත් වසර ඔබේ සෞඛ්‍ය ගමන තේරුම් ගැනීමට අත්‍යවශ්‍ය වේ. එය රෝගයෙහි ප්‍රගතිය තත්ත්වය හා ප්‍රතිකාර සැලසුම් ක්‍රියාත්මක කිරීමේදී උදව් කරයි."
-      },
-      diastolicBp: {
-        title: "ඩයස්ටොලික් රුධිර පීඩනය",
-        info: "ඩයස්ටොලික් රුධිර පීඩනය, හදවත තදපෑම අතර ශරීරයේ මුරණ්‍යයන්හි පීඩනය මැනේ. සෞඛ්‍ය ප්‍රමිතියකට අදාළ ඩයස්ටොලික් BP පවත්වාගෙන යාම හෘද රෝග සහ තොල් වළක්වා ගැනීමට අත්‍යවශ්‍ය වේ."
-      },
-      hba1c: {
-        title: "HbA1c මට්ටම්",
-        info: "HbA1c ඔබේ මධ්‍යම ලේ ග්ලූකෝස් මට්ටම් අවුරුදු දෙකකින් තුනක් කාලය පුරා නිරීක්ෂණය කරයි. දියබීටිස් කළමනාකරණය සඳහා මෙය ප්‍රධාන සංඛ්‍යාත්මක දර්ශකයක් වන අතර, ඔබේ ලේ සීනි මට්ටම් කොපමණ පාලනය කර තිබේද යන්න ඇගයීමට උපකාරී වේ."
-      },
-      systolicBp: {
-        title: "සිස්ටොලික් රුධිර පීඩනය",
-        info: "සිස්ටොලික් රුධිර පීඩනය හදවත ක්‍රියාත්මක වන විට ශරීරයේ මුරණ්‍යයන්හි පීඩනය මැනේ. සිස්ටොලික් BP නිර්දේශිත පරාසයට අභ්‍යන්තරව තබා ගැනීම හෘද සෛල රෝග සම්බන්ධ අසීරුතා වලින් වලක්වා ගැනීමට අත්‍යවශ්‍ය වේ."
-      }
+    avgGlucose: {
+      title: "Average Glucose Information",
+      info: "Maintaining an average blood glucose level within the recommended range is crucial for overall health. It helps in preventing complications related to diabetes, such as nerve damage, kidney issues, and vision problems. Regular monitoring and a balanced diet can aid in achieving optimal glucose levels.",
+      stepsTitle: "How to Check Average Glucose Levels:",
+      steps: [
+        "Visit your healthcare provider for a blood test.",
+        "The HbA1c test will be conducted, which shows your average blood sugar levels over the past 2-3 months.",
+        "The results will be provided in percentage form; consult with your doctor for interpretation.",
+        "Regular testing is recommended every 3 to 6 months.",
+      ],
+      report: "HbA1c Report",
     },
-    ta: {
-      buttons: {
-        language: "மொழி",
-        close: "மூடு"
-      },
-      avgGlucose: {
-        title: "சராசரி கிளுக்கோஸ் தகவல்",
-        info: "சராசரி இரத்த கிளுக்கோஸ் அளவைக் பரிந்துரைக்கப்பட்ட வரம்புக்குள் பராமரிப்பது முழுமையான ஆரோக்கியத்திற்கான முக்கிய அம்சமாகும். இது நீரிழிவு நோயுடன் தொடர்புடைய சிக்கல்களைத் தடுப்பதில் உதவுகிறது, உதாரணமாக நரம்பு சேதம், சிறுநீரக பிரச்சினைகள் மற்றும் பார்வை பிரச்சினைகள். எளிமையான பரிசோதனை மற்றும் சமநிலை உணவு உச்ச கிளுக்கோஸ் அளவுகளை அடைவதற்கான உதவியாக இருக்கலாம்."
-      },
-      diabetesType: {
-        title: "நீரிழிவு வகை",
-        info: "நீரிழிவில் முக்கியமாக மூன்று வகைகள் உள்ளன: வகை 1, வகை 2 மற்றும் கர்ப்பிணி நீரிழிவு. வகை 1 நீரிழிவு என்பது தானாக எதிர்ப்பு செயல் ஆகும், இதில் உடல் இன்சுலின் உற்பத்தி செல்களை தாக்குகிறது. வகை 2 நீரிழிவு இன்சுலின் எதிர்ப்பு தன்மையைக் கொண்டது, மேலும் கர்ப்பிணி நீரிழிவு கர்ப்ப காலத்தில் நிகழ்கிறது."
-      },
-      diagnosisYear: {
-        title: "விரோதம் ஆண்டு",
-        info: "நீரிழிவு நோயறிதல் ஆண்டின் மூலம் உங்கள் ஆரோக்கிய பயணத்தைப் புரிந்துகொள்ள முடியும். இது நோயின் முன்னேற்றத்தை கண்காணிக்க மற்றும் சிகிச்சைத் திட்டங்களைச் செயல்படுத்த உதவுகிறது."
-      },
-      diastolicBp: {
-        title: "டையாஸ்டொலிக் இரத்த அழுத்தம்",
-        info: "டையாஸ்டொலிக் இரத்த அழுத்தம் என்பது இதயம் ஓய்வில் இருக்கும் போது உங்கள் இரத்தக் குழாய்களில் உள்ள அழுத்தத்தை அளக்கிறது. ஆரோக்கியமான டையாஸ்டொலிக் BP ஐ பராமரிப்பது இதய நோய்கள் மற்றும் குருதி பரிசய நோய்களைத் தடுப்பதில் அவசியமாகும்."
-      },
-      hba1c: {
-        title: "HbA1c அளவுகள்",
-        info: "HbA1c உங்கள் சராசரி இரத்த கிளுக்கோஸ் அளவுகளை கடந்த இரண்டு முதல் மூன்று மாதங்கள் வரை பிரதிபலிக்கிறது. இது நீரிழிவு மேலாண்மைக்கான முக்கியக் குறியீடாகும், இது உங்கள் இரத்த சர்க்கரை அளவுகள் எவ்வாறு கட்டுப்பாட்டில் உள்ளன என்பதை மதிப்பிட உதவுகிறது."
-      },
-      systolicBp: {
-        title: "சிஸ்டொலிக் இரத்த அழுத்தம்",
-        info: "சிஸ்டொலிக் இரத்த அழுத்தம் என்பது இதயம் துடிப்பதற்குப் பொழுது உங்கள் இரத்தக் குழாய்களில் உள்ள அழுத்தத்தை அளக்கிறது. உங்கள் சிஸ்டொலிக் BP ஐ பரிந்துரைக்கப்பட்ட வரம்புக்குள் வைத்திருப்பது இதய சம்பந்தப்பட்ட சிக்கல்களைத் தடுப்பதில் முக்கியமாகும்."
-      }
-    }
-  };
-  
+    diabetesType: {
+      title: "Type of Diabetes",
+      info: "There are mainly three types of diabetes: Type 1, Type 2, and Gestational Diabetes. Type 1 diabetes is an autoimmune condition where the body attacks insulin-producing cells. Type 2 diabetes is characterized by insulin resistance, and gestational diabetes occurs during pregnancy.",
+      stepsTitle: "Understanding Diabetes Types:",
+      steps: [
+        "Consult your healthcare provider to determine the type of diabetes.",
+        "Get regular blood tests to monitor how the condition is progressing.",
+        "Follow your treatment plan based on the type of diabetes diagnosed.",
+      ],
+      report: "Diabetes Type Report",
+    },
+    diagnosisYear: {
+      title: "Year of Diagnosis",
+      info: "The year you were diagnosed with diabetes is crucial for understanding your health journey. It helps in tracking the progression of the disease and managing treatment plans effectively.",
+      stepsTitle: "How to Track Your Diagnosis Year:",
+      steps: [
+        "Consult your medical records to confirm your diagnosis year.",
+        "Use the diagnosis year to track your progress and adjust treatment plans.",
+        "Discuss any changes in your condition with your healthcare provider.",
+      ],
+      report: "Diagnosis Year Report",
+    },
+    diastolicBp: {
+      title: "Diastolic Blood Pressure",
+      info: "Diastolic blood pressure measures the pressure in your arteries when your heart rests between beats. Maintaining a healthy diastolic BP is essential to reduce the risk of heart disease and stroke.",
+      stepsTitle: "How to Measure Diastolic Blood Pressure:",
+      steps: [
+        "Use a blood pressure monitor at home or at a clinic.",
+        "Rest for 5 minutes before taking the reading.",
+        "Measure at the same time every day for consistency.",
+        "Record the diastolic reading and consult your healthcare provider for advice.",
+      ],
+      report: "Diastolic Blood Pressure Report",
+    },
+    hba1c: {
+      title: "HbA1c Levels",
+      info: "HbA1c reflects your average blood glucose levels over the past two to three months. It's a key indicator for diabetes management, helping to assess how well your blood sugar levels are controlled.",
+      stepsTitle: "How to Check HbA1c Levels:",
+      steps: [
+        "Visit your healthcare provider for a blood test.",
+        "HbA1c tests are typically done every 3 to 6 months.",
+        "The test results will show your average glucose levels over the past few months.",
+        "Discuss the results with your doctor for better diabetes management.",
+      ],
+      report: "HbA1c Report",
+    },
+    systolicBp: {
+      title: "Systolic Blood Pressure",
+      info: "Systolic blood pressure measures the pressure in your arteries when your heart beats. Keeping your systolic BP within the recommended range is vital for preventing cardiovascular complications.",
+      stepsTitle: "How to Measure Systolic Blood Pressure:",
+      steps: [
+        "Use a home blood pressure monitor or visit a healthcare facility.",
+        "Ensure you are relaxed before measuring your blood pressure.",
+        "Take multiple readings and track them over time.",
+        "Consult with your healthcare provider to interpret the readings and adjust treatment.",
+      ],
+      report: "Systolic Blood Pressure Report",
+    },
+  },
+  si: {
+    buttons: {
+      language: "භාෂාව",
+      close: "වසන්න",
+    },
+    avgGlucose: {
+      title: "මධ්‍යම ග්ලූකෝස් තොරතුරු",
+      info: "ශෛලික ලේ ග්ලූකෝස් මට්ටම නිර්දේශිත පරාසය තුළ පවත්වාගෙන යාම සමස්ත සෞඛ්‍යය සඳහා මහඟු වේ. මෙය දියබීටිස් සම්බන්ධ ගැටළු, උදාහරණයක් ලෙස, සැලවේ සිටින්නන්, වෘකීය ගැටළු සහ දෘෂ්ටී ගැටළු වළක්වීමට උපකාරී වේ. නියමිත පරීක්ෂණ සහ සමතුලිත ආහාරය මධ්‍යම ග්ලූකෝස් මට්ටම ප්‍රවේශමෙන්ම පවත්වාගෙන යාමට උපකාරී වේ.",
+      stepsTitle: "මධ්‍යම ග්ලූකෝස් මට්ටම් පරික්ෂා කරන ආකාරය:",
+      steps: [
+        "ඔබේ සෞඛ්‍ය සේවා සැපයුම්කරුවා වෙත පිවිසෙන්න.",
+        "HbA1c පරීක්ෂාවක් සිදු කරන අතර, එය ඔබේ මස 2-3 කාලය පුරා සාමාන්‍ය ලේ සීනි මට්ටම පෙන්නුම් කරයි.",
+        "පරිණාමයක් ලෙස ප්‍රතිපල ලබා දිය හැකි අතර, විශ්ලේෂණය සඳහා ඔබේ වෛද්‍යවරයා සමඟ සාකච්ඡා කරන්න.",
+        "සැලකිය යුතුය, මාස 3-6 කට පරීක්ෂා කිරීම නිර්දේශිත වේ.",
+      ],
+      report: "HbA1c වාර්තාව",
+    },
+    diabetesType: {
+      title: "දියබීටිස් වර්ගය",
+      info: "දියබීටිස් වල ප්‍රධාන වශයෙන් වර්ග 3ක් ඇත: වර්ග 1, වර්ග 2, සහ ගර්භණී දියබීටිස්. වර්ග 1 දියබීටිස් යනු ආතම ප්‍රතික්‍රියාවක් වන අතර ශරීරය ඉන්සූලින් නිෂ්පාදන සෛලවලට ප‍්‍රහාර කරයි. වර්ග 2 දියබීටිස් නම් ඉන්සූලින් ප්‍රතිරෝධතාවයක් සහිතය, සහ ගර්භණී දියබීටිස් ගර්භණී කාලයේදී සිදුවේ.",
+      stepsTitle: "දියබීටිස් වර්ග හඳුනාගන්නා ආකාරය:",
+      steps: [
+        "ඔබේ වෛද්‍යවරයා සමඟ සාකච්ඡා කරන්න.",
+        "නිත්‍ය පරීක්ෂණයක් කර ඔබගේ තත්වය නිරීක්ෂණය කරන්න.",
+        "දියබීටිස් වර්ග අනුව ප්‍රතිකාර සැලසුමක් සකස් කරගෙන ක්‍රියා කරන්න.",
+      ],
+      report: "දියබීටිස් වර්ග වාර්තාව",
+    },
+    diagnosisYear: {
+      title: "නියමය වසර",
+      info: "දියබීටිස් හඳුනාගත් වසර ඔබේ සෞඛ්‍ය ගමන තේරුම් ගැනීමට අත්‍යවශ්‍ය වේ. එය රෝගයෙහි ප්‍රගතිය තත්ත්වය හා ප්‍රතිකාර සැලසුම් ක්‍රියාත්මක කිරීමේදී උදව් කරයි.",
+      stepsTitle: "නියමය වසර සොයා ගැනීම:",
+      steps: [
+        "ඔබේ වෛද්‍ය වාර්තා පරීක්ෂා කරන්න.",
+        "ඔබේ ප්‍රගතිය ට්‍රැක් කිරීම සඳහා තොරතුරු භාවිතා කරන්න.",
+        "සෞඛ්‍ය සේවා සැපයුම්කරුවා සමඟ සාකච්ඡා කරන්න.",
+      ],
+      report: "නියමය වසර වාර්තාව",
+    },
+    diastolicBp: {
+      title: "ඩයස්ටොලික් රුධිර පීඩනය",
+      info: "ඩයස්ටොලික් රුධිර පීඩනය, හදවත තදපෑම අතර ශරීරයේ මුරණ්‍යයන්හි පීඩනය මැනේ. සෞඛ්‍ය ප්‍රමිතියකට අදාළ ඩයස්ටොලික් BP පවත්වාගෙන යාම හෘද රෝග සහ තොල් වළක්වා ගැනීමට අත්‍යවශ්‍ය වේ.",
+      stepsTitle: "ඩයස්ටොලික් රුධිර පීඩනය මැනීමේ ක්‍රමය:",
+      steps: [
+        "තෝතෙල් රුධිර පීඩනය මැනීමේ උපකරණ භාවිතා කරන්න.",
+        "පැය 5 ක් පසු රුධිර පීඩනය මැනන්න.",
+        "නිත්‍යයක් ලෙස එකම කාලයේදී මැනීම කරන්න.",
+        "ඔබේ වෛද්‍යවරයා සමඟ සාකච්ඡා කරන්න.",
+      ],
+      report: "ඩයස්ටොලික් රුධිර පීඩන වාර්තාව",
+    },
+    hba1c: {
+      title: "HbA1c මට්ටම්",
+      info: "HbA1c පරීක්ෂාව මස 2-3 කාලය පුරා ඇති සාමාන්‍ය ග්ලූකෝස් මට්ටම පෙන්නුම් කරයි. මෙම පරීක්ෂණය දියබීටිස් කළමනාකරණයේ මූලික පරාමිතියක් වන අතර, රෝගය පාලනය කිරීමේ ප්‍රගතිය විග්‍රහ කිරීමේදී ප‍්‍රයෝජනවත් වේ.",
+      stepsTitle: "HbA1c පරීක්ෂා කරන ආකාරය:",
+      steps: [
+        "ඔබේ වෛද්‍යවරයා වෙත පිවිසෙන්න.",
+        "HbA1c පරීක්ෂා කරන්න.",
+        "පරීක්ෂණ ප්‍රතිඵල ප්‍රවේශමෙන් විග්‍රහ කරන්න.",
+        "ඔබේ වෛද්‍යවරයා සමඟ සාකච්ඡා කරන්න.",
+      ],
+      report: "HbA1c වාර්තාව",
+    },
+    systolicBp: {
+      title: "සයිස්ටොලික් රුධිර පීඩනය",
+      info: "සයිස්ටොලික් රුධිර පීඩනය හදවතේ තදපෑම සමයේ ශරීරයේ මුරණ්‍යයන්හි පීඩනය මැනේ. සෞඛ්‍යයට අදාළ ප්‍රමිතියකට සයිස්ටොලික් BP පවත්වාගෙන යාම හෘදයාබාධ සහ තොල් වළක්වා ගැනීමට අත්‍යවශ්‍ය වේ.",
+      stepsTitle: "සයිස්ටොලික් රුධිර පීඩනය මැනීමේ ක්‍රමය:",
+      steps: [
+        "සෞඛ්‍ය සේවා සපයන්නා වෙත හෝ රුධිර පීඩන මිනුම් යන්ත්‍රය භාවිතා කරන්න.",
+        "නිහතමානීවම පීඩනය මැනන්න.",
+        "නිත්‍යයෙන් මනන්න.",
+        "ප්‍රතිඵල විග්‍රහ කරන්න.",
+      ],
+      report: "සයිස්ටොලික් රුධිර පීඩන වාර්තාව",
+    },
+  },
+  ta: {
+    buttons: {
+      language: "மொழி",
+      close: "மூடு",
+    },
+    avgGlucose: {
+      title: "சராசரி குளுக்கோஸ் தகவல்",
+      info: "சராசரி இரத்தக் குளுக்கோஸ் மட்டத்தை பரிந்துரைக்கப்பட்ட அளவில் பராமரிப்பது உடல்நலத்திற்கு மிக முக்கியம். இது சர்க்கரை நோயுடன் தொடர்புடைய சிக்கல்களைத் தவிர்க்க உதவுகிறது, எ.கா., நரம்புகளின் பாதிப்பு, சிறுநீரக பிரச்சினைகள், மற்றும் பார்வை பிரச்சினைகள். தவறாமல் கண்காணித்தல் மற்றும் சமநிலையான உணவுப் பழக்கம் உங்களை சரியான குளுக்கோஸ் அளவில் வைத்திருப்பதற்கு உதவும்.",
+      stepsTitle: "சராசரி குளுக்கோஸ் அளவை எப்படி சரிபார்ப்பது:",
+      steps: [
+        "உங்கள் சுகாதார பராமரிப்பாளர் உடன் இரத்தப் பரிசோதனை செய்யுங்கள்.",
+        "HbA1c பரிசோதனை செய்யப்படும், இது உங்கள் கடந்த 2-3 மாத காலக்கட்டத்தின் சராசரி இரத்த சர்க்கரை அளவுகளை காட்டும்.",
+        "பரிசோதனை முடிவுகள் சதவீதத்தில் கிடைக்கும்; விளக்கம் பெற உங்கள் மருத்துவரிடம் ஆலோசிக்கவும்.",
+        "தோராயமாக 3 முதல் 6 மாதங்களுக்கு ஒரு முறை பரிசோதனை செய்ய பரிந்துரைக்கப்படுகிறது.",
+      ],
+      report: "HbA1c அறிக்கை",
+    },
+    diabetesType: {
+      title: "வகை சர்க்கரை நோய்",
+      info: "சர்க்கரை நோயின் மூன்று முக்கிய வகைகள் உள்ளன: வகை 1, வகை 2, மற்றும் கர்ப்பகால சர்க்கரை நோய். வகை 1 சர்க்கரை நோய் என்பது உடலின் எதிர்ப்பு சக்தி இன்சுலின் உற்பத்தி செல்களைக் தாக்குவதால் ஏற்படும். வகை 2 சர்க்கரை நோயில் இன்சுலின் எதிர்ப்பு காணப்படுகிறது, மற்றும் கர்ப்பகால சர்க்கரை நோய் கர்ப்பகாலத்தில் ஏற்படுகிறது.",
+      stepsTitle: "சர்க்கரை நோயின் வகைகளை புரிந்து கொள்ள:",
+      steps: [
+        "உங்கள் சுகாதார பராமரிப்பாளர் உடன் ஆலோசிக்கவும்.",
+        "நியமிக்கப்பட்ட இரத்தப் பரிசோதனைகளைப் பின்பற்றவும்.",
+        "நோய் வகையைப் பொருத்து மருத்துவத்தின் அடிப்படையில் தீர்வு பின்பற்றவும்.",
+      ],
+      report: "சர்க்கரை நோய் வகை அறிக்கை",
+    },
+    diagnosisYear: {
+      title: "நோயறிதல் ஆண்டு",
+      info: "உங்களுக்கு சர்க்கரை நோயால் பாதிக்கப்பட்ட ஆண்டைச் சரியாக அறிந்து கொள்ளுதல் முக்கியம். இது நோயின் வளர்ச்சியை கண்காணிக்க மற்றும் சிகிச்சை திட்டங்களை முன்னேற்ற உதவுகிறது.",
+      stepsTitle: "நோயறிதல் ஆண்டைப் பார்க்கும் விதம்:",
+      steps: [
+        "உங்கள் மருத்துவ பதிவுகளைப் பார்வையிடுங்கள்.",
+        "உங்கள் சிகிச்சை முன்னேற்றத்தைப் பின்தொடர இந்த தகவலைப் பயன்படுத்துங்கள்.",
+        "நோயின் மாற்றங்களை உங்கள் மருத்துவருடன் விவாதிக்கவும்.",
+      ],
+      report: "நோயறிதல் ஆண்டு அறிக்கை",
+    },
+    diastolicBp: {
+      title: "டயஸ்டாலிக் இரத்த அழுத்தம்",
+      info: "டயஸ்டாலிக் இரத்த அழுத்தம் என்பது உங்கள் இதயம் துடிப்புகளுக்கு இடையில் ஓய்வெடுக்கும் பொழுது நரம்புகளில் உள்ள அழுத்தத்தை அளக்கிறது. இதய நோய் மற்றும் ஸ்ட்ரோக் உடனான ஆபத்தை குறைக்க டயஸ்டாலிக் இரத்த அழுத்தத்தை பராமரித்தல் முக்கியம்.",
+      stepsTitle: "டயஸ்டாலிக் இரத்த அழுத்தத்தை அளக்கும் முறை:",
+      steps: [
+        "வீட்டில் அல்லது மருத்துவமனையில் இரத்த அழுத்த பரிசோதனை கருவியைப் பயன்படுத்துங்கள்.",
+        "பரிசோதனைக்கு முன் 5 நிமிடங்கள் ஓய்வெடுங்கள்.",
+        "ஒவ்வொரு நாளும் ஒரே நேரத்தில் அளவிடுங்கள்.",
+        "இரத்த அழுத்த அளவீட்டினைப் பதிவு செய்து உங்கள் சுகாதார பராமரிப்பாளரிடம் ஆலோசனை பெறுங்கள்.",
+      ],
+      report: "டயஸ்டாலிக் இரத்த அழுத்த அறிக்கை",
+    },
+    hba1c: {
+      title: "HbA1c அளவுகள்",
+      info: "HbA1c என்பது கடந்த 2-3 மாதங்களில் உங்கள் சராசரி இரத்தக் குளுக்கோஸ் அளவைக் காட்டுகிறது. இது சர்க்கரை நோயின் மேலாண்மைக்கு முக்கிய குறியீடாக உள்ளது, உங்கள் இரத்த சர்க்கரை அளவுகளை எப்படி மேலாண்மை செய்கிறீர்கள் என்பதை மதிப்பீடு செய்ய உதவுகிறது.",
+      stepsTitle: "HbA1c அளவுகளை எப்படி பரிசோதிப்பது:",
+      steps: [
+        "உங்கள் சுகாதார பராமரிப்பாளர் உடன் இரத்தப் பரிசோதனை செய்யுங்கள்.",
+        "HbA1c பரிசோதனைகள் பொதுவாக 3 முதல் 6 மாதங்களுக்கு ஒரு முறை செய்யப்படுகிறது.",
+        "இந்த பரிசோதனை முடிவுகள் கடந்த சில மாதங்களின் சராசரி குளுக்கோஸ் அளவுகளை காட்டும்.",
+        "உங்கள் மருத்துவருடன் முடிவுகளை விவாதிக்கவும்.",
+      ],
+      report: "HbA1c அறிக்கை",
+    },
+    systolicBp: {
+      title: "சிஸ்டாலிக் இரத்த அழுத்தம்",
+      info: "சிஸ்டாலிக் இரத்த அழுத்தம் என்பது உங்கள் இதயம் துடிக்கும் பொழுது நரம்புகளில் உள்ள அழுத்தத்தை அளக்கிறது. இதய நோய் மற்றும் இதர இதய நோய் பிரச்சினைகளைத் தவிர்க்க சிஸ்டாலிக் இரத்த அழுத்தத்தை பராமரிப்பது முக்கியம்.",
+      stepsTitle: "சிஸ்டாலிக் இரத்த அழுத்தத்தை அளக்கும் முறை:",
+      steps: [
+        "வீட்டில் இரத்த அழுத்தம் பரிசோதனை கருவியை அல்லது மருத்துவமனைக்குச் சென்று பரிசோதியுங்கள்.",
+        "அளவீட்டிற்கு முன் மனஅழுத்தம் இல்லாமல் இருங்கள்.",
+        "மீண்டும் மீண்டும் அளவிடுங்கள் மற்றும் அவற்றைப் பதிவுசெய்யுங்கள்.",
+        "உங்கள் சுகாதார பராமரிப்பாளருடன் ஆலோசித்து அளவீட்டைப் பயன்படுத்தி சிகிச்சையை மாற்றிக்கொள்ளுங்கள்.",
+      ],
+      report: "சிஸ்டாலிக் இரத்த அழுத்த அறிக்கை",
+    },
+  },
+};

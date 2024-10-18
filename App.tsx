@@ -8,7 +8,6 @@ const App = () => {
   const [selectedTime, setSelectedTime] = useState(null);
 
   useEffect(() => {
-
     const requestPermissions = async () => {
       const { status } = await Notifications.requestPermissionsAsync();
       if (status !== "granted") {
@@ -29,9 +28,8 @@ const App = () => {
   }, []);
 
   const scheduleNotification = async (hours, minutes) => {
-
-    console.log("hey ")
-    console.log(hours, minutes)
+    console.log("hey ");
+    console.log(hours, minutes);
     const trigger = {
       hour: hours,
       minute: minutes,

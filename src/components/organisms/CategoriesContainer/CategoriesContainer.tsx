@@ -33,15 +33,6 @@ const cards: CategoriesCardType[] = [
     backgroundColor: "#FFBF9B",
   },
 
-
-
-
-
-
-
-
-
-
   {
     title: "Check Diabetes",
     description: "Check your vision and complete the task.",
@@ -106,7 +97,7 @@ const CategoriesContainer = () => {
         }}
       >
         <ScrollView
-          
+
         // showsVerticalScrollIndicator={true}
         // scrollEnabled
         // alwaysBounceVertical

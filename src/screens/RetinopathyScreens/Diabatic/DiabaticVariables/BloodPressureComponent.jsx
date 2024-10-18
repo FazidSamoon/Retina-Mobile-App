@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Animated,
+  Image,
   ScrollView, // Import ScrollView
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -64,18 +65,16 @@ const BloodPressureComponent = () => {
               onPress={() => setModalVisible(false)}
               style={styles.closeButton}
             >
-              <Ionicons name="close-circle" size={28} color="#FF5252" />
+     <Ionicons name="close-circle" size={28} color="#FF5252" />
             </TouchableOpacity>
           </View>
 
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.infoContainer}>
-              <Ionicons
-                name="water-outline"
-                size={50}
-                color="#4CAF50"
-                style={styles.infoIcon}
-              />
+            <Image
+            source={require("../../../../assets/RetinoImages/20.png")} // Replace with your GIF path or URL
+            style={styles.gifImage}
+          />
               <Text style={styles.infoText}>
                 {translations[language].bloodPressure.info}
               </Text>
