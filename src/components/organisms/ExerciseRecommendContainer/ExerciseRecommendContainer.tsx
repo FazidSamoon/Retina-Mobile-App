@@ -117,28 +117,22 @@ const ExerciseRecommendContainer = () => {
         </View>
         <Text style={styles.text}>Recommended Exercises</Text>
         <View style={styles.card}>
-          <TouchableOpacity
+          <Text
+            style={styles.myInfoTouchable}
             onPress={() => {
               setMyInfoModal(true);
             }}
           >
-            <Text
-              style={{
-                color: "blue",
-                alignSelf: "flex-end",
-                paddingTop: 10,
-                paddingEnd: 20,
-              }}
-            >
-              My Info
-            </Text>
-          </TouchableOpacity>
+            My Info
+          </Text>
+
           <View style={styles.list}>
             {exercises.map((exercise, index) => (
               <Text key={index}>{exercise}</Text>
             ))}
           </View>
         </View>
+
         <RPPrimaryButton
           buttonType={ButtonType.PRIMARY}
           buttonTitle={"Log Exercise"}
@@ -261,6 +255,7 @@ const ExerciseRecommendContainer = () => {
           value={exerciseFormik.values.exerciseTime}
           labelStyles={styles.labelStyle}
           inputStyle={RPSInputFieldStyle.OUTLINED}
+          inputTextStyles={styles.inputTextStyles}
           inputContainerStyle={{
             backgroundColor: "white",
             borderWidth: 1,
@@ -314,7 +309,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexDirection: "column",
-    paddingVertical: 10,
+    marginBottom: 20,
     paddingHorizontal: 40,
     gap: 10,
   },
@@ -343,5 +338,12 @@ const styles = StyleSheet.create({
   inputTextStyles: {
     color: BASIC_COLORS.FONT_PRIMARY,
     fontWeight: "400",
+  },
+  myInfoTouchable: {
+    color: "blue",
+    alignSelf: "flex-end",
+    paddingTop: 10,
+    paddingEnd: 20,
+    fontWeight: "700",
   },
 });
