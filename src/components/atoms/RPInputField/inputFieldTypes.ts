@@ -12,6 +12,7 @@ export type RPSInputFieldProps = {
   secureTextEntry?: boolean;
   labelStyles?: any;
   inputTextStyles?: any;
+  keyboardType?: any;
 };
 
 export enum RPSInputFieldStyle {

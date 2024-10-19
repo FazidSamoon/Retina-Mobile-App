@@ -9,6 +9,7 @@ const RPPrimaryButton = ({
   buttonType = ButtonType.PRIMARY,
   buttonStyle,
   buttonContainerStyle,
+  buttonTextStyle,
   onPress,
   loading,
   icon,
@@ -27,6 +28,7 @@ const RPPrimaryButton = ({
               ? BASIC_COLORS.PRIMARY
               : BASIC_COLORS.ERROR,
           fontSize: 15,
+          ...buttonTextStyle,
         }}
         style={{}}
         buttonStyle={{

@@ -17,6 +17,7 @@ const RPInputField = ({
   secureTextEntry,
   labelStyles,
   inputTextStyles,
+  keyboardType,
 }: RPSInputFieldProps) => {
   return (
     <View>
@@ -62,6 +63,7 @@ const RPInputField = ({
           editable={editable}
           value={value}
           secureTextEntry={secureTextEntry}
+          keyboardType={keyboardType}
         />
 
         {icon && icon}

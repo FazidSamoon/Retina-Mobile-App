@@ -11,6 +11,7 @@ type RPPickerInputProps = {
   options: { label: string; value: string }[];
   pickerStyle?: object;
   error?: string;
+  labelStyle?: object;
 };
 
 const RPPickerInput = ({
@@ -20,13 +21,14 @@ const RPPickerInput = ({
   options,
   pickerStyle,
   error,
+  labelStyle,
 }: RPPickerInputProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
     <View style={styles.container}>
       {/* Label */}
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
 
       {/* Dropdown Container */}
       <Dropdown
