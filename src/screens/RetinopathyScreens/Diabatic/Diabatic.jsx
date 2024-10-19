@@ -15,6 +15,7 @@ import {
   Modal,
   TouchableOpacity,
   Pressable,
+  Vibration,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -181,6 +182,8 @@ export default function Diabatic({ navigation }) {
   };
 
   const handleSubmit = async () => {
+    Vibration.vibrate();
+    console.log('Vibration triggered!');    
     if (!validateForm()) {
       return;
     }

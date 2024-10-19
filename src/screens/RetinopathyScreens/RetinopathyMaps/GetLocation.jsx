@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-//import * as Location from 'expo-location';
+import * as Location from 'expo-location';
 
 const GetLocation = ({ onLocationFound }) => {
   const [location, setLocation] = useState(null);

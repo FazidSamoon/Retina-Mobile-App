@@ -71,10 +71,10 @@ const DiastolicBp = () => {
 
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.infoContainer}>
-            <Image
-            source={require("../../../../assets/Retinoimages/20.png")} // Replace with your GIF path or URL
+            {/* <Image
+            source={require("../../../../assets/Retinoimages/14.png")} // Replace with your GIF path or URL
             style={styles.gifImage}
-          />
+          /> */}
               <Text style={styles.infoText}>
                 {translations[language].diastolicBp.info}
               </Text>

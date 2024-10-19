@@ -38,6 +38,7 @@ import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/Di
 import InsulinComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/InsulinComponent";
 import SkinThicknessComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/SkinThicknessComponent";
 import RetinClinicLo from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
+import Survay from "../../screens/RetinopathyScreens/Survay/Survay";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -134,6 +135,7 @@ const index = () => {
         <DrawerNav.Screen name="DiastolicBp" component={DiastolicBp} />
         <DrawerNav.Screen name="Hba1c" component={Hba1c} />
         <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
+        <DrawerNav.Screen name="Survay" component={Survay} />
 
         <DrawerNav.Screen
           name="GlucoseComponent"

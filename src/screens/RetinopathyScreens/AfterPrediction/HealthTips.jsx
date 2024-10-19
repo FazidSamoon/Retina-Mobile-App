@@ -13,7 +13,7 @@ export default function HealthTips({ navigation }) {
   return (
     <>
     
-              <RetinopathyHomeScreenTopAppBar header={"Check For Retinopathy"} />
+              <RetinopathyHomeScreenTopAppBar header={"LifeBoost Tips"} />
 
     <ScrollView style={styles.container}>
       {/* Header Section */}

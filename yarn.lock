@@ -6986,6 +6986,11 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
+react-native-maps-osmdroid@^0.26.1-rc1:
+  version "0.26.1-rc1"
+  resolved "https://registry.yarnpkg.com/react-native-maps-osmdroid/-/react-native-maps-osmdroid-0.26.1-rc1.tgz#22414d6f1b057cedba786ba83cd1a0e8ee1e8c86"
+  integrity sha512-B2a23lDl/oE8UzdMB5tveBUjU7beiGvGutu/nWSAvr9C6f9qie7tTFJ9tCOTPXYtbGTP0hWH37FzPNtD/KXgtg==
+
 react-native-maps@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.10.0.tgz#1b78270473f4caadc5ff8e8400285b6db9f14e12"

@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Modal,
   ScrollView,
+  Vibration,
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -189,6 +190,8 @@ export default function Retinopathy() {
   };
 
   const handlePrediction = async () => {
+    Vibration.vibrate();
+    console.log('Vibration triggered!');  
     if (!isFormValid) {
       Alert.alert("Form Error", "Please correct the errors in the form.");
       return;

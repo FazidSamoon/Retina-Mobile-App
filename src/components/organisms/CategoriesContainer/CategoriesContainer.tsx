@@ -66,7 +66,7 @@ const cards: CategoriesCardType[] = [
     title: "Survay",
     description: "Do some eye exercise to improve your vision.",
     imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "EyeExercisiseHome",
+    ontapLink: "Survay",
     backgroundColor: "#AAF0D1",
   },
   {

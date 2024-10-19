@@ -30,89 +30,96 @@ export default function RetinopathyResult({ route, navigation }) {
     ? require("../../../assets/negative.gif") // Path to high-risk gif
     : require("../../../assets/positive.gif"); // Path to low-risk gif
 
+  const predictionText = isPositive
+    ? "There Is a Risk Of Eye Blindness."
+    : "No Risk Of Eye Blindness";
+  const predictionTextColor = isPositive ? "red" : "green";
   return (
-
     <>
-          <RetinopathyHomeScreenTopAppBar header={"Review Summary "} />
+      <RetinopathyHomeScreenTopAppBar header={"Review Summary"} />
 
-    <ScrollView contentContainerStyle={styles.container}>
-      <ScrollView>
-        <View style={styles.container}>
-        
+      <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.predictionSection}>
+              {/* Display the appropriate gif based on the prediction */}
+              <Image source={riskGif} style={styles.gifImage} />
 
-          <View style={styles.predictionSection}>
-            {/* Display the prediction, isPositive, and speedometerValue */}
-            <Text style={styles.predictionText}>Prediction: {prediction}</Text>
-            {/* Display the appropriate gif based on the prediction */}
-            <Image source={riskGif} style={styles.gifImage} />
-          </View>
+              {/* Display the prediction message */}
+              <Text
+                style={[styles.predictionText, { color: predictionTextColor }]}
+              >
+                {predictionText}
+              </Text>
+            </View>
 
-          <View style={styles.hr} />
+            <Text style={styles.predictionText}>Summary</Text>
+            <View style={styles.hr} />
 
-          <View style={styles.pricingSection}>
-            {responseData && (
-              <View style={styles.responseDataContainer}>
-                {Object.entries(responseData).map(([key, value]) => (
-                  <View
-                    key={key}
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: 5,
-                    }}
-                  >
-                    <Text style={styles.pricingText}>{key}:</Text>
-                    <Text style={styles.price}>
-                      {Array.isArray(value) ? value[0] : value}
-                    </Text>
-                  </View>
-                ))}
+            <View style={styles.pricingSection}>
+              {responseData && (
+                <View style={styles.responseDataContainer}>
+                  {Object.entries(responseData).map(([key, value]) => (
+                    <View
+                      key={key}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 5,
+                      }}
+                    >
+                      <Text style={styles.pricingText}>{key}:</Text>
+                      <Text style={styles.price}>
+                        {Array.isArray(value) ? value[0] : value}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              <View style={styles.hr} />
+            </View>
+
+            {isPositive ? (
+              <View style={styles.paymentSection}>
+                <View style={styles.paymentIconSection}>
+                  <FontAwesome name="map-signs" size={18} color="#007bff" />
+                  <Text style={styles.paymentText}>Locations</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Locations")}
+                >
+                  <Text style={styles.changeText}>View Nearest Clinical</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.paymentSection}>
+                <View style={styles.paymentIconSection}>
+                  <FontAwesome name="fort-awesome" size={18} color="#007bff" />
+                  <Text style={styles.paymentText}>HealthTips</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("HealthTips")}
+                >
+                  <Text style={styles.changeText}>View Health Tips</Text>
+                </TouchableOpacity>
               </View>
             )}
 
-            <View style={styles.hr} />
-          </View>
-
-          {isPositive ? (
             <View style={styles.paymentSection}>
               <View style={styles.paymentIconSection}>
-                <FontAwesome name="map-signs" size={18} color="#007bff" />
-                <Text style={styles.paymentText}>Locations</Text>
+                <FontAwesome name="forward" size={18} color="#007bff" />
+                <Text style={styles.paymentText}>Next screen</Text>
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Locations")}
+                onPress={() => navigation.navigate("NextScreeningInterval")}
               >
-                <Text style={styles.changeText}>View Nearest Clinical</Text>
+                <Text style={styles.changeText}>View Next Screening</Text>
               </TouchableOpacity>
             </View>
-          ) : (
-            <View style={styles.paymentSection}>
-              <View style={styles.paymentIconSection}>
-                <FontAwesome name="fort-awesome" size={18} color="#007bff" />
-                <Text style={styles.paymentText}>HealthTips</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("HealthTips")}
-              >
-                <Text style={styles.changeText}>View Health Tips</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          <View style={styles.paymentSection}>
-            <View style={styles.paymentIconSection}>
-              <FontAwesome name="forward" size={18} color="#007bff" />
-              <Text style={styles.paymentText}>Next screen</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("NextScreeningInterval")}
-            >
-              <Text style={styles.changeText}>View Next Screening</Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </ScrollView>
-    </ScrollView>
     </>
   );
 }
@@ -143,8 +150,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   gifImage: {
-    width: 200, // Adjust size as needed
-    height: 200,
+    width: 250, // Adjust size as needed
+    height: 250,
     resizeMode: "contain",
     marginTop: 20,
   },
