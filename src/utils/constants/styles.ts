@@ -8,4 +8,6 @@ export const BASIC_COLORS = {
   ERROR: "#FF0000",
   DESCRIPTION: "#342F2F",
   LIGHT_GRAY: "#D3D3D3",
+  LIGHT_BLUE: "#88cafc",
+  BLACK: "#000000",
 };

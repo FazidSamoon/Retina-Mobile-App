@@ -67,3 +67,21 @@ export const mealFormValidationSchema = Yup.object().shape({
   mealType: Yup.string().required("Please select a meal type"),
   exerciseLevel: Yup.string().required("Please select your exercise level"),
 });
+
+export const exerciseValidationSchema = Yup.object().shape({
+  exerciseName: Yup.string().required("Exercise is required"),
+  exerciseTime: Yup.string()
+    .required("Time is required")
+    .matches(/^\d+$/, "Time must be a valid number"),
+});
+
+export const myInfoValidationSchema = Yup.object().shape({
+  retinopathy: Yup.string().required("This field is required"),
+  age: Yup.number()
+    .required("Age is required")
+    .min(1, "Age must be at least 1")
+    .max(120, "Age must be less than or equal to 120")
+    .typeError("Age must be a number"),
+  heartProblems: Yup.string().required("Heart Problems is required"),
+  bloodPressure: Yup.string().required("Blood Pressure is required"),
+});
