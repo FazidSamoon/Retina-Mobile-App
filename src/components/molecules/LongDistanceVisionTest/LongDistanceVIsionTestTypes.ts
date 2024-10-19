@@ -1,16 +1,23 @@
 export enum LongDIstanceVisionTestSteps {
   FAILED = "FAILED",
   PASSED = "PASSED",
-  SIZE_202_6 = "SIZE_202_6",
-  SIZE_173_3 = "SIZE_173_3",
-  SIZE_144 = "SIZE_144",
-  SIZE_116 = "SIZE_116",
-  SIZE_86_6 = "SIZE_86_6",
-  SIZE_57_3 = "SIZE_57_3",
-  SIZE_44 = "SIZE_44",
-  SIZE_28 = "SIZE_28",
-  SIZE_20 = "SIZE_20",
-  SIZE_12 = "SIZE_12",
+  SIZE_202_6 = "SIZE_202_6", //152pt
+  SIZE_173_3 = "SIZE_173_3", //130pt
+  SIZE_144 = "SIZE_144", //108pt
+  SIZE_116 = "SIZE_116", //87pt
+  SIZE_86_6 = "SIZE_86_6", //65pt
+  SIZE_57_3 = "SIZE_57_3", //43pt
+  SIZE_44 = "SIZE_44", //33pt
+  SIZE_28 = "SIZE_28", //21pt
+  SIZE_20 = "SIZE_20", //15pt
+  SIZE_12 = "SIZE_12", //9pt
+}
+
+export enum PersonalizedDistance {
+  ONEMETER = 1,
+  POINTFIMEMETER = 0.5,
+  TWOMETER = 2,
+  FOURMETER = 4,
 }
 
 export enum ResultStatus {
@@ -23,6 +30,7 @@ export type VisionTestStateType = {
   week: number;
   year: number;
   testCompleted: boolean;
+  testType: string;
   testResults: {
     leftEye: {
       result: {
@@ -55,4 +63,17 @@ export type VisionTestStateType = {
       status: string;
     };
   };
+};
+
+export type Results = {
+  [key: string]: number;
+};
+
+export type UserLevelResponseType = {
+  _id: string;
+  user: string;
+  year: number;
+  level: number;
+  xpGained: number;
+  maxXpPerLevel: number;
 };

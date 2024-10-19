@@ -11,9 +11,10 @@ export type RPSInputFieldProps = {
   editable?: boolean;
   secureTextEntry?: boolean;
   labelStyles?: any;
+  inputTextStyles?: any;
 };
 
 export enum RPSInputFieldStyle {
-    OUTLINED = "outlined",
-    ERROR = "error",
-};
+  OUTLINED = "outlined",
+  ERROR = "error",
+}

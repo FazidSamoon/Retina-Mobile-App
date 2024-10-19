@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { ScrollView, StyleSheet, Text, View, Button } from "react-native";
+import React, { useState } from "react";
 import Header from "../../../components/molecules/Header/Header";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Greetings from "../../../components/molecules/Greetings/Greetings";

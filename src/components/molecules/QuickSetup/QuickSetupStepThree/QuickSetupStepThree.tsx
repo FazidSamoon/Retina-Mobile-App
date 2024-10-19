@@ -1,16 +1,30 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { MutableRefObject, useRef, useState } from "react";
 import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { BASIC_COLORS } from "../../../../utils/constants/styles";
+import { RegisterUserRequest } from "../../../../utils/types/commonTypes";
 
 const QuickSetupStepThree = ({
   setStep,
+  setRegistrationData,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegisterUserRequest>
+  >;
 }) => {
+  const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const onNextButtonPressed = () => {
+    setRegistrationData((prev) => ({
+      ...prev,
+      dateOfBirth: dateOfBirth,
+    }));
     setStep(4);
   };
+
+  console.log(dateOfBirth);
   return (
     <View
       style={{
@@ -35,7 +49,7 @@ const QuickSetupStepThree = ({
             marginBottom: 10,
           }}
         >
-          Tell Us About Yourelf!
+          Date of Birth?
         </Text>
         <Text
           style={{
@@ -45,12 +59,73 @@ const QuickSetupStepThree = ({
             maxWidth: 300,
           }}
         >
-          To give you a better experience we need to know your gender
+          This helps us create your personalized plan
         </Text>
       </View>
 
       <View>
-        <RNDateTimePicker value={new Date()} />
+        <Pressable
+          onPress={() => setShowDatePicker(true)}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            borderTopColor: BASIC_COLORS.PRIMARY,
+            borderTopWidth: 1,
+            borderBottomColor: BASIC_COLORS.PRIMARY,
+            borderBottomWidth: 1,
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              marginBottom: 10,
+              color: BASIC_COLORS.PRIMARY,
+            }}
+          >
+            {dateOfBirth.getFullYear()}
+          </Text>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              marginBottom: 10,
+              color: BASIC_COLORS.PRIMARY,
+            }}
+          >
+            {dateOfBirth.getMonth()}
+          </Text>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              marginBottom: 10,
+              color: BASIC_COLORS.PRIMARY,
+            }}
+          >
+            {dateOfBirth.getDate()}
+          </Text>
+        </Pressable>
+
+        {showDatePicker && (
+          <RNDateTimePicker
+            value={new Date()}
+            mode="date"
+            display="inline"
+            onChange={(event, selectedDate) => {
+              if (event.type === "set") {
+                setShowDatePicker(false);
+                setDateOfBirth(selectedDate);
+              }
+            }}
+            style={{
+              backgroundColor: "white",
+              width: "100%",
+              height: 200,
+            }}
+          />
+        )}
       </View>
 
       <View>

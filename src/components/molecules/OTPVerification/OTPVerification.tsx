@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import OTPTextView from "react-native-otp-textinput";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
+import { useDispatch } from "react-redux";
+import { setVerificationCode } from "../../../store/slices/authSlice";
 
 const OTPVerification = ({
   onOTPVerificationModalButtonPress,
 }: {
   onOTPVerificationModalButtonPress: () => void;
 }) => {
+  const dispatch = useDispatch();
+  const [verification, setVerification] = useState<string>("");
   return (
     <View style={styles.container}>
       <View>
@@ -24,7 +28,7 @@ const OTPVerification = ({
           </Text>
         </Text>
         <OTPTextView
-          handleTextChange={(e) => console.log(e)}
+          handleTextChange={(e) => setVerification(e)}
           containerStyle={{
             marginTop: 20,
           }}
@@ -34,13 +38,13 @@ const OTPVerification = ({
             borderColor: "red",
             height: 50,
           }}
-          inputCount={4}
-          keyboardType="numeric"
+          inputCount={6}
+          keyboardType="default"
           tintColor={BASIC_COLORS.PRIMARY}
         />
         <View style={styles.resendTextContainer}>
-            <Text>Didn't receive OTP?</Text>
-            <Text style={styles.resendOtpText}>Resend OTP</Text>
+          <Text>Didn't receive OTP?</Text>
+          <Text style={styles.resendOtpText}>Resend OTP</Text>
         </View>
       </View>
       <View
@@ -53,7 +57,11 @@ const OTPVerification = ({
           buttonStyle={{
             borderRadius: 30,
           }}
-          onPress={onOTPVerificationModalButtonPress}
+          onPress={() => {
+            dispatch(setVerificationCode(verification));
+            onOTPVerificationModalButtonPress();
+          }}
+          disabled={!verification || verification === ""}
         />
       </View>
     </View>
@@ -81,12 +89,12 @@ const styles = StyleSheet.create({
   resendOtpText: {
     fontSize: 12.5,
     lineHeight: 24,
-    textDecorationLine: 'underline'
+    textDecorationLine: "underline",
   },
   resendTextContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: 10
-  }
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 10,
+  },
 });

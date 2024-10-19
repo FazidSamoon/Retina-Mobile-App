@@ -1,6 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { Genders } from "../../../../utils/types/commonTypes";
+import {
+  Genders,
+  RegisterUserRequest,
+} from "../../../../utils/types/commonTypes";
 import { BASIC_COLORS } from "../../../../utils/constants/styles";
 import FemaleIcon from "../../../../assets/FemaleIcon";
 import MaleIcon from "../../../../assets/MaleIcon";
@@ -8,13 +11,21 @@ import RPPrimaryButton from "../../../atoms/RPPrimaryButton/RPPrimaryButton";
 
 const QuickSetupStepOne = ({
   setStep,
+  setRegistrationData,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegisterUserRequest>
+  >;
 }) => {
   const [selected, setSelected] = useState<Genders>(null);
 
   const onNextButtonPressed = () => {
     if (selected) {
+      setRegistrationData((prev) => ({
+        ...prev,
+        gender: selected,
+      }));
       setStep(2);
     }
   };
@@ -139,7 +150,7 @@ const QuickSetupStepOne = ({
           onPress={onNextButtonPressed}
           buttonStyle={{
             borderRadius: 30,
-            borderColor: selected ? BASIC_COLORS.PRIMARY : "#E6E6E6" ,
+            borderColor: selected ? BASIC_COLORS.PRIMARY : "#E6E6E6",
           }}
         />
       </View>

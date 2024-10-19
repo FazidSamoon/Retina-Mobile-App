@@ -1,11 +1,21 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Dimensions,
+  Modal,
+} from "react-native";
+import React, { useState } from "react";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
   VisionTestFlows,
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
-
+import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
+import * as Animatable from "react-native-animatable";
+import Doctor1 from "../../../assets/doctorMain.png";
 const LongDistanceFlowSelector = ({
   setSelectedFlow,
   setSteps,
@@ -14,6 +24,7 @@ const LongDistanceFlowSelector = ({
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
 }) => {
   const [selected, setSelected] = React.useState<number>(-1);
+  const [modalVisible, setModalVisible] = useState(true);
   const onPress = (index: number) => {
     setSelected(index);
     setSelectedFlow(
@@ -21,7 +32,11 @@ const LongDistanceFlowSelector = ({
         ? VisionTestFlowsActions.PERFORM_BY_MYSELF
         : VisionTestFlowsActions.PERFORM_WITH_HELP
     );
-    setSteps(VisionTestFlows.TEST_INSTRUCTIONS);
+    if (index === 0) setSteps(VisionTestFlows.TEST_TYPE_SELECTOR);
+    else setSteps(VisionTestFlows.TEST_INSTRUCTIONS);
+  };
+  const handleCloseModal = () => {
+    setModalVisible(false);
   };
   return (
     <View style={styles.container}>
@@ -68,6 +83,31 @@ const LongDistanceFlowSelector = ({
           Perform with Someonces Guidence
         </Text>
       </View>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={handleCloseModal}
+        >
+          <View style={styles.modalContent}>
+            <SpeechBubble
+              message="You can perform by your self or with someone elses help!"
+              position="left"
+            />
+            <Animatable.Image
+              animation="bounceIn"
+              duration={1500}
+              source={Doctor1}
+              style={styles.doctorImage}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -107,5 +147,30 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#002055",
     marginTop: 20,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    height: 600,
+    borderRadius: 10,
+    alignItems: "center",
+    // backgroundColor: "#fff",
+  },
+  doctorImage: {
+    width: 300,
+    height: 500,
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginVertical: 10,
+    color: "#333",
   },
 });

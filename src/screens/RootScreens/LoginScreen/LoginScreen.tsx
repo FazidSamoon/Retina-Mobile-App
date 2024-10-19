@@ -1,8 +1,7 @@
 import {
-  Button,
-  Pressable,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -16,15 +15,23 @@ import { Feather } from "@expo/vector-icons";
 import ForgotPassword from "../../../components/molecules/ForgotPassword/ForgotPassword";
 import OTPVerification from "../../../components/molecules/OTPVerification/OTPVerification";
 import ResetPassword from "../../../components/molecules/ResetPassword/ResetPassword";
-import DatePicker from "react-native-date-picker";
 import { useNavigation } from "@react-navigation/native";
+import { useFormik } from "formik";
+import { loginValidationSchema } from "../../../utils/validations";
+import { loginUser } from "../../../api/auth";
+import {
+  setDataToAsyncStorage,
+} from "../../../utils/common/commonUtil";
+import { useDispatch } from "react-redux";
+import { setAuthenticated } from "../../../store/slices/authSlice";
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [bottomSheetType, setBottomSheetType] =
     useState<LoginScreenBottomSheetTypes>(LoginScreenBottomSheetTypes.NONE);
 
-    const navigation = useNavigation<any>();
+  const navigation = useNavigation<any>();
   const onForgotPasswordModalButtonPress = () => {
     setBottomSheetVisible(true);
     setBottomSheetType(
@@ -43,6 +50,44 @@ const LoginScreen = () => {
     setBottomSheetVisible(false);
     setBottomSheetType(LoginScreenBottomSheetTypes.NONE);
   };
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const onSubmit = async (values: any) => {
+    const { apiSuccess, apiError }: any = await loginUser({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (apiSuccess) {
+      await setDataToAsyncStorage("user", apiSuccess);
+      dispatch(setAuthenticated(true));
+    } else {
+      showToastWithGravityAndOffset("Invalid email or password");
+    }
+  };
+
+  const showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
+  };
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validateOnChange: true,
+    validationSchema: loginValidationSchema,
+  });
+
+  const { values, handleChange, handleSubmit } = formik;
 
   return (
     <View>
@@ -73,21 +118,28 @@ const LoginScreen = () => {
           <RPInputField
             inputLabel={"Email Address"}
             inputPlaceholder={"example@gmail.com"}
-            onChangeText={undefined}
-            value={""}
+            onChangeText={(e) => {
+              formik.setFieldValue("email", e);
+            }}
+            value={values.email}
             inputContainerStyle={{
               backgroundColor: "#F4F6F9",
             }}
+            error={formik.errors.email ? true : false}
+            errorMessage={formik.errors.email as string}
           />
           <RPInputField
             inputLabel={"Password"}
             inputPlaceholder={"********"}
-            onChangeText={undefined}
-            value={""}
+            onChangeText={(e) => {
+              formik.setFieldValue("password", e);
+            }}
+            value={values.password}
             secureTextEntry={true}
             inputContainerStyle={{
               backgroundColor: "#F4F6F9",
             }}
+            error={formik.errors.password ? true : false}
           />
           <View>
             <Text
@@ -113,9 +165,7 @@ const LoginScreen = () => {
           }}
         >
           <RPPrimaryButton
-            onPress={() => {
-              navigation.navigate("HomeScreen");
-            }}
+            onPress={handleSubmit}
             buttonTitle={"Sign In"}
             buttonStyle={{ borderRadius: 30 }}
           />

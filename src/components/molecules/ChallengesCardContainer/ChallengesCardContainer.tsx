@@ -1,10 +1,44 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import WeeklyChallengesCard from "./WeeklyChallengesCard";
 import MonthlyChallengesCard from "./MonthlyChallengesCard";
+import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
+import {
+  UserType,
+  VisionTestChallenge,
+  VisionTestChallengesResponse,
+} from "../../../utils/types/commonTypes";
+import {
+  checkChallangesAvailability,
+  getMonthlyChallanges,
+} from "../../../api/challanges";
+import { useDispatch } from "react-redux";
+import { setChallenges } from "../../../store/slices/visionTestChallengesSlice";
 
 const ChallengesCardContainer = () => {
+  const dispatch = useDispatch();
+  const [user, setUser] = useState<UserType>();
+  const [challanges, setChallanges] = useState<VisionTestChallenge[]>([]);
+  const getUser = async () => {
+    const userObj = await getDataFromAsyncStorage("user");
+    setUser(userObj);
+
+    if (userObj) {
+      await checkChallangesAvailability(userObj.data?.otherDetails?._id);
+      const { apiError, apiSuccess } = await getMonthlyChallanges(
+        userObj.data?.otherDetails?._id
+      );
+      if (apiSuccess) {
+        dispatch(setChallenges(apiSuccess.data));
+        setChallanges(apiSuccess.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    void getUser();
+  }, []);
   return (
     <View
       style={{
@@ -20,8 +54,8 @@ const ChallengesCardContainer = () => {
           height: "auto",
         }}
       >
-        <WeeklyChallengesCard />
-        <MonthlyChallengesCard />
+        <WeeklyChallengesCard user={user} challanges={challanges} />
+        {/* <MonthlyChallengesCard /> */}
       </ScrollView>
     </View>
   );

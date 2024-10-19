@@ -6,7 +6,7 @@ export const weeklyTests = [
         objective:
           "Evaluate the user's ability to distinguish between light and dark contrasts.",
         mission: "Identify the faintest contrast lines in the provided images.",
-        test_type: "Contrast Sensitivity Test",
+        test_type: "ContrastSensitivityTest",
       },
       {
         objective:
@@ -26,7 +26,7 @@ export const weeklyTests = [
         objective: "Assess the user's visual acuity at short distances.",
         mission:
           "Read the smallest letters or characters presented on the screen from a distance of 14 inches (35 centimeters).",
-        test_type: "Short Distance Acuity Test",
+        test_type: "ShortDistanceAcuityTest",
       },
       {
         objective: "Assess the user's visual acuity at long distances.",

@@ -4,27 +4,45 @@ import * as Brightness from "expo-brightness";
 import { getCurrentWeek } from "../../../utils/common/commonUtil";
 import {
   LongDIstanceVisionTestSteps,
+  PersonalizedDistance,
   ResultStatus,
   VisionTestStateType,
 } from "./LongDistanceVIsionTestTypes";
-import { VisionTestLetters } from "../../../utils/types/data";
+import {
+  VisionTestLetters,
+  VisionTestNumbers,
+} from "../../../utils/types/data";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import Voice from "@react-native-voice/voice";
-import SoundWave from "../../atoms/SoundWave/SoundWave";
-import { identifiyLetters } from "../../../utils/common/speechIdentification";
+import {
+  getNextTextSize,
+  identifiyLetters,
+  identifyNumbers,
+} from "../../../utils/common/speechIdentification";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
+  TestTypes,
   VisionTestFlows,
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
+import ForwardArrowHead from "../../../assets/ForwardArrowHead";
+import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 
 const LongDinstanceVisionTest = ({
   selectedFlow,
   setSteps,
+  setResults,
+  testType,
+  personalizedTestSize,
+  personalizedDistance
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
+  setResults: React.Dispatch<React.SetStateAction<VisionTestStateType>>;
+  personalizedTestSize: LongDIstanceVisionTestSteps;
+  testType: TestTypes;
+  personalizedDistance: PersonalizedDistance;
 }) => {
   const [startedListning, setStartedListning] = useState<boolean>(false);
   const [letterRecognitionResult, setLetterRecognitionResult] = useState([]);
@@ -34,6 +52,7 @@ const LongDinstanceVisionTest = ({
       week: getCurrentWeek(),
       year: new Date().getFullYear(),
       testCompleted: false,
+      testType: "LONG_DISTANCE",
       testResults: {
         leftEye: {
           result: {
@@ -69,9 +88,8 @@ const LongDinstanceVisionTest = ({
     }
   );
 
-  const [currentStep, setCurrentStep] = useState<LongDIstanceVisionTestSteps>(
-    LongDIstanceVisionTestSteps.SIZE_202_6
-  );
+  const [currentStep, setCurrentStep] =
+    useState<LongDIstanceVisionTestSteps>(personalizedTestSize);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(1);
 
   const [showStepChangeModal, setShowStepChangeModal] =
@@ -92,33 +110,17 @@ const LongDinstanceVisionTest = ({
   const [startTimer, setStartTimer] = useState<boolean>(false);
   const letterInView = useRef<string>("E");
 
-  const getNextTextSize = (curr: number) => {
-    switch (curr) {
-      case 202.6:
-        return 173.3;
-      case 173.3:
-        return 144;
-      case 144:
-        return 116;
-      case 116:
-        return 86.6;
-      case 86.6:
-        return 57.3;
-      case 57.3:
-        return 44;
-      case 44:
-        return 28;
-      case 28:
-        return 20;
-      case 20:
-        return 12;
-      case 12:
-        return 0;
-      default:
-        return 0;
-    }
-  };
+  const [inRange, setInRange] = useState(true);
+  const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
+  const handleInRange = () => {
+    setInRange(true);
+    if (showNotInRangeModal) setShowEyeChangeModal(false);
+  };
+  const handleNotInRange = () => {
+    setInRange(false);
+    if (!showNotInRangeModal) setShowEyeChangeModal(true);
+  };
   const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps) => {
     switch (step) {
       case LongDIstanceVisionTestSteps.SIZE_202_6:
@@ -163,6 +165,12 @@ const LongDinstanceVisionTest = ({
     return VisionTestLetters[randomIndex];
   };
 
+  const getRandomNumber = () => {
+    const randomIndex = Math.floor(Math.random() * 10);
+    letterInView.current = VisionTestNumbers[randomIndex];
+    return VisionTestNumbers[randomIndex];
+  };
+
   useEffect(() => {
     let interval;
 
@@ -203,6 +211,7 @@ const LongDinstanceVisionTest = ({
   useEffect(() => {
     if (timer === 0) {
       stopSpeechToText();
+      letterInView.current = null;
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
         setCurrentStepIndex((prev) => prev + 1);
       setLetterRecognitionResult([]);
@@ -211,7 +220,10 @@ const LongDinstanceVisionTest = ({
     }
     if (timer === 15) {
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
-        letterInView.current = getRandomLetter();
+        letterInView.current =
+          testType === TestTypes.LETTERS
+            ? getRandomLetter()
+            : getRandomNumber();
       setIdentified(false);
       startSpeechToText();
       setListning(true);
@@ -234,7 +246,7 @@ const LongDinstanceVisionTest = ({
     };
 
     Voice.onSpeechError = (e) => {
-      console.log("onSpeechErrorsssssss", e);
+      stopSpeechToText();
       setTimeout(startSpeechToText, 1000);
     };
     return () => {
@@ -291,7 +303,6 @@ const LongDinstanceVisionTest = ({
   }, [showEyeChangeModal]);
 
   const handleTextSizeStepChange = () => {
-    console.log("currentStepIndex", currentStepIndex);
     if (
       currentStepIndex === 6 ||
       currentStepIndex === 11 ||
@@ -304,7 +315,6 @@ const LongDinstanceVisionTest = ({
       currentStepIndex === 46 ||
       currentStepIndex === 51
     ) {
-      console.log("currentStepIndex hello world");
       setVisionTestStates({
         ...visionTestStates,
         testResults: {
@@ -322,10 +332,9 @@ const LongDinstanceVisionTest = ({
       if (currentStepIndex < 51)
         setCurrentTextSize(getNextTextSize(currentTextSize));
 
-      if (successfullyIdentified < 4) {
+      if (successfullyIdentified < 3) {
         stopSpeechToText();
         setStatus(ResultStatus.FAILED);
-        alert("You have failed the test at level ");
         setListning(false);
       }
       setSuccessfullyIdentified(0);
@@ -335,18 +344,19 @@ const LongDinstanceVisionTest = ({
   const onSpeechResults = (event) => {
     setLetterRecognitionResult(event.value);
     console.log("onSpeechResults", event.value);
-    const recognitionState: boolean = identifiyLetters(
-      event.value,
-      letterInView.current
-    );
+    const recognitionState: boolean =
+      testType === TestTypes.LETTERS
+        ? identifiyLetters(event.value, letterInView.current)
+        : identifyNumbers(event.value, parseInt(letterInView.current));
 
     if (recognitionState) {
+      letterInView.current = null;
       stopSpeechToText();
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
         setCurrentStepIndex((prev) => prev + 1);
       setListning(false);
       setIdentified(true);
-      setSuccessfullyIdentified(successfullyIdentified + 1);
+      setSuccessfullyIdentified((prev) => prev + 1);
       setLetterRecognitionResult([]);
 
       if (timer > 5) {
@@ -386,10 +396,12 @@ const LongDinstanceVisionTest = ({
       (currentEye === "leftEye" && status === ResultStatus.PASSED) ||
       (currentEye === "rightEye" && currentStepIndex === 51)
     ) {
+      console.log("End Test Left Eye ", visionTestStates);
       setCurrentEye("rightEye");
       setStatus(ResultStatus.NULL);
       setShowEyeChangeModal(true);
       setCurrentStepIndex(1);
+      setCurrentTextSize(202.6);
     }
 
     if (
@@ -397,6 +409,7 @@ const LongDinstanceVisionTest = ({
       (currentEye === "rightEye" && ResultStatus.PASSED) ||
       (currentEye === "rightEye" && currentStepIndex === 51)
     ) {
+      console.log("End Test Right Eye ", visionTestStates);
       stopSpeechToText();
       setVisionTestStates({
         ...visionTestStates,
@@ -404,7 +417,9 @@ const LongDinstanceVisionTest = ({
       });
 
       setTimer(0);
+      setCurrentStepIndex(1);
       setStatus(ResultStatus.PASSED);
+      setResults(visionTestStates);
       setSteps(VisionTestFlows.TEST_RESULT);
     }
   };
@@ -430,80 +445,164 @@ const LongDinstanceVisionTest = ({
             {currentStepIndex} / 50
           </Text>
         </View>
-
-        {status === ResultStatus.NULL ? (
-          <AnimatedCircularProgress
-            size={30}
-            width={3}
-            fill={(timer * 100) / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => <Text>{timer}</Text>}
-          </AnimatedCircularProgress>
-        ) : (
-          <AnimatedCircularProgress
-            size={30}
-            width={3}
-            fill={15 / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => <Text>15</Text>}
-          </AnimatedCircularProgress>
-        )}
       </View>
 
       <View style={styles.textContainerView}>
-        <Text
-          style={{
-            fontSize: currentTextSize,
-            fontWeight: "bold",
-          }}
-        >
-          {letterInView.current}
-        </Text>
-      </View>
-
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: "500" }}>
-          Current screening {currentStep + 1}
-        </Text>
+        {letterInView.current === null ? (
+          <>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: 200,
+                height: 200,
+                borderRadius: 100,
+                backgroundColor: "white",
+                borderColor: "#E9F1FF",
+                borderWidth: 5,
+              }}
+            >
+              <ForwardArrowHead height={60} width={60} />
+            </View>
+          </>
+        ) : (
+          <Text
+            style={{
+              fontSize: currentTextSize,
+              fontWeight: "bold",
+            }}
+          >
+            {letterInView.current}
+          </Text>
+        )}
       </View>
 
       <View
         style={{
+          display: "flex",
+          flexDirection: "row",
           marginTop: 30,
-          width: "100%",
         }}
       >
         <View
           style={{
+            backgroundColor: "blue",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            height: 270,
+          }}
+        >
+          <View
+            style={{
+              ...styles.camearaContainer,
+              backgroundColor: inRange ? "green" : "red",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            <FaceDetectorComponenet
+              handleInRange={handleInRange}
+              handleNotInRange={handleNotInRange}
+              fullScreenEnabled={false}
+              distanceToMaintain={Number(personalizedDistance) * 2}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            alignContent: "center",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          {identified && (
-            <Text
+          <View
+            style={{
+              marginTop: 30,
+            }}
+          >
+            {status === ResultStatus.NULL ? (
+              <AnimatedCircularProgress
+                size={100}
+                width={7}
+                fill={(timer * 100) / 15}
+                tintColor={
+                  timer > 10
+                    ? BASIC_COLORS.PRIMARY
+                    : timer > 5
+                    ? "orange"
+                    : "red"
+                }
+                backgroundColor="#3d5875"
+              >
+                {(fill) => (
+                  <Text
+                    style={{
+                      fontSize: 50,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {timer}
+                  </Text>
+                )}
+              </AnimatedCircularProgress>
+            ) : (
+              <AnimatedCircularProgress
+                size={30}
+                width={3}
+                fill={15 / 15}
+                tintColor={
+                  timer > 10
+                    ? BASIC_COLORS.PRIMARY
+                    : timer > 5
+                    ? "orange"
+                    : "red"
+                }
+                backgroundColor="#3d5875"
+              >
+                {(fill) => <Text>15</Text>}
+              </AnimatedCircularProgress>
+            )}
+          </View>
+          <View
+            style={{
+              marginTop: 10,
+              width: "100%",
+            }}
+          >
+            <View
               style={{
-                fontSize: 20,
-                fontWeight: "bold",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Identified
-            </Text>
-          )}
-          {listning && !identified && (
-            <Image source={require("../../../assets/SoundWave.gif")} />
-          )}
+              {identified && (
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Identified
+                </Text>
+              )}
+              {true && (
+                <Image source={require("../../../assets/SoundWave.gif")} />
+              )}
+            </View>
+          </View>
         </View>
       </View>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -524,7 +623,7 @@ const LongDinstanceVisionTest = ({
         >
           <View
             style={{
-              height: 200,
+              height: Dimensions.get("window").height * 0.7,
               width: 300,
               backgroundColor: "white",
               borderRadius: 20,
@@ -533,15 +632,71 @@ const LongDinstanceVisionTest = ({
               alignItems: "center",
             }}
           >
-            <Text>Change Eye</Text>
-            <RPPrimaryButton
-              buttonTitle="Change Eye"
-              onPress={() => {
-                setShowEyeChangeModal(false);
-                setSuccessfullyIdentified(0);
-                setTimer(15);
-                setListning(true);
-                startSpeechToText();
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Please close your LEFT eye
+            </Text>
+            <Image
+              source={require("../../../assets/CloseLeftEye.png")}
+              style={{
+                width: Dimensions.get("window").width * 0.6,
+                height: Dimensions.get("window").height * 0.4,
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showNotInRangeModal}
+        onRequestClose={() => {
+          setShowNotInRangeModal(false);
+        }}
+      >
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              height: Dimensions.get("window").height * 0.7,
+              width: 300,
+              backgroundColor: "white",
+              borderRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Please maintain the distance
+            </Text>
+            <Image
+              source={require("../../../assets/doctor1.jpg")}
+              style={{
+                width: Dimensions.get("window").width * 0.6,
+                height: Dimensions.get("window").height * 0.4,
               }}
             />
           </View>
@@ -572,5 +727,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  camearaContainer: {
+    padding: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "auto",
   },
 });
