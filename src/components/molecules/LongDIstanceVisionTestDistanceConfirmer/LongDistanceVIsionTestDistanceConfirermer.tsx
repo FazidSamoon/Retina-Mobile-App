@@ -14,6 +14,7 @@ import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer
 import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
 import Doctor1 from "../../../assets/doctorMain.png";
 import * as Animatable from "react-native-animatable";
+import * as Speech from "expo-speech";
 
 const LongDistanceVIsionTestDistanceConfirermer = ({
   personalizedDistance,
@@ -62,7 +63,25 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
       clearTimeout(timer);
     };
   }, [modalVisible]);
+
+  const narrateText = (message) => {
+    Speech.speak(message, {
+      voice: "en-in-x-ene-local",
+      pitch: 1.0,
+      rate: 1.0,
+    });
+  };
+
+  useEffect(() => {
+    if (modalVisible) {
+      narrateText(
+        `Now keep your phone ${personalizedDistance} m away from you! And get ready! We are going to check your left eye first.`
+      );
+    }
+  }, [modalVisible]);
+
   const handleCloseModal = () => {
+    Speech.stop();
     setModalVisible(false);
   };
   return (

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VisionTestStateType } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import VisionTestResultSingleCard from "../VisionTestResultSingleCard/VisionTestResultSingleCard";
 import { calculateVisualAcuityScoreUsingSLMAformula } from "../../../utils/common/scoreCalculations";
@@ -18,6 +18,7 @@ import { API_URL } from "../../../api/config";
 import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
 import Doctor1 from "../../../assets/doctorMain.png";
 import * as Animatable from "react-native-animatable";
+import * as Speech from "expo-speech";
 
 const DetailedOverview = ({
   visionTestResults,
@@ -62,8 +63,35 @@ const DetailedOverview = ({
   };
 
   const handleCloseModal = () => {
+    Speech.stop(); // Stop the speech when closing the modal
     setModalVisible(false);
   };
+
+  // Function to narrate the message based on the logMAR score
+  const narrateMessage = (message: string) => {
+    Speech.speak(message, {
+      voice: "en-us-x-sfg-local",
+      pitch: 1.0,
+      rate: 1.0,
+    });
+  };
+
+  useEffect(() => {
+    if (modalVisible) {
+      const message =
+        parseFloat(leftEyeScore) <= 0.1
+          ? "Your vision is really impressive! Keep it up!"
+          : parseFloat(leftEyeScore) <= 0.3
+          ? "Your vision is quite good, but there's a slight reduction. Let's continue monitoring it."
+          : parseFloat(leftEyeScore) <= 0.5
+          ? "There's a noticeable reduction in your vision. We should discuss corrective measures like glasses."
+          : parseFloat(leftEyeScore) <= 1.0
+          ? "Your vision shows significant impairment. It's important to schedule a thorough examination."
+          : "Your vision has deteriorated substantially. We need to explore treatment options immediately.";
+
+      narrateMessage(message);
+    }
+  }, [modalVisible]);
   return (
     <View>
       <Text style={styles.titleText}>Detailed Overview</Text>

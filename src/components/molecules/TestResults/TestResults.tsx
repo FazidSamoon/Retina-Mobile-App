@@ -219,8 +219,7 @@ const TestResults = ({
         if (
           filteredLeftEyeResults.length > 0 &&
           (filteredLeftEyeResults[0][1] >= Number(shouldIdentify) ||
-            filteredRightEyeResults[0][1] >= Number(shouldIdentify)) &&
-          element.minDistanceRequirement <= personalizedDistanceGlobal
+            filteredRightEyeResults[0][1] >= Number(shouldIdentify))
         ) {
           setCompletedTaskIds((prev) => [...prev, element._id]);
           listOfCompletedTasks.push(element._id);

@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import ForwardArrowHead from "../../../assets/ForwardArrowHead";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import {
@@ -15,6 +15,7 @@ import {
   VisionTestFlowsActions,
 } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
 import { LongDistanceTestGuidenceStepsType } from "./LongDistanceStepTypes";
+import * as Speech from "expo-speech";
 
 const LongDistanceTestGuidence = ({
   steps,
@@ -41,6 +42,7 @@ const LongDistanceTestGuidence = ({
         setSelectedFlow(VisionTestFlows.TEST_DISTANCE_MEASURER);
       }
     }
+    Speech.stop();
   };
 
   const LongDistanceTestGuidenceSteps: LongDistanceTestGuidenceStepsType[] = [
@@ -48,7 +50,7 @@ const LongDistanceTestGuidence = ({
       step: 1,
       title: "Step 1",
       description:
-        "If you are wearing glasses wear then before performing the test",
+        "If you are wearing glasses wear them before performing the test",
       image: require("../../../assets/step1.png"),
     },
     {
@@ -64,9 +66,31 @@ const LongDistanceTestGuidence = ({
         flow === VisionTestFlowsActions.PERFORM_BY_MYSELF
           ? "Once you identified the letter pronounce the letter loud and clear before clocks ticks out"
           : "Once you identified the letter ask for helper to swipe to the direction letter is pointing",
-      image: flow === VisionTestFlowsActions.PERFORM_BY_MYSELF ?require("../../../assets/voicepng.png") : require("../../../assets/4.png"),
+      image:
+        flow === VisionTestFlowsActions.PERFORM_BY_MYSELF
+          ? require("../../../assets/voicepng.png")
+          : require("../../../assets/4.png"),
     },
   ];
+
+  const narrateText = (message: string) => {
+    Speech.speak(message, {
+      voice: "en-in-x-ene-local",
+      pitch: 1.0,
+      rate: 1.0,
+    });
+  };
+
+  useEffect(() => {
+    const currentStepDescription =
+      LongDistanceTestGuidenceSteps[steps].description;
+    narrateText(currentStepDescription);
+  }, [steps]);
+
+  const handleCloseModal = () => {
+    Speech.stop();
+    // Handle modal close logic
+  };
   return (
     <View style={styles.container}>
       <View

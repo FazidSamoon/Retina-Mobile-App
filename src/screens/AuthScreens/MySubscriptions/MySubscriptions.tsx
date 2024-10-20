@@ -41,6 +41,8 @@ const MySubscriptions = () => {
       userObj.data.otherDetails._id
     );
     if (apiSuccess) {
+
+      console.log(apiSuccess.data)
       setDoctor(apiSuccess.data);
     }
   };
@@ -100,17 +102,18 @@ const MySubscriptions = () => {
 
   const handleAddingChanneling = async () => {
     const { apiError, apiSuccess } = await getChannelingAvailability({
-      doctorId: doctor[0]._id,
+      doctorId: doctor[0].doctor._id,
       date: selected,
       endTime: selectedSlot.end,
       startTime: selectedSlot.start,
     });
 
     if (apiSuccess) {
+      console.log(apiSuccess)
       if (apiSuccess.data.available) {
         dispatch(
           setChannelingData({
-            doctorId: doctor[0]._id,
+            doctorId: doctor[0].doctor._id,
             date: selected,
             slot: {
               end: selectedSlot.end,
@@ -308,7 +311,7 @@ const MySubscriptions = () => {
 
           {selected && selectedSlot && (
             <RPPrimaryButton
-              buttonTitle={"Make Appointment"}
+              buttonTitle={"Request An Appointment"}
               onPress={handleAddingChanneling}
             />
           )}

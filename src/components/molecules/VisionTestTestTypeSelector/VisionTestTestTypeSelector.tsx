@@ -7,7 +7,7 @@ import {
   Dimensions,
   Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TestTypes,
   VisionTestFlows,
@@ -19,6 +19,7 @@ import Number1 from "../../../assets/Number1";
 import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble";
 import * as Animatable from "react-native-animatable";
 import Doctor1 from "../../../assets/doctorMain.png";
+import * as Speech from "expo-speech";
 
 const VisionTestTestTypeSelector = ({
   setSteps,
@@ -34,7 +35,24 @@ const VisionTestTestTypeSelector = ({
     setTestType(index === 0 ? TestTypes.LETTERS : TestTypes.NUMBERS);
     setSteps(VisionTestFlows.TEST_INSTRUCTIONS);
   };
+  const narrateText = (message) => {
+    Speech.speak(message, {
+      voice: "en-in-x-ene-local",
+      pitch: 1.0,
+      rate: 1.0,
+    });
+  };
+
+  useEffect(() => {
+    if (modalVisible) {
+      narrateText(
+        "What do you like to have as test elements? Numbers or letters?. Please select your preferred method"
+      );
+    }
+  }, [modalVisible]);
+
   const handleCloseModal = () => {
+    Speech.stop();
     setModalVisible(false);
   };
   return (

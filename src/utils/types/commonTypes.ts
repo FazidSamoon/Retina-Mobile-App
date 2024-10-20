@@ -56,3 +56,64 @@ export type VisionTestChallengesResponse = {
   data: VisionTestChallenge[];
   message: string;
 };
+
+export interface TimeSlot {
+  start: string;
+  end: string;
+  _id: string;
+}
+
+export interface Doctor {
+  ratings: number;
+  _id: string;
+  name: string;
+  email: string;
+  location: string;
+  occupation: string;
+  phone: string;
+  gender: string;
+  user: string;
+  channelingSchedule: {
+    MONDAY: TimeSlot[];
+    TUESDAY: TimeSlot[];
+    WEDNESDAY: TimeSlot[];
+    THURSDAY: TimeSlot[];
+    FRIDAY: TimeSlot[];
+    SATURDAY: TimeSlot[];
+    SUNDAY: TimeSlot[];
+  };
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+  name: string;
+  password: string;
+  gender: string;
+  date_of_birth: string;
+  phone: string;
+  eye_deciease: string;
+  location: string;
+  occupation: string;
+  is_loggedIn: boolean;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface Channeling {
+  _id: string;
+  doctor: Doctor;
+  user: User;
+  date: string;
+  timeSlot: TimeSlot;
+  type: "IN-HOUSE" | "VIDEOCONFERENCE";
+  status: "SCHEDULED" | "COMPLETED" | "CANCELLED" | "PENDING";
+  meetLink: string | null;
+  __v: number;
+}

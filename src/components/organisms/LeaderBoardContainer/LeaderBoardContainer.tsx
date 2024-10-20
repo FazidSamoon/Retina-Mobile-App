@@ -5,7 +5,6 @@ import { BASIC_COLORS } from "../../../utils/constants/styles";
 
 const LeaderBoardContainer = ({ level, leaderboard }) => {
 
-  console.log("level ", level)
   const nameInitials = (name: string) => {
     const words = name?.split(" ");
     return words

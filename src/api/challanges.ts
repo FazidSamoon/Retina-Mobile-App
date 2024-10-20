@@ -48,9 +48,7 @@ export const updateUserChallengesCompletion = async (
       }
     );
     apiSuccess = response.data;
-    console.log("ssffsff");
   } catch (error) {
-    console.log("errorrrr ");
     apiError = error;
   }
 
@@ -111,3 +109,4 @@ export const getLeaderboard = async (userId: string) => {
 
   return { apiSuccess, apiError };
 };
+

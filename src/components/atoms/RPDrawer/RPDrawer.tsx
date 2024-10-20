@@ -203,6 +203,47 @@ const RPDrawer: React.FC<Props> = ({ navigation }) => {
             </Pressable>
 
             <Pressable
+              onPress={() => {
+                setSelected("channeling");
+                navigation.navigate("MyChannelings");
+              }}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor:
+                  selected === "channeling"
+                    ? BASIC_COLORS.PRIMARY
+                    : BASIC_COLORS.WHITE,
+                padding: 10,
+                borderRadius: 10,
+              }}
+            >
+              <Icon
+                name="bookmark"
+                color={
+                  selected !== "channeling"
+                    ? BASIC_COLORS.FONT_PRIMARY
+                    : BASIC_COLORS.WHITE
+                }
+                size={20}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: "500",
+                  color:
+                    selected !== "channeling"
+                      ? BASIC_COLORS.FONT_PRIMARY
+                      : BASIC_COLORS.WHITE,
+                }}
+              >
+                My Channelings
+              </Text>
+            </Pressable>
+
+            <Pressable
               style={{
                 display: "flex",
                 flexDirection: "row",

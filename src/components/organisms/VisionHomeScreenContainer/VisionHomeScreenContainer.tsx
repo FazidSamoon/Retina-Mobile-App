@@ -14,16 +14,17 @@ import * as Animatable from "react-native-animatable";
 import Doctor1 from "../../../assets/doctorMain.png";
 import SpeechBubble from "./SpeachBubble";
 import * as Speech from "expo-speech";
+import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
+import { UserType } from "../../../utils/types/commonTypes";
 
 const VisionHomeScreenContainer = () => {
   const [modalVisible, setModalVisible] = useState(true);
-  const [maleVoice, setMaleVoice] = useState(null);
 
   const narrateText = (message) => {
     Speech.speak(message, {
       voice: "en-in-x-ene-local",
-      pitch: 2.0,
-      rate: 2.0,
+      pitch: 1.0,
+      rate: 1.0,
     });
   };
 
@@ -39,6 +40,7 @@ const VisionHomeScreenContainer = () => {
     Speech.stop();
     setModalVisible(false);
   };
+
   return (
     <View>
       <VisionHomeScreenTopAppBar header={"Check Vision Task"} />
@@ -66,7 +68,7 @@ const VisionHomeScreenContainer = () => {
         >
           <View style={styles.modalContent}>
             <SpeechBubble
-              message="Hey Jone, how are you doing today?  Let's do your daily vision test today!"
+              message={`Hey, how are you doing today?  Let's do your daily vision test today!`}
               position="left"
             />
             <Animatable.Image
