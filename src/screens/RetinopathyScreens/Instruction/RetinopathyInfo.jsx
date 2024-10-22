@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 import DiabaticResult from "../Diabatic/DiabaticResult";
 
 export default function RetinopathyInfo({ navigation }) {

@@ -39,6 +39,9 @@ import InsulinComponent from "../../screens/RetinopathyScreens/Diabatic/Diabatic
 import SkinThicknessComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/SkinThicknessComponent";
 import RetinClinicLo from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
 import Survay from "../../screens/RetinopathyScreens/Survay/Survay";
+import SurvayPrediction from "../../screens/RetinopathyScreens/Survay/SurvayPrediction";
+import SurvayContribution from "../../screens/RetinopathyScreens/Survay/SurvayContribution";
+import PredictionMain from "../../screens/RetinopathyScreens/PredictionMain/PredictionMain";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -136,6 +139,26 @@ const index = () => {
         <DrawerNav.Screen name="Hba1c" component={Hba1c} />
         <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
         <DrawerNav.Screen name="Survay" component={Survay} />
+        {/* <DrawerNav.Screen name="Survay" component={Survay} />
+        <DrawerNav.Screen name="Survay" component={Survay} />
+        <DrawerNav.screen name=""
+        
+        
+        
+        
+        
+        */}
+
+      
+        <DrawerNav.Screen
+          name="SurvayPrediction"
+          component={SurvayPrediction}
+        />
+        <DrawerNav.Screen
+          name="SurvayContribution"
+          component={SurvayContribution}
+        />
+        <DrawerNav.Screen name="PredictionMain" component={PredictionMain} />
 
         <DrawerNav.Screen
           name="GlucoseComponent"

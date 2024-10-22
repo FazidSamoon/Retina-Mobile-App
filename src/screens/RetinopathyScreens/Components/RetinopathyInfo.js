@@ -8,7 +8,7 @@ import {
   Modal,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-//import * as ImagePicker from "expo-image-picker";
+
 
 export default function RetinopathyInfo() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,7 +16,7 @@ export default function RetinopathyInfo() {
   const steps = [
     {
       title: "Step 1: Take the Clinical Report",
-      image: require("../../../../assets/1.gif"), // Replace with appropriate image
+      image: require("../../../assets/1.gif"), // Replace with appropriate image
       instructions: [
         "Make sure you have the clinical data report ready.",
         "Place the report in good lighting for the next steps.",
@@ -24,7 +24,7 @@ export default function RetinopathyInfo() {
     },
     {
       title: "Step 2: Focus on the Text",
-      image: require("../../../../assets/2.gif"), // Replace with appropriate image
+      image: require("../../../assets/2.gif"), // Replace with appropriate image
       instructions: [
         "Ensure the text on the report is in focus for a clear capture.",
         "Adjust the angle and distance if necessary for a sharp image.",
@@ -32,7 +32,7 @@ export default function RetinopathyInfo() {
     },
     {
       title: "Step 3: Capture the Image",
-      image: require("../../../../assets/3.gif"), // Replace with appropriate image
+      image: require("../../../assets/3.gif"), // Replace with appropriate image
       instructions: [
         "Press the shutter button to take the photo of the report.",
         "Make sure the entire report is captured clearly.",
@@ -40,7 +40,7 @@ export default function RetinopathyInfo() {
     },
     {
       title: "Step 4: Check the Form Fields",
-      image: require("../../../../assets/4.gif"), // Replace with appropriate image
+      image: require("../../../assets/4.gif"), // Replace with appropriate image
       instructions: [
         "Ensure that the form fields have fetched the data correctly.",
         "Review all the fields and make sure the extracted values match the report.",
@@ -48,7 +48,7 @@ export default function RetinopathyInfo() {
     },
     {
       title: "Step 5: Look for Error Messages",
-      image: require("../../../../assets/5.gif"), // Replace with appropriate image
+      image: require("../../../assets/5.gif"), // Replace with appropriate image
       instructions: [
         "Check if there are any error messages or warnings on the form.",
         "If errors are found, correct them and retry capturing the report.",
@@ -56,7 +56,7 @@ export default function RetinopathyInfo() {
     },
     {
       title: "Step 6: Predict the Results",
-      image: require("../../../../assets/6.gif"), // Replace with appropriate image
+      image: require("../../../assets/6.gif"), // Replace with appropriate image
       instructions: [
         "Once all fields are filled correctly and no errors are present, click the 'Predict' button.",
         "Wait for the results and review the predictions.",

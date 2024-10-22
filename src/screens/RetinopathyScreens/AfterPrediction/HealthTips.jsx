@@ -7,76 +7,83 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
+import DiabaticResultHomeScreenTopAppBar from "../TopBar/DiabaticResultHomeScreenTopAppBar";
 
 export default function HealthTips({ navigation }) {
   return (
     <>
     
-              <RetinopathyHomeScreenTopAppBar header={"LifeBoost Tips"} />
+      <DiabaticResultHomeScreenTopAppBar header={"LifeBoost Tips"} />
 
-    <ScrollView style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.headerSection}>
-        <Text style={styles.header}>Health Tips</Text>
-        <TouchableOpacity style={styles.seeAllBtn}>
-          <Text style={styles.seeAllText}>See All</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Tip Card 1 */}
-      <View style={styles.tipCard}>
-        <View style={[styles.tipCardContent, { backgroundColor: "#d9a4f4" }]}>
-          <Image
-            source={require("../../../assets/2.gif")} // Replace with your GIF path or URL
-            style={styles.gifImage}
-          />
-          <Text style={styles.tipTitle}>Check Vision Task</Text>
-          <Text style={styles.tipDescription}>
-            Regular eye check-ups are crucial for early detection of retinopathy. Make sure to schedule periodic vision tests to avoid complications.
-          </Text>
-          <TouchableOpacity style={styles.learnMoreBtn}>
-            <Text style={styles.learnMoreText}>Learn more</Text>
+      <ScrollView style={styles.container}>
+        {/* Header Section */}
+        <View style={styles.headerSection}>
+          <Text style={styles.header}>Health Tips</Text>
+          <TouchableOpacity style={styles.seeAllBtn}>
+            <Text style={styles.seeAllText}>See All</Text>
           </TouchableOpacity>
         </View>
-      </View>
 
-      {/* Tip Card 2 */}
-      <View style={styles.tipCard}>
-        <View style={[styles.tipCardContent, { backgroundColor: "#8cd4f5" }]}>
-          <Image
-            source={require("../../../assets/3.gif")} // Replace with your GIF path or URL
-            style={styles.gifImage}
-          />
-          <Text style={styles.tipTitle}>Eye Exercise</Text>
-          <Text style={styles.tipDescription}>
-            Engage in simple eye exercises daily to improve blood flow to the eyes and maintain eye health. This can reduce strain and support better vision.
-          </Text>
-          <TouchableOpacity style={styles.learnMoreBtn}>
-            <Text style={styles.learnMoreText}>Learn more</Text>
-          </TouchableOpacity>
+        {/* Tip Card 1 */}
+        <View style={styles.tipCard}>
+          <View style={[styles.tipCardContent, { backgroundColor: "#d9a4f4" }]}>
+            <Image
+              source={require("../../../assets/2.gif")} // Replace with your GIF path or URL
+              style={styles.gifImage}
+            />
+            <Text style={styles.tipTitle}>Check Vision Task</Text>
+            <Text style={styles.tipDescription}>
+              Regular eye check-ups are crucial for early detection of
+              retinopathy. Make sure to schedule periodic vision tests to avoid
+              complications.
+            </Text>
+            <TouchableOpacity style={styles.learnMoreBtn}>
+              <Text style={styles.learnMoreText}>Learn more</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      {/* Tip Card 3 */}
-      <View style={styles.tipCard}>
-        <View style={[styles.tipCardContent, { backgroundColor: "#f5b48c" }]}>
-          <Image
-            source={require("../../../assets/3.gif")} // Replace with your GIF path or URL
-            style={styles.gifImage}
-          />
-          <Text style={styles.tipTitle}>Healthy Foods</Text>
-          <Text style={styles.tipDescription}>
-            Incorporating foods rich in vitamins A, C, and E, as well as omega-3 fatty acids, can help protect your eyes from damage caused by diabetes.
-          </Text>
-          <TouchableOpacity style={styles.bookNowBtn}>
-            <Text style={styles.bookNowText}>Learn more</Text>
-          </TouchableOpacity>
+        {/* Tip Card 2 */}
+        <View style={styles.tipCard}>
+          <View style={[styles.tipCardContent, { backgroundColor: "#8cd4f5" }]}>
+            <Image
+              source={require("../../../assets/3.gif")} // Replace with your GIF path or URL
+              style={styles.gifImage}
+            />
+            <Text style={styles.tipTitle}>Eye Exercise</Text>
+            <Text style={styles.tipDescription}>
+              Engage in simple eye exercises daily to improve blood flow to the
+              eyes and maintain eye health. This can reduce strain and support
+              better vision.
+            </Text>
+            <TouchableOpacity style={styles.learnMoreBtn}>
+              <Text style={styles.learnMoreText}>Learn more</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      {/* Add more tips as needed */}
-    </ScrollView>
+        {/* Tip Card 3 */}
+        <View style={styles.tipCard}>
+          <View style={[styles.tipCardContent, { backgroundColor: "#f5b48c" }]}>
+            <Image
+              source={require("../../../assets/3.gif")} // Replace with your GIF path or URL
+              style={styles.gifImage}
+            />
+            <Text style={styles.tipTitle}>Healthy Foods</Text>
+            <Text style={styles.tipDescription}>
+              Incorporating foods rich in vitamins A, C, and E, as well as
+              omega-3 fatty acids, can help protect your eyes from damage caused
+              by diabetes.
+            </Text>
+            <TouchableOpacity style={styles.bookNowBtn}>
+              <Text style={styles.bookNowText}>Learn more</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Add more tips as needed */}
+      </ScrollView>
     </>
   );
 }

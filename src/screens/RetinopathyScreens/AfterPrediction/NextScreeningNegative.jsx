@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
-import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 
 const NextScreeningIntervalNeg = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -80,52 +80,51 @@ const NextScreeningIntervalNeg = () => {
 
   return (
     <>
-    
-          <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
+      <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
 
-    <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Next Screening Interval</Text>
-        <Text style={styles.title}>For No Signs Of Diabetic Retinopathy</Text>
-      </View>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Next Screening Interval</Text>
+          <Text style={styles.title}>For No Signs Of Diabetic Retinopathy</Text>
+        </View>
 
-      {/* Display the screening date */}
-      {screeningDate && (
+        {/* Display the screening date */}
+        {screeningDate && (
+          <Text style={styles.subtitle}>
+            Next Screening Date: {screeningDate.format("MMMM Do, YYYY")}
+          </Text>
+        )}
+
         <Text style={styles.subtitle}>
-          Next Screening Date: {screeningDate.format("MMMM Do, YYYY")}
+          If no signs of retinopathy are present, a typical follow-up screening
+          is recommended every 12 months.
         </Text>
-      )}
 
-      <Text style={styles.subtitle}>
-        If no signs of retinopathy are present, a typical follow-up screening is
-        recommended every 12 months.
-      </Text>
+        {/* Custom Countdown Display */}
+        <View style={styles.countdownContainer}>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{days}</Text>
+            <Text style={styles.countdownLabel}>Days</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{hours}</Text>
+            <Text style={styles.countdownLabel}>Hours</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{minutes}</Text>
+            <Text style={styles.countdownLabel}>Minutes</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{secs}</Text>
+            <Text style={styles.countdownLabel}>Seconds</Text>
+          </View>
+        </View>
 
-      {/* Custom Countdown Display */}
-      <View style={styles.countdownContainer}>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{days}</Text>
-          <Text style={styles.countdownLabel}>Days</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{hours}</Text>
-          <Text style={styles.countdownLabel}>Hours</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{minutes}</Text>
-          <Text style={styles.countdownLabel}>Minutes</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{secs}</Text>
-          <Text style={styles.countdownLabel}>Seconds</Text>
-        </View>
+        {/* Custom Done Button */}
+        <TouchableOpacity style={styles.button} onPress={handleDonePress}>
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Custom Done Button */}
-      <TouchableOpacity style={styles.button} onPress={handleDonePress}>
-        <Text style={styles.buttonText}>Done</Text>
-      </TouchableOpacity>
-    </View>
     </>
   );
 };

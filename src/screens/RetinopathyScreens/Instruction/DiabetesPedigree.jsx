@@ -15,7 +15,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'; // Ensure @expo/vect
 // Complete Translations for English, Sinhala, and Tamil
 const translations = {
   en: {
-    title: "Diabetes Risk Prediction",
+    title: "Diabetes Pedigree Analysis",
     questions: {
       ageGroup: "What is your age group?",
       gender: "What is your gender?",
@@ -261,7 +261,8 @@ ${score >= 12 ? translations[language].results.highRiskMessage.replace('{score}'
       {/* Info Icon Centered on Home Screen */}
       <View style={styles.infoIconContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7}>
-        <FontAwesome name="calculator" size={18} color="#D3D3D3" />
+        <FontAwesome name="question-circle" size={18} color="#A6CE39" />
+     
          
         </TouchableOpacity>
       </View>

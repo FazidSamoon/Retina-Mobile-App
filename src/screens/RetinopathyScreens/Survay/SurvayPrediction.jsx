@@ -10,11 +10,15 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import { Dropdown } from "react-native-element-dropdown";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
+import LoadingSpinner from "../../../components/atoms/LoadingSpinner/LoadingSpinner";
+import TestLoadingRetinopathy from "../Components/LoadingRetinopathy";
+import ClinicalTrailHome from "../TopBar/ClinicalTrailHome";
 
 const server_name = "http://155.248.225.224:8093";
 
-const RetinopathyPrediction = () => {
+const SurvayPrediction = () => {
   const [formData, setFormData] = useState({
     gender: "Male",
     diabetesType: "Type 2",
@@ -27,8 +31,6 @@ const RetinopathyPrediction = () => {
 
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedField, setSelectedField] = useState("");
 
   const handleChange = (name, value) => {
     setFormData({
@@ -81,38 +83,56 @@ const RetinopathyPrediction = () => {
     }
   };
 
-  const toggleModal = (field) => {
-    setSelectedField(field);
-    setModalVisible(!modalVisible);
-  };
+  const genderOptions = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+  ];
 
-  const handleSelect = (value) => {
-    handleChange(selectedField, value);
-    toggleModal("");
-  };
+  const diabetesOptions = [
+    { label: "Type 1", value: "Type 1" },
+    { label: "Type 2", value: "Type 2" },
+  ];
 
   return (
     <View style={styles.container}>
-      <RetinopathyHomeScreenTopAppBar header={"Public Retinopathy model"} />
+      <ClinicalTrailHome header={"Public Retinopathy model"} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.form}>
           <Text style={styles.label}>Gender</Text>
-          <TouchableOpacity onPress={() => toggleModal("gender")}>
-            <TextInput
-              style={styles.input}
-              editable={false}
-              value={formData.gender}
-            />
-          </TouchableOpacity>
+          <Dropdown
+            style={styles.dropdown}
+            data={genderOptions}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Gender"
+            value={formData.gender}
+            onChange={(item) => handleChange("gender", item.value)}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            containerStyle={styles.dropdownContainer}
+            itemTextStyle={styles.itemTextStyle}
+            maxHeight={120}
+          />
 
           <Text style={styles.label}>Diabetes Type</Text>
-          <TouchableOpacity onPress={() => toggleModal("diabetesType")}>
-            <TextInput
-              style={styles.input}
-              editable={false}
-              value={formData.diabetesType}
-            />
-          </TouchableOpacity>
+          <Dropdown
+            style={styles.dropdown}
+            data={diabetesOptions}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Diabetes Type"
+            value={formData.diabetesType}
+            onChange={(item) => handleChange("diabetesType", item.value)}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            containerStyle={styles.dropdownContainer}
+            itemTextStyle={styles.itemTextStyle}
+            maxHeight={120}
+          />
 
           <Text style={styles.label}>Systolic BP</Text>
           <TextInput
@@ -154,56 +174,18 @@ const RetinopathyPrediction = () => {
             onChangeText={(value) => handleChange("diagnosisYear", value)}
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Predict Diabetic</Text>
-          </TouchableOpacity>
-
-          {loading && <ActivityIndicator size="large" color="#0000ff" />}
-
           {prediction && (
             <View style={styles.resultContainer}>
               <Text style={styles.resultText}>{prediction}</Text>
             </View>
           )}
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Predict Retinopathy</Text>
+          </TouchableOpacity>
+
+          {loading && <TestLoadingRetinopathy />}
         </View>
       </ScrollView>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => toggleModal("")}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            {selectedField === "gender" && (
-              <>
-                <Text style={styles.modalTitle}>Select Gender</Text>
-                <TouchableOpacity onPress={() => handleSelect("Male")}>
-                  <Text style={styles.modalButton}>Male</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleSelect("Female")}>
-                  <Text style={styles.modalButton}>Female</Text>
-                </TouchableOpacity>
-              </>
-            )}
-            {selectedField === "diabetesType" && (
-              <>
-                <Text style={styles.modalTitle}>Select Diabetes Type</Text>
-                <TouchableOpacity onPress={() => handleSelect("Type 1")}>
-                  <Text style={styles.modalButton}>Type 1</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleSelect("Type 2")}>
-                  <Text style={styles.modalButton}>Type 2</Text>
-                </TouchableOpacity>
-              </>
-            )}
-            <TouchableOpacity onPress={() => toggleModal("")}>
-              <Text style={styles.modalButton}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -211,11 +193,11 @@ const RetinopathyPrediction = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "white",
   },
   scrollViewContent: {
     padding: 20,
-    paddingBottom: 100, // Add some bottom padding to prevent overlap with bottom of screen
+    paddingBottom: 100,
   },
   label: {
     marginBottom: 5,
@@ -235,12 +217,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     fontSize: 16,
   },
-  button: {
-    backgroundColor: "#1E90FF",
-    paddingVertical: 15,
+  dropdown: {
+    backgroundColor: "#fff",
+    borderColor: "#ddd",
+    borderWidth: 1,
     borderRadius: 10,
-    alignItems: "center",
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    height: 50,
+    justifyContent: "center",
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: "#aaa",
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: "#000",
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  dropdownContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingVertical: 10,
+  },
+  itemTextStyle: {
+    fontSize: 16,
+    color: "#000",
+  },
+  button: {
     marginTop: 20,
+    backgroundColor: "#109BE7",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    alignContent: "center",
+    borderRadius: 10,
+    height: 55,
   },
   buttonText: {
     color: "#fff",
@@ -251,34 +271,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     backgroundColor: "#f0f0f0",
-    borderRadius: 5,
+    borderRadius: 15,
   },
   resultText: {
     fontSize: 18,
     textAlign: "center",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "80%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
-  },
-  modalTitle: {
-    fontSize: 18,
-    marginBottom: 15,
-  },
-  modalButton: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "#1E90FF",
-  },
 });
 
-export default RetinopathyPrediction;
+export default SurvayPrediction;

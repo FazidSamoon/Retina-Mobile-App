@@ -2,15 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import React from "react";
 import {
-  Button,
-  StyleSheet,
   Text,
   Image,
   SafeAreaView,
   TextInput,
   View,
   Alert,
-  ActivityIndicator,
   ScrollView,
   Modal,
   TouchableOpacity,
@@ -20,14 +17,18 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
-import RetinopathyHomeScreenTopAppBar from "../../../../src/screens/RetinopathyScreens/TopBar/RetinopathyHomeScreenTopAppBar";
-import RetinopathyInfo from "../Retinopathy/RetinopathyComponents/RetinopathyInfo";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 import DiabetesRiskPrediction from "../Instruction/DiabetesPedigree";
 import BMICalculator from "../Instruction/BMICalculator";
 import BloodPressureComponent from "./DiabaticVariables/BloodPressureComponent";
 import SkinThicknessComponent from "./DiabaticVariables/SkinThicknessComponent";
 import GlucoseComponent from "./DiabaticVariables/GlucoseComponent";
 import InsulinComponent from "./DiabaticVariables/InsulinComponent";
+import RetinopathyInfo from "../Components/RetinopathyInfo";
+import TestLoadingScreen from "../Components/LoadingScreen";
+import TestLoadingDiabatic from "../Components/LoadingDiabatic";
+import styles from "../Diabatic/DiabaticStyles";
+import RetinopathyHomeScreenTopAppBar0 from "../TopBar/PredictHomeTopAppBar";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);
@@ -183,7 +184,7 @@ export default function Diabatic({ navigation }) {
 
   const handleSubmit = async () => {
     Vibration.vibrate();
-    console.log('Vibration triggered!');    
+    console.log("Vibration triggered!");
     if (!validateForm()) {
       return;
     }
@@ -243,7 +244,7 @@ export default function Diabatic({ navigation }) {
 
   return (
     <>
-      <RetinopathyHomeScreenTopAppBar header={"Current Diabetes Status"} />
+      <RetinopathyHomeScreenTopAppBar0 header={"Current Diabetes Status"} />
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.headerButtons}>
@@ -252,7 +253,14 @@ export default function Diabatic({ navigation }) {
               onPress={() => navigation.navigate("Retinopathy")}
               style={styles.topButton}
             >
-              <Text style={styles.skipText}>Skip this step</Text>
+              <Text style={styles.skipText}>
+                Skip this step{" "}
+                <FontAwesome
+                  name="angle-double-right"
+                  size={20}
+                  color="007BFF"
+                />
+              </Text>
             </TouchableOpacity>
 
             <RetinopathyInfo />
@@ -272,7 +280,7 @@ export default function Diabatic({ navigation }) {
                 />
               ) : (
                 <Text style={styles.imagePickerText}>
-                  <FontAwesome name="photo" size={24} color="#ccc" /> Select
+                  <FontAwesome name="photo" size={25} color="#ccc" /> Select
                   file
                 </Text>
               )}
@@ -294,8 +302,7 @@ export default function Diabatic({ navigation }) {
           {/* Image Loading Progress */}
           {imageLoading && (
             <View style={styles.progressContainer}>
-              <ActivityIndicator size="large" />
-              <Text style={styles.progressText}>Processing {ocrProgress}%</Text>
+              <TestLoadingScreen />
             </View>
           )}
           {/* Display Extracted Text */}
@@ -338,14 +345,7 @@ export default function Diabatic({ navigation }) {
             <View style={styles.container}>
               {loading && (
                 <View style={styles.progressContainer}>
-                  <ActivityIndicator
-                    style={styles.loadingIndicator}
-                    size="large"
-                    color="#0000ff"
-                  />
-                  <Text style={styles.progressText}>
-                    fetchProgress{fetchProgress}%
-                  </Text>
+                  <TestLoadingDiabatic />
                 </View>
               )}
 
@@ -461,7 +461,10 @@ export default function Diabatic({ navigation }) {
 
                     <View style={styles.row}>
                       <View style={styles.inputGroup}>
-                        <Text style={styles.label}>Insulin (µU/mL)<InsulinComponent/></Text>
+                        <Text style={styles.label}>
+                          Insulin (µU/mL)
+                          <InsulinComponent />
+                        </Text>
                         <TextInput
                           style={styles.input}
                           placeholder="Insulin"
@@ -515,12 +518,7 @@ export default function Diabatic({ navigation }) {
 
                   {loading && (
                     <View style={styles.progressContainer}>
-                      <ActivityIndicator
-                        style={styles.loadingIndicator}
-                        size="large"
-                        color="#0000ff"
-                      />
-                      <Text style={styles.progressText}>{fetchProgress}%</Text>
+                      <TestLoadingDiabatic />
                     </View>
                   )}
 
@@ -540,221 +538,3 @@ export default function Diabatic({ navigation }) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff",
-  },
-  headerButtons: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "100%",
-    paddingRight: 20,
-    paddingTop: 10,
-    position: "absolute",
-    top: 0,
-    right: 0,
-    zIndex: 1,
-  },
-  topButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 10,
-    padding: 5,
-    backgroundColor: "transparent",
-  },
-  skipText: {
-    color: "#717171",
-    fontSize: 16,
-    marginLeft: 5,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    marginBottom: 20,
-  },
-  inputGroup: {
-    flex: 1,
-
-    marginHorizontal: 5,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontWeight: "bold",
-  },
-  lab: {
-    marginBottom: 15,
-  },
-  input: {
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    fontSize: 16,
-  },
-  imagePicker: {
-    marginTop: 60,
-    width: "80%",
-    height: 150,
-    borderRadius: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  imagePlaceholder: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imagePickerText: {
-    fontSize: 16,
-    color: "#999",
-  },
-  orText: {
-    fontSize: 16,
-    color: "#999",
-    marginVertical: 10,
-  },
-  cameraButton: {
-    width: "80%",
-    paddingVertical: 15,
-    borderRadius: 15,
-    backgroundColor: "#F0F8FF",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  cameraButtonText: {
-    color: "#109BE7",
-    fontSize: 16,
-  },
-
-  button: {
-    marginTop: 20,
-    backgroundColor: "#109BE7",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    alignContent: "center",
-    borderRadius: 10,
-    height: 45,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginTop: 5,
-  },
-  extractedTextContainer: {
-    marginTop: 20,
-    padding: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    width: "80%",
-    alignItems: "center",
-  },
-  extractedTextLabel: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  extractedText: {
-    marginTop: 10,
-    fontSize: 14,
-  },
-  transparentButton: {
-    backgroundColor: "transparent",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#109BE7",
-    alignItems: "center",
-    justifyContent: "center",
-    alignContent: "center",
-    borderRadius: 10,
-    height: 45,
-  },
-  transparentButtonText: {
-    color: "#109BE7",
-    fontSize: 16,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "80%",
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  modalScrollView: {
-    marginVertical: 10,
-    maxHeight: 200,
-  },
-  modalText: {
-    fontSize: 16,
-    color: "#333",
-  },
-  closeButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    backgroundColor: "#109BE7",
-  },
-  closeButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  progressContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 20,
-  },
-  progressText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: "#000",
-  },
-});

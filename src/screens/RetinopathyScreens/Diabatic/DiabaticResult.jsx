@@ -9,7 +9,8 @@ import {
   Image,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome"; // Importing FontAwesome
-import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
+import DiabaticHomeScreenTopAppBar from "../TopBar/DiabaticHomeScreenTopAppBar";
 
 export default function DiabaticResult({ route, navigation }) {
   const { responseData, formData } = route.params; // Destructure formData from route.params
@@ -21,25 +22,20 @@ export default function DiabaticResult({ route, navigation }) {
   const positiveGif = require("../../../assets/negative.gif"); // Local GIF file for positive result
   const negativeGif = require("../../../assets/positive.gif"); // Local GIF file for negative result
 
-  // Icon map for specific form data keys
-  const iconMap = {
-    age: "birthday-cake",
-    weight: "balance-scale",
-    bloodPressure: "heartbeat",
-    glucoseLevel: "tint",
-    cholesterol: "medkit",
-    gender: "venus-mars",
-  };
+ 
 
   return (
     <>
-      <RetinopathyHomeScreenTopAppBar header={"Diabates Prediction"} />
+    
+      <DiabaticHomeScreenTopAppBar header={"Diabates Prediction"} />
       <ScrollView contentContainerStyle={styles.container}>
         {/* GIF feedback based on prediction result */}
         <View style={styles.gifContainer}>
           <Image
             source={
-              predictionResult === "Diabetes positive" ? positiveGif : negativeGif
+              predictionResult === "Diabetes positive"
+                ? positiveGif
+                : negativeGif
             }
             style={styles.resultGif}
           />
@@ -57,12 +53,7 @@ export default function DiabaticResult({ route, navigation }) {
             {Object.entries(formData).map(([key, value]) => (
               <View style={styles.infoRow} key={key}>
                 {/* Render icon if available in the iconMap */}
-                <FontAwesome
-                  name={iconMap[key] || "info-circle"} // Default icon if not in map
-                  size={18}
-                  color="#007bff"
-                  style={styles.icon}
-                />
+             
                 <Text style={styles.label}>{key}</Text>
                 <Text style={styles.value}>{value}</Text>
               </View>
@@ -80,7 +71,9 @@ export default function DiabaticResult({ route, navigation }) {
                 <FontAwesome name="eye" size={18} color="#444" />
                 <Text style={styles.paymentText}>Check Retinopathy</Text>
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate("Retinopathy")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Retinopathy")}
+              >
                 <Text style={styles.changeText}>View Retinopathy</Text>
               </TouchableOpacity>
             </View>
@@ -91,34 +84,37 @@ export default function DiabaticResult({ route, navigation }) {
                 <FontAwesome name="user-md" size={18} color="#444" />
                 <Text style={styles.paymentText}>Doctor Channel</Text>
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate("ChannelDoctorsScreen")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ChannelDoctorsScreen")}
+              >
                 <Text style={styles.changeText}>Contact a Doctor</Text>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
           <View>
-          <View style={styles.paymentSection}>
-            <View style={styles.paymentIconSection}>
-              <FontAwesome name="forward" size={23} color="#444" />
-              <Text style={styles.paymentText}>Health Tips</Text>
+            <View style={styles.paymentSection}>
+              <View style={styles.paymentIconSection}>
+                <FontAwesome name="forward" size={23} color="#444" />
+                <Text style={styles.paymentText}>Health Tips</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("HealthTips")}
+              >
+                <Text style={styles.changeText}>View Health Tips</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("HealthTips")}>
-              <Text style={styles.changeText}>View Health Tips</Text>
-            </TouchableOpacity>
-          </View>
 
-
-
-          
             {/* Doctor Channel Section */}
             <View style={styles.paymentSection}>
               <View style={styles.paymentIconSection}>
                 <FontAwesome name="magic" size={23} color="#444" />
                 <Text style={styles.paymentText}>Recommendations</Text>
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate("RecommendHome")}>
-                <Text style={styles.changeText}>View Recommendations</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RecommendHome")}
+              >
+                <Text style={styles.changeText}>View </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -132,8 +128,12 @@ export default function DiabaticResult({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 25,
     backgroundColor: "#fff",
+
+
+
+
   },
   gifContainer: {
     justifyContent: "center",

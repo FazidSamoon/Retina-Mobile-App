@@ -43,7 +43,7 @@ const InsulinComponent = () => {
         onPress={() => setModalVisible(true)}
         activeOpacity={0.7}
       >
-        <FontAwesome name="question-circle" size={18} color="#D3D3D3" />
+        <FontAwesome name="question-circle" size={18} color="#A6CE39" />
       </TouchableOpacity>
 
       <Modal

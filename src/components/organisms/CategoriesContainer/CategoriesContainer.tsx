@@ -32,12 +32,18 @@ const cards: CategoriesCardType[] = [
     ontapLink: "ChannelDoctorsScreen",
     backgroundColor: "#FFBF9B",
   },
-
   {
-    title: "Check Diabetes",
+    title: "Prediction",
     description: "Check your vision and complete the task.",
     imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "Diabatic",
+    ontapLink: "PredictionMain",
+    backgroundColor: "#AAF0D1",
+  },
+  {
+    title: "Clinical Trials",
+    description: "Do some eye exercise to improve your vision.",
+    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+    ontapLink: "Survay",
     backgroundColor: "#AAF0D1",
   },
   {
@@ -48,25 +54,10 @@ const cards: CategoriesCardType[] = [
     backgroundColor: "#AAF0D1",
   },
   {
-    title: "Check Retinopathy",
-    description: "Consult with our doctors for better vision.",
-    imageSrc: require("../../../assets/channelDoctorCardImg.png"),
-    ontapLink: "Retinopathy",
-    backgroundColor: "#AAF0D1",
-  },
-  {
     title: "Health Tips",
     description: "Check your vision and complete the task.",
     imageSrc: require("../../../assets/visionTestcardImg.png"),
     ontapLink: "HealthTips",
-    backgroundColor: "#AAF0D1",
-  },
-
-  {
-    title: "Survay",
-    description: "Do some eye exercise to improve your vision.",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "Survay",
     backgroundColor: "#AAF0D1",
   },
   {
@@ -76,6 +67,7 @@ const cards: CategoriesCardType[] = [
     ontapLink: "RetinopathyInfo",
     backgroundColor: "#AAF0D1",
   },
+
 ];
 
 const CategoriesContainer = () => {

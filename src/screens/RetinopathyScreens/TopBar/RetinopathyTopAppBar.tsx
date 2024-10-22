@@ -51,7 +51,7 @@ const RetinopathyHomeScreenTopAppBar = ({
         style={{
           height: 50,
           width: 50,
-          paddingVertical: 35,
+          paddingVertical: 65,
         }}
       ></TouchableOpacity>
     </View>

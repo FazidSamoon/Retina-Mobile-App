@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackArrowHead from "../../../assets/BackArrowHead";
 import Retinopathy from "../Retinopathy/Retinopathy";
 
-const RetinopathyHomeScreenTopAppBar = ({
+const DiabaticResultHomeScreenTopAppBar = ({
   header = "Check Vision Task",
   navigateTo,
 }: {
@@ -14,12 +14,12 @@ const RetinopathyHomeScreenTopAppBar = ({
   navigateTo?: () => void;
 }) => {
   const navigation = useNavigation<any>();
-
+//ResultScreen
   const handleNavigation = () => {
     if (navigateTo) {
-      navigation.goBack();
+      navigation.navigate('Home');
     } else {
-      navigation.goBack();
+      navigation.navigate('Home');
     }
   };
   return (
@@ -51,14 +51,14 @@ const RetinopathyHomeScreenTopAppBar = ({
         style={{
           height: 50,
           width: 50,
-          paddingVertical: 35,
+          paddingVertical: 65,
         }}
       ></TouchableOpacity>
     </View>
   );
 };
 
-export default RetinopathyHomeScreenTopAppBar;
+export default DiabaticResultHomeScreenTopAppBar;
 
 const styles = StyleSheet.create({
   menuContainer: {
