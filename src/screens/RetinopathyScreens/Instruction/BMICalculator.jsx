@@ -224,7 +224,7 @@ const BMICalculator = () => {
       {/* Info Icon Centered on Home Screen */}
       <View style={styles.infoIconContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7} accessibilityLabel="Open BMI Calculator Information">
-        <FontAwesome name="calculator" size={18} color="#A6CE39" />
+        <FontAwesome name="calculator" size={18} color="#5bc3fc" />
         </TouchableOpacity>
       </View>
 
@@ -244,7 +244,7 @@ const BMICalculator = () => {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{translations[language].title}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton} accessibilityLabel="Close Modal">
-                <Ionicons name="close-circle" size={28} color="#FF5252" />
+                <Ionicons name="close-circle" size={35} color="#c4c4c4" />
               </TouchableOpacity>
             </View>
 

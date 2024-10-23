@@ -261,7 +261,7 @@ ${score >= 12 ? translations[language].results.highRiskMessage.replace('{score}'
       {/* Info Icon Centered on Home Screen */}
       <View style={styles.infoIconContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.7}>
-        <FontAwesome name="question-circle" size={18} color="#A6CE39" />
+        <FontAwesome name="question-circle" size={18} color="#5bc3fc" />
      
          
         </TouchableOpacity>
@@ -283,7 +283,7 @@ ${score >= 12 ? translations[language].results.highRiskMessage.replace('{score}'
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{translations[language].title}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Ionicons name="close-circle" size={28} color="#FF5252" />
+                <Ionicons name="close-circle" size={35} color="#c4c4c4" />
               </TouchableOpacity>
             </View>
 

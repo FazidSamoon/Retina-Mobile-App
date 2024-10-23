@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   skipText: {
-    color: "#A6CE39",
+    color: "#5bc3fc",
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 5,

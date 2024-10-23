@@ -26,6 +26,7 @@ import TestLoadingScreen from "../Components/LoadingScreen";
 import TestLoadingRetinopathy from "../Components/LoadingRetinopathy";
 import styles from "../Retinopathy/RetinopathyStyles";
 import RetinopathyHomeScreenTopAppBar0 from "../TopBar/PredictHomeTopAppBar";
+import { Dropdown } from "react-native-element-dropdown";
 
 export default function Retinopathy() {
   const navigation = useNavigation();
@@ -230,6 +231,23 @@ export default function Retinopathy() {
     }
   };
 
+
+
+
+
+
+  
+  // Options for dropdowns
+  const genderOptions = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+  ];
+
+  const diabetesTypeOptions = [
+    { label: "Type 1", value: "Type 1" },
+    { label: "Type 2", value: "Type 2" },
+  
+  ];
   return (
     <>
       <RetinopathyHomeScreenTopAppBar0 header={"Check For Retinopathy"} />
@@ -298,30 +316,33 @@ export default function Retinopathy() {
             {/* Gender and Diabetes Type */}
             <View style={styles.row}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Gender</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Gender"
-                  value={gender}
-                  onChangeText={setGender}
-                />
+              <Text style={styles.label}>Gender</Text>
+              <Dropdown
+                style={styles.input}
+                data={genderOptions}
+                labelField="label"
+                valueField="value"
+                placeholder="Select Gender"
+                value={gender}
+                onChange={(item) => setGender(item.value)}
+              />
                 {errors.gender && (
                   <Text style={styles.error}>{errors.gender}</Text>
                 )}
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
-                  Diabetes Type <DiabetesType />
-                </Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Diabetes Type"
-                  value={diabetesType}
-                  onChangeText={setDiabetesType}
-                  editable={false} // Make it non-editable
-                />
-              </View>
+              <Text style={styles.label}>Diabetes Type</Text>
+              <Dropdown
+                style={styles.input}
+                data={diabetesTypeOptions}
+                labelField="label"
+                valueField="value"
+                placeholder="Select Diabetes Type"
+                value={diabetesType}
+                onChange={(item) => setDiabetesType(item.value)}
+              />
+            </View>
             </View>
 
             {/* BP Inputs */}
