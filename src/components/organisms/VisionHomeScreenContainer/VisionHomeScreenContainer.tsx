@@ -1,10 +1,8 @@
 import {
   Modal,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
@@ -14,16 +12,13 @@ import * as Animatable from "react-native-animatable";
 import Doctor1 from "../../../assets/doctorMain.png";
 import SpeechBubble from "./SpeachBubble";
 import * as Speech from "expo-speech";
-import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
-import { UserType } from "../../../utils/types/commonTypes";
-
 const VisionHomeScreenContainer = () => {
   const [modalVisible, setModalVisible] = useState(true);
 
   const narrateText = (message) => {
     Speech.speak(message, {
       voice: "en-in-x-ene-local",
-      pitch: 1.0,
+      pitch: 0.7,
       rate: 1.0,
     });
   };
@@ -40,6 +35,14 @@ const VisionHomeScreenContainer = () => {
     Speech.stop();
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    const checkAvailableVoices = async () => {
+      const voices = await Speech.getAvailableVoicesAsync();
+      console.log(voices);
+    };
+    checkAvailableVoices();
+  }, []);
 
   return (
     <View>

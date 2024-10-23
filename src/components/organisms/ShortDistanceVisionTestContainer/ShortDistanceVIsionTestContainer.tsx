@@ -62,7 +62,7 @@ const ShortDistanceVIsionTestContainer = () => {
     });
   const [guidenceStep, setGuidenceStep] = useState<number>(0);
   const [steps, setSteps] = useState<VisionTestFlows>(
-    VisionTestFlows.TEST_FLOW_SELECTOR
+    VisionTestFlows.TEST_INSTRUCTIONS
   );
   const [testType, setTestType] = useState<TestTypes>(TestTypes.LETTERS);
 
@@ -107,6 +107,7 @@ const ShortDistanceVIsionTestContainer = () => {
       <VisionHomeScreenTopAppBar
         header={getTopAppBarTitle()}
         setSteps={setSteps}
+        step={steps}
       />
       {steps === VisionTestFlows.TEST_INSTRUCTIONS ? (
         <ShortDistaneTestGuidence
@@ -124,10 +125,11 @@ const ShortDistanceVIsionTestContainer = () => {
       ) : steps === VisionTestFlows.TEST_RESULT ? (
         <ShortDistanceTestResults  visionTestResults={visionTestStates} setSteps={setSteps} user={user} />
       ) : (
-        <VisionTestTestTypeSelector
-          setSteps={setSteps}
-          setTestType={setTestType}
-        />
+        // <VisionTestTestTypeSelector
+        //   setSteps={setSteps}
+        //   setTestType={setTestType}
+        // />
+        <></>
       )}
     </View>
   );

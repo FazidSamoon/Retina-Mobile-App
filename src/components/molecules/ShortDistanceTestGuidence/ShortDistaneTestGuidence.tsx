@@ -1,12 +1,13 @@
 import {
   Dimensions,
   Image,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TestTypes,
   VisionTestFlows,
@@ -29,13 +30,29 @@ const ShortDistaneTestGuidence = ({
   flow?: VisionTestFlowsActions;
   testType?: TestTypes;
 }) => {
+  const [showModal, setShowModal] = useState(false);
   const handleNextStep = () => {
     if (steps < ShortDistanceTestGuidenceSteps.length - 1)
       setGuidenceSteps(steps + 1);
 
-    if (steps === ShortDistanceTestGuidenceSteps.length - 1)
-      setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+    if (steps === ShortDistanceTestGuidenceSteps.length - 1) setShowModal(true);
+    // if (steps === ShortDistanceTestGuidenceSteps.length - 1)
+    //   setSelectedFlow(VisionTestFlows.TEST_SCREEN);
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (showModal) {
+      timer = setTimeout(() => {
+        setSelectedFlow(VisionTestFlows.TEST_SCREEN);
+      }, 5000); // Proceed to next step after 5 seconds in range
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showModal])
 
   const ShortDistanceTestGuidenceSteps: LongDistanceTestGuidenceStepsType[] = [
     {
@@ -142,6 +159,57 @@ const ShortDistaneTestGuidence = ({
       >
         <ForwardArrowHead fill={BASIC_COLORS.PRIMARY} />
       </Pressable>
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => {
+          setShowModal(false);
+        }}
+      >
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              height: Dimensions.get("window").height * 0.7,
+              width: 300,
+              backgroundColor: "white",
+              borderRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Please close your RIGHT eye
+            </Text>
+            <Image
+              source={require("../../../assets/CloseRightEye.png")}
+              style={{
+                width: Dimensions.get("window").width * 0.6,
+                height: Dimensions.get("window").height * 0.4,
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

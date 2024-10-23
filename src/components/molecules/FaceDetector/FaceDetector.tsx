@@ -13,6 +13,7 @@ import {
 import * as FaceDetector from "expo-face-detector";
 import * as Device from "expo-device";
 import { PersonalizedDistance } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
+import { debounce } from "lodash";
 
 const FaceDetectorComponenet = ({
   fullScreenEnabled = true,
@@ -33,6 +34,7 @@ const FaceDetectorComponenet = ({
   const cameraRef = useRef(null);
   const [faces, setFaces] = useState([]);
 
+
   const estimateDistance = (face) => {
     const faceWidth = face.bounds.size.width;
     const focalLength = 500;
@@ -41,13 +43,12 @@ const FaceDetectorComponenet = ({
     const distance = (realFaceWidth * focalLength) / faceWidth;
     if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
     else handleInRange();
-    console.log(distance.toFixed(2))
     return distance.toFixed(2);
   };
 
-  const handleFacesDetected = ({ faces }) => {
+  const handleFacesDetected = debounce(({ faces }) => {
     setFaces(faces);
-  };
+  }, 500);
 
   useEffect(() => {
     (async () => {
@@ -90,10 +91,10 @@ const FaceDetectorComponenet = ({
         ref={cameraRef}
         onFacesDetected={handleFacesDetected}
         faceDetectorSettings={{
-          mode: FaceDetector.FaceDetectorMode.fast,
-          detectLandmarks: FaceDetector.FaceDetectorLandmarks.all,
+          mode: FaceDetector.FaceDetectorMode.accurate,
+          detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
           runClassifications: FaceDetector.FaceDetectorClassifications.none,
-          minDetectionInterval: 500,
+          minDetectionInterval: 1000,
           tracking: true,
         }}
       >
@@ -122,7 +123,6 @@ export default FaceDetectorComponenet;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
   },
   camera: {
     flex: 1,

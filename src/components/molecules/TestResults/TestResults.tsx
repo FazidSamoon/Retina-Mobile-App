@@ -184,6 +184,7 @@ const TestResults = ({
       "12",
     ];
 
+
     pendingLongDistanceTasksList.map((element, index) => {
       const includesSize = sizes.some((size) =>
         element.identification.includes(size)
@@ -233,6 +234,9 @@ const TestResults = ({
         setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
       }
     });
+
+    console.log("pendingLongDistanceTasksList ", pendingLongDistanceTasksList)
+    console.log("listOfCompletedTasks ", listOfCompletedTasks)
     if (listOfCompletedTasks.length > 0)
       handleUploadCompletion(listOfCompletedTasks);
   };

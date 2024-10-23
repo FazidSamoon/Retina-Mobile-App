@@ -115,11 +115,11 @@ const LongDinstanceVisionTest = ({
 
   const handleInRange = () => {
     setInRange(true);
-    if (showNotInRangeModal) setShowEyeChangeModal(false);
+    if (showNotInRangeModal) setShowNotInRangeModal(false);
   };
   const handleNotInRange = () => {
     setInRange(false);
-    if (!showNotInRangeModal) setShowEyeChangeModal(true);
+    if (!showNotInRangeModal) setShowNotInRangeModal(true);
   };
   const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps) => {
     switch (step) {

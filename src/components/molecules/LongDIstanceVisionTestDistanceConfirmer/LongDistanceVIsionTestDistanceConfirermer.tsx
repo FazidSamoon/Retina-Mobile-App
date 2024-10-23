@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 import { PersonalizedDistance } from "../LongDistanceVisionTest/LongDistanceVIsionTestTypes";
 import { VisionTestFlows } from "../../organisms/LongDistanceVisionTestContainer/LongDistanceVisionTestTypes";
@@ -16,6 +16,16 @@ import Doctor1 from "../../../assets/doctorMain.png";
 import * as Animatable from "react-native-animatable";
 import * as Speech from "expo-speech";
 
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 const LongDistanceVIsionTestDistanceConfirermer = ({
   personalizedDistance,
   setSteps,
@@ -23,19 +33,33 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
   personalizedDistance: PersonalizedDistance;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
 }) => {
-  console.log("personalizedDistance ", personalizedDistance);
+
   const [inRange, setInRange] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(true);
+  const previousInRangeState = useRef(inRange);
+
+  // Debounced distance checker to avoid multiple rapid state changes
+  const debouncedInRangeHandler = useRef(
+    debounce((inRangeState) => {
+      if (previousInRangeState.current !== inRangeState) {
+        setInRange(inRangeState);
+        if (inRangeState) {
+          setShowConfirmModal(true);
+        } else {
+          setShowConfirmModal(false);
+        }
+        previousInRangeState.current = inRangeState;
+      }
+    }, 500)
+  ).current;
+
   const handleInRange = () => {
-    if (!inRange) {
-      setInRange(true);
-      setShowConfirmModal(true);
-    }
+    debouncedInRangeHandler(true);
   };
 
   const handleNotInRange = () => {
-    if (inRange) setInRange(false);
+    debouncedInRangeHandler(false);
   };
 
   useEffect(() => {
@@ -44,7 +68,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
     if (inRange && showConfirmModal) {
       timer = setTimeout(() => {
         setSteps(VisionTestFlows.TEST_SCREEN);
-      }, 5000);
+      }, 5000); // Proceed to next step after 5 seconds in range
     }
 
     return () => {
@@ -57,7 +81,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
     if (modalVisible) {
       timer = setTimeout(() => {
         setModalVisible(false);
-      }, 6000);
+      }, 6000); // Auto-hide the modal after 6 seconds
     }
     return () => {
       clearTimeout(timer);

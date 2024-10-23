@@ -48,8 +48,9 @@ const LongDistanceFlowSelector = ({
   useEffect(() => {
     if (modalVisible) {
       narrateText(
-        "You can perform the test by your self or with someone elses help!. Please select your preferred method"
+        "You can perform the test by your self or with someone elses help!."
       );
+      narrateText("Please select your preferred method");
     }
   }, [modalVisible]);
 

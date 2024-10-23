@@ -116,13 +116,12 @@ const LongDistanceVisionSwipableTest = ({
   const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
   const handleInRange = () => {
-    console.log("hey")
     setInRange(true);
-    if (showNotInRangeModal) setShowEyeChangeModal(false);
+    if (showNotInRangeModal) setShowNotInRangeModal(false);
   };
   const handleNotInRange = () => {
     setInRange(false);
-    if (!showNotInRangeModal) setShowEyeChangeModal(true);
+    if (!showNotInRangeModal) setShowNotInRangeModal(true);
   };
   const letterInView = useRef<string>("E");
 
@@ -223,8 +222,6 @@ const LongDistanceVisionSwipableTest = ({
   const validateSwipeWithDirection = (
     currAppliedDir: SwiperLetterDirectionsType
   ) => {
-    console.log("currAppliedDir", currAppliedDir);
-    console.log("direction", direction);
     if (currAppliedDir === direction) {
       letterInView.current = null;
       if (currentStepIndex < 51 && status === ResultStatus.NULL)
@@ -624,74 +621,6 @@ const LongDistanceVisionSwipableTest = ({
           </View>
         </View>
       </View>
-
-      {/* <View
-        style={{
-          marginTop: 30,
-        }}
-      >
-        {status === ResultStatus.NULL ? (
-          <AnimatedCircularProgress
-            size={100}
-            width={7}
-            fill={(timer * 100) / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => (
-              <Text
-                style={{
-                  fontSize: 50,
-                  fontWeight: "bold",
-                }}
-              >
-                {timer}
-              </Text>
-            )}
-          </AnimatedCircularProgress>
-        ) : (
-          <AnimatedCircularProgress
-            size={100}
-            width={7}
-            fill={15 / 15}
-            tintColor={
-              timer > 10 ? BASIC_COLORS.PRIMARY : timer > 5 ? "orange" : "red"
-            }
-            backgroundColor="#3d5875"
-          >
-            {(fill) => <Text>15</Text>}
-          </AnimatedCircularProgress>
-        )}
-      </View>
-
-      <View
-        style={{
-          marginTop: 10,
-          width: "100%",
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {identified && (
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
-            >
-              Identified
-            </Text>
-          )}
-        </View>
-      </View> */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -729,10 +658,10 @@ const LongDistanceVisionSwipableTest = ({
                 textAlign: "center",
               }}
             >
-              Please maintain required distance
+              Please close your LEFT eye
             </Text>
             <Image
-              source={require("../../../assets/doctor1.jpg")}
+              source={require("../../../assets/CloseLeftEye.png")}
               style={{
                 width: Dimensions.get("window").width * 0.6,
                 height: Dimensions.get("window").height * 0.4,
