@@ -24,9 +24,11 @@ import { useNavigation } from "@react-navigation/native";
 const WeeklyChallengesCard = ({
   user,
   challanges,
+  leaderboard
 }: {
   user: UserType;
   challanges: VisionTestChallenge[];
+  leaderboard: any[]
 }) => {
   const navigation = useNavigation<any>();
   // const { data, isLoading } = useQuery({
@@ -92,7 +94,7 @@ const WeeklyChallengesCard = ({
             alignItems: "center",
           }}
         >
-          <RPAvatarGroup avatars={dummyAvatar} size={"small"} max={3} />
+          <RPAvatarGroup avatars={leaderboard} size={"small"} max={3} />
 
           <View
             style={{
