@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from "react-native";
 import React from "react";
-import { LinearProgress } from "react-native-elements";
+import { LinearProgress } from "@rneui/base";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 
 const LeaderBoardContainer = ({ level, leaderboard }) => {
-
   const nameInitials = (name: string) => {
     const words = name?.split(" ");
     return words
@@ -65,14 +69,13 @@ const LeaderBoardContainer = ({ level, leaderboard }) => {
               }}
             >
               <LinearProgress
-                value={level?.xpGained ?? 5 / 100}
-                trackColor="#F4F6F9"
-                color={BASIC_COLORS.PRIMARY}
+                value={(level?.xpGained ?? 5 / 100) / 100}
+                color={BASIC_COLORS.WHITE}
                 style={{
                   height: 10,
                   borderRadius: 5,
-                  marginTop: 20,
-                  marginBottom: 5,
+                  marginTop: 10,
+                  marginBottom: 5
                 }}
               />
               <Text

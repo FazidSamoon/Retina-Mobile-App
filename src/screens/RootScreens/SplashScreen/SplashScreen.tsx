@@ -72,7 +72,7 @@ const SplashScreen = () => {
               fontWeight: "bold",
             }}
           >
-            Welcome to React Native
+            Welcome to Retina Care
           </Text>
           <Text
             style={{
@@ -81,7 +81,7 @@ const SplashScreen = () => {
               marginTop: 10,
             }}
           >
-            Hello world
+            
           </Text>
         </View>
         <View>

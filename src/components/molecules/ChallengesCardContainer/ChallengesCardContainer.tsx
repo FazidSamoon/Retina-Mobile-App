@@ -11,6 +11,7 @@ import {
 } from "../../../utils/types/commonTypes";
 import {
   checkChallangesAvailability,
+  getLeaderboard,
   getMonthlyChallanges,
 } from "../../../api/challanges";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,7 @@ const ChallengesCardContainer = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState<UserType>();
   const [challanges, setChallanges] = useState<VisionTestChallenge[]>([]);
+  const [leaderboard, setLeaderboards] = useState([]);
   const getUser = async () => {
     const userObj = await getDataFromAsyncStorage("user");
     setUser(userObj);
@@ -34,8 +36,29 @@ const ChallengesCardContainer = () => {
         setChallanges(apiSuccess.data);
       }
     }
+
+    const { apiError: leaderBoardApiError, apiSuccess: leaderBoardApiSuccess } =
+      await getLeaderboard(userObj?.data?.otherDetails?._id);
+
+    if (leaderBoardApiSuccess) {
+      const nameInitials = (name: string) => {
+        const words = name?.split(" ");
+        return words
+          ?.slice(0, 2)
+          ?.map((word) => word[0]?.toUpperCase())
+          ?.join("");
+      };
+      
+      setLeaderboards(
+        leaderBoardApiSuccess.data.map((item) => ({
+          title: nameInitials(item.user.name),
+        }))
+      );
+    }
   };
 
+
+  console.log("fafa ", leaderboard)
   useEffect(() => {
     void getUser();
   }, []);
@@ -54,7 +77,7 @@ const ChallengesCardContainer = () => {
           height: "auto",
         }}
       >
-        <WeeklyChallengesCard user={user} challanges={challanges} />
+        <WeeklyChallengesCard user={user} challanges={challanges} leaderboard={leaderboard}/>
         {/* <MonthlyChallengesCard /> */}
       </ScrollView>
     </View>
