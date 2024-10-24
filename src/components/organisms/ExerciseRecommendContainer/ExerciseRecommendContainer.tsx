@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProgressChart } from "react-native-chart-kit";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
@@ -18,6 +18,7 @@ import { RPSInputFieldStyle } from "../../atoms/RPInputField/inputFieldTypes";
 import RPPickerInput from "../../atoms/RPPickerInput/RPPickerInput";
 import { useFormik } from "formik";
 import CustomModal from "../../molecules/Recommondations/ExerciseRecommondations/CustomModal";
+import { getExercises } from "../../../utils/common/excersiseRecommender";
 import {
   binaryAnswerData,
   bloodPressureData,
@@ -27,24 +28,79 @@ import {
   exerciseValidationSchema,
   myInfoValidationSchema,
 } from "../../../utils/validations";
+import {
+  getDataFromAsyncStorage,
+  setDataToAsyncStorage,
+} from "../../../utils/common/commonUtil";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+
+const basicColors = [
+  "#f94144",
+  "#f8961e",
+  "#f9844a",
+  "#f3722c",
+  "#f9c74f",
+  "#90be6d",
+  "#43aa8b",
+  "#4d908e",
+  "#577590",
+  "#277da1",
+  "#6680B3",
+];
 
 const ExerciseRecommendContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
   const [myInfoModal, setMyInfoModal] = useState(false);
   const [logExerciseModal, setLogExerciseModal] = useState(false);
+  const [myHealthInfo, setMyHealthInfo] = useState<any>();
+  const [recommendedExercises, setRecommendedExercises] = useState<string[]>();
 
   const navigateTo = () => {
     navigation.navigate("RecommendHome");
   };
 
-  const exercises = ["Jogging", "Swimming", "Push-ups", "Squats"];
+  const getMyHealthInfo = async () => {
+    const myHealthInfo = await getDataFromAsyncStorage("myHealthInfo");
+    return myHealthInfo;
+  };
+
+  const fetchHealthInfo = async () => {
+    try {
+      const info = await getMyHealthInfo();
+      setMyHealthInfo(info);
+    } catch (error) {
+      console.error("Failed to fetch health info", error);
+    }
+  };
+
+  const getRecommendedExercises = (myInfo: any) => {
+    const exercises = getExercises(myInfo);
+    setRecommendedExercises(exercises);
+  };
+
+  useEffect(() => {
+    fetchHealthInfo();
+    getRecommendedExercises(myHealthInfo);
+  }, []);
+
+  useEffect(() => {
+    console.log("recommendedExercises", recommendedExercises);
+  }, [recommendedExercises]);
+
+  const generateColorsArray = (length: number) => {
+    const colorsArray = [];
+    for (let i = 0; i < length; i++) {
+      colorsArray.push(basicColors[i]);
+    }
+    return colorsArray;
+  };
 
   const sampleChartData = {
-    labels: ["Swim", "Bike", "Run", "Hike"],
-    data: [0.4, 0.3, 0.3, 0.7],
+    labels: ["Swim", "Bike", "Run", "Hike", "Ski", "Walk", "Gym"],
+    data: [0.4, 0.3, 0.3, 0.7, 0.8, 0.6, 0.8],
+    colors: generateColorsArray(7),
   };
 
   const chartConfig = {
@@ -78,17 +134,23 @@ const ExerciseRecommendContainer = () => {
     },
   });
 
-  const handleMyInfoUpdate = (values: any) => {
-    console.log("My Info Updated:", values);
+  const handleMyInfoUpdate = async (values: any) => {
+    if (values) {
+      await setDataToAsyncStorage("myHealthInfo", values);
+      getRecommendedExercises(values);
+      setMyHealthInfo(values);
+      fetchHealthInfo();
+    }
   };
 
   const myInfoFormik = useFormik({
     initialValues: {
-      retinopathy: "",
-      age: "",
-      heartProblems: "",
-      bloodPressure: "",
+      retinopathy: myHealthInfo?.retinopathy || "",
+      age: myHealthInfo?.age || "",
+      heartProblems: myHealthInfo?.heartProblems || "",
+      bloodPressure: myHealthInfo?.bloodPressure || "",
     },
+    enableReinitialize: true,
     validationSchema: myInfoValidationSchema,
     onSubmit: (values) => {
       handleMyInfoUpdate(values);
@@ -113,6 +175,7 @@ const ExerciseRecommendContainer = () => {
             radius={24}
             chartConfig={chartConfig}
             hideLegend={false}
+            withCustomBarColorFromData
           />
         </View>
         <Text style={styles.text}>Recommended Exercises</Text>
@@ -127,9 +190,10 @@ const ExerciseRecommendContainer = () => {
           </Text>
 
           <View style={styles.list}>
-            {exercises.map((exercise, index) => (
-              <Text key={index}>{exercise}</Text>
-            ))}
+            {recommendedExercises &&
+              recommendedExercises.map((exercise, index) => (
+                <Text key={index}>{exercise}</Text>
+              ))}
           </View>
         </View>
 
@@ -234,7 +298,7 @@ const ExerciseRecommendContainer = () => {
           selectedValue={exerciseFormik.values.exerciseName}
           onValueChange={(value) => {
             exerciseFormik.setFieldValue("exerciseName", value);
-            exerciseFormik.setFieldTouched("exerciseName", true); // Mark field as touched
+            exerciseFormik.setFieldTouched("exerciseName", true);
           }}
           options={exercisesData}
           labelStyle={styles.labelStyle}
@@ -250,7 +314,7 @@ const ExerciseRecommendContainer = () => {
           inputPlaceholder={"Enter time in minutes"}
           onChangeText={(e) => {
             exerciseFormik.setFieldValue("exerciseTime", e);
-            exerciseFormik.setFieldTouched("exerciseTime", true); // Mark field as touched
+            exerciseFormik.setFieldTouched("exerciseTime", true);
           }}
           value={exerciseFormik.values.exerciseTime}
           labelStyles={styles.labelStyle}
@@ -338,6 +402,7 @@ const styles = StyleSheet.create({
   inputTextStyles: {
     color: BASIC_COLORS.FONT_PRIMARY,
     fontWeight: "400",
+    fontSize: 16,
   },
   myInfoTouchable: {
     color: "blue",
