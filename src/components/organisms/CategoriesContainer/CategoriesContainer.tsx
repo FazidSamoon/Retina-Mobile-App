@@ -67,6 +67,14 @@ const cards: CategoriesCardType[] = [
     ontapLink: "RetinopathyInfo",
     backgroundColor: "#AAF0D1",
   },
+  {
+    title: "Next Screening",
+    description: "Check your vision and complete the task.",
+    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    ontapLink: "NextScreeningInterval",
+    backgroundColor: "#AAF0D1",
+  },
+
 
 ];
 

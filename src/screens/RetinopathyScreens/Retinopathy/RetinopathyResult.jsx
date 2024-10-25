@@ -34,7 +34,7 @@ export default function RetinopathyResult({ route, navigation }) {
   const predictionText = isPositive
     ? "There Is a Risk Of Eye Blindness."
     : "No Risk Of Eye Blindness";
-  const predictionTextColor = isPositive ? "red" : "green";
+  const predictionTextColor = isPositive ? "red" : "#5bc3fc";
   return (
     <>
     
@@ -85,7 +85,7 @@ export default function RetinopathyResult({ route, navigation }) {
             {isPositive ? (
               <View style={styles.paymentSection}>
                 <View style={styles.paymentIconSection}>
-                  <FontAwesome name="map-signs" size={18} color="#007bff" />
+                  <FontAwesome name="map-signs" size={18} color="grey" />
                   <Text style={styles.paymentText}>Locations</Text>
                 </View>
                 <TouchableOpacity
@@ -97,7 +97,7 @@ export default function RetinopathyResult({ route, navigation }) {
             ) : (
               <View style={styles.paymentSection}>
                 <View style={styles.paymentIconSection}>
-                  <FontAwesome name="fort-awesome" size={18} color="#007bff" />
+                  <FontAwesome name="bell" size={18} color="grey" />
                   <Text style={styles.paymentText}>HealthTips</Text>
                 </View>
                 <TouchableOpacity
@@ -110,8 +110,8 @@ export default function RetinopathyResult({ route, navigation }) {
 
             <View style={styles.paymentSection}>
               <View style={styles.paymentIconSection}>
-                <FontAwesome name="forward" size={18} color="#007bff" />
-                <Text style={styles.paymentText}>Next screen</Text>
+                <FontAwesome name="forward" size={18} color="grey" />
+                <Text style={styles.paymentText}>Next Screening Date</Text>
               </View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("NextScreeningInterval")}

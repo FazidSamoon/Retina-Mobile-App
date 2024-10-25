@@ -248,8 +248,7 @@ const BMICalculator = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Language Switch Buttons */}
-            {renderLanguageButtons()}
+          
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
   <Image
     source={require("../../../assets/RetinoImages/16.png")} // Replace with your image path or URL
@@ -458,7 +457,7 @@ const styles = StyleSheet.create({
   },
   calculateButton: {
     flexDirection: 'row',
-    backgroundColor: '#28A745',
+    backgroundColor: '#109BE7',
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 30,

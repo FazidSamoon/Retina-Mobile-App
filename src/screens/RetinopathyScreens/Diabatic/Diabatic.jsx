@@ -217,7 +217,7 @@ export default function Diabatic({ navigation }) {
 
     try {
       const response = await axios.post(
-        "http://155.248.225.224:8091/predict-diabetes",
+        "https://324aprj.sliit.eye.retino.zeuscorp.co/predict-diabetes",
         { data: formattedData }
       );
 
@@ -335,7 +335,7 @@ export default function Diabatic({ navigation }) {
                   style={styles.closeButton}
                   onPress={() => setIsModalVisible(false)}
                 >
-                  <Text style={styles.closeButtonText}>Close</Text>
+                  <Text style={styles.closeButtonText}>Done</Text>
                 </Pressable>
               </View>
             </View>

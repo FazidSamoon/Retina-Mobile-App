@@ -81,12 +81,12 @@ const NextScreeningInterval = () => {
   return (
     <>
     
-              <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
+              <RetinopathyHomeScreenTopAppBar header={"Next Screening Date"} />
 
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>Next Screening Interval</Text>
-        <Text style={styles.title}>For Mild to moderate</Text>
+        <Text style={styles.title}>For Mild to Moderate</Text>
       </View>
 
       {/* Display the screening date */}
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E9DF9", // Blue background
     padding: 20,
 
-    marginTop: 0,
+    marginTop: 70,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

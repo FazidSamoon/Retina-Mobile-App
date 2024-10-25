@@ -14,16 +14,10 @@ export default function HealthTips({ navigation }) {
   return (
     <>
     
-      <DiabaticResultHomeScreenTopAppBar header={"LifeBoost Tips"} />
+      <DiabaticResultHomeScreenTopAppBar header={"Health Tips"} />
 
       <ScrollView style={styles.container}>
-        {/* Header Section */}
-        <View style={styles.headerSection}>
-          <Text style={styles.header}>Health Tips</Text>
-          <TouchableOpacity style={styles.seeAllBtn}>
-            <Text style={styles.seeAllText}>See All</Text>
-          </TouchableOpacity>
-        </View>
+
 
         {/* Tip Card 1 */}
         <View style={styles.tipCard}>

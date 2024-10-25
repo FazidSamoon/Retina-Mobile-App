@@ -149,6 +149,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  closeButtonText: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#109BE7",
+    color:"white",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    borderRadius: 10,
+    height: 45,
+    backgroundColor: "#109BE7",
+
+  },
   transparentButton: {
     backgroundColor: "transparent",
     paddingVertical: 10,

@@ -27,7 +27,7 @@ export default function DiabaticResult({ route, navigation }) {
   return (
     <>
     
-      <DiabaticHomeScreenTopAppBar header={"Diabates Prediction"} />
+      <DiabaticHomeScreenTopAppBar header={"Diabetes Result"} />
       <ScrollView contentContainerStyle={styles.container}>
         {/* GIF feedback based on prediction result */}
         <View style={styles.gifContainer}>
@@ -95,7 +95,7 @@ export default function DiabaticResult({ route, navigation }) {
           <View>
             <View style={styles.paymentSection}>
               <View style={styles.paymentIconSection}>
-                <FontAwesome name="forward" size={23} color="#444" />
+                <FontAwesome name="forward" size={18} color="#444" />
                 <Text style={styles.paymentText}>Health Tips</Text>
               </View>
               <TouchableOpacity
@@ -108,13 +108,13 @@ export default function DiabaticResult({ route, navigation }) {
             {/* Doctor Channel Section */}
             <View style={styles.paymentSection}>
               <View style={styles.paymentIconSection}>
-                <FontAwesome name="magic" size={23} color="#444" />
+                <FontAwesome name="magic" size={18} color="#444" />
                 <Text style={styles.paymentText}>Recommendations</Text>
               </View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("RecommendHome")}
               >
-                <Text style={styles.changeText}>View </Text>
+                <Text style={styles.changeText}>View Recommendations</Text>
               </TouchableOpacity>
             </View>
           </View>

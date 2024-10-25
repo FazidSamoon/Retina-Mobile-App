@@ -213,7 +213,7 @@ export default function Retinopathy() {
       };
 
       const response = await axios.post(
-        "http://155.248.225.224:8091/predict-retinopathy",
+        "https://324aprj.sliit.eye.retino.zeuscorp.co/predict-retinopathy",
         { data: formData }
       );
 
@@ -231,12 +231,6 @@ export default function Retinopathy() {
     }
   };
 
-
-
-
-
-
-  
   // Options for dropdowns
   const genderOptions = [
     { label: "Male", value: "Male" },
@@ -246,7 +240,6 @@ export default function Retinopathy() {
   const diabetesTypeOptions = [
     { label: "Type 1", value: "Type 1" },
     { label: "Type 2", value: "Type 2" },
-  
   ];
   return (
     <>
@@ -316,33 +309,37 @@ export default function Retinopathy() {
             {/* Gender and Diabetes Type */}
             <View style={styles.row}>
               <View style={styles.inputGroup}>
-              <Text style={styles.label}>Gender</Text>
-              <Dropdown
-                style={styles.input}
-                data={genderOptions}
-                labelField="label"
-                valueField="value"
-                placeholder="Select Gender"
-                value={gender}
-                onChange={(item) => setGender(item.value)}
-              />
+                <Text style={styles.label}>Gender</Text>
+                <Dropdown
+                  style={styles.input}
+                  data={genderOptions}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select Gender"
+                  value={gender}
+                  onChange={(item) => setGender(item.value)}
+                />
                 {errors.gender && (
                   <Text style={styles.error}>{errors.gender}</Text>
                 )}
               </View>
 
               <View style={styles.inputGroup}>
-              <Text style={styles.label}>Diabetes Type</Text>
-              <Dropdown
-                style={styles.input}
-                data={diabetesTypeOptions}
-                labelField="label"
-                valueField="value"
-                placeholder="Select Diabetes Type"
-                value={diabetesType}
-                onChange={(item) => setDiabetesType(item.value)}
-              />
-            </View>
+                <Text style={styles.label}>
+                  Diabetes Type
+                  <DiabetesType />{" "}
+                </Text>
+
+                <Dropdown
+                  style={styles.input}
+                  data={diabetesTypeOptions}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select Diabetes Type"
+                  value={diabetesType}
+                  onChange={(item) => setDiabetesType(item.value)}
+                />
+              </View>
             </View>
 
             {/* BP Inputs */}

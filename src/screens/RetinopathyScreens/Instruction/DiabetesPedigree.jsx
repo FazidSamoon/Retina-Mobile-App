@@ -15,7 +15,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'; // Ensure @expo/vect
 // Complete Translations for English, Sinhala, and Tamil
 const translations = {
   en: {
-    title: "Diabetes Pedigree Analysis",
+    title: "Diabetes Pedigree Calculator",
     questions: {
       ageGroup: "What is your age group?",
       gender: "What is your gender?",
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedOption: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#3eaae6',
   },
   optionText: {
     color: '#333333',
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   calculateButton: {
     flexDirection: 'row',
-    backgroundColor: '#28A745',
+    backgroundColor: '#109BE7',
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 30,
