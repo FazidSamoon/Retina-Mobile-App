@@ -244,6 +244,11 @@ const ExerciseRecommendContainer = () => {
     navigation.navigate("RecommendHome");
   };
 
+  const resetExerciseData = () => {
+    removeDataFromAsyncStorage("exerciseValues");
+    addInitialExerciseValues();
+  };
+
   return (
     <>
       <View>
@@ -253,6 +258,12 @@ const ExerciseRecommendContainer = () => {
         />
         <Text style={styles.text}>Weekly Exercise Progress</Text>
         <View style={styles.card}>
+          <Text
+            style={styles.myInfoTouchableSecondary}
+            onPress={resetExerciseData}
+          >
+            Reset
+          </Text>
           {chartData && (
             <>
               <ProgressChart
@@ -472,6 +483,14 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginTop: 20,
   },
+  customSecondButtonStyle: {
+    borderRadius: 10,
+    height: 60,
+    paddingVertical: 10,
+    backgroundColor: BASIC_COLORS.WHITE,
+    borderWidth: 0,
+    marginTop: 20,
+  },
   customButtonTextStyle: {
     color: BASIC_COLORS.BLACK,
     fontWeight: "500",
@@ -495,6 +514,12 @@ const styles = StyleSheet.create({
     color: "blue",
     alignSelf: "flex-end",
     paddingTop: 10,
+    paddingEnd: 20,
+    fontWeight: "700",
+  },
+  myInfoTouchableSecondary: {
+    color: "#e5e5e5",
+    alignSelf: "flex-end",
     paddingEnd: 20,
     fontWeight: "700",
   },
