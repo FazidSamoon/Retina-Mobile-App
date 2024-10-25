@@ -30,8 +30,15 @@ import {
 } from "../../../utils/validations";
 import {
   getDataFromAsyncStorage,
+  removeDataFromAsyncStorage,
   setDataToAsyncStorage,
 } from "../../../utils/common/commonUtil";
+import {
+  exerciseWeightages,
+  initialExersiceValues,
+} from "../../../data/mealPrefernces";
+import { set } from "date-fns";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -50,15 +57,57 @@ const basicColors = [
   "#6680B3",
 ];
 
+type ExerciseData = { exercise: string; value: number };
+
+type ChartData = {
+  labels: string[];
+  data: number[];
+  colors: string[];
+};
+
 const ExerciseRecommendContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
   const [myInfoModal, setMyInfoModal] = useState(false);
   const [logExerciseModal, setLogExerciseModal] = useState(false);
   const [myHealthInfo, setMyHealthInfo] = useState<any>();
   const [recommendedExercises, setRecommendedExercises] = useState<string[]>();
+  const [exerciseValues, setExerciseValues] = useState<
+    { exercise: string; value: number }[]
+  >([]);
+  const [chartData, setChartData] = useState<ChartData>();
 
-  const navigateTo = () => {
-    navigation.navigate("RecommendHome");
+  useEffect(() => {
+    fetchHealthInfo();
+  }, []);
+
+  useEffect(() => {
+    if (myHealthInfo) {
+      getRecommendedExercises(myHealthInfo);
+    }
+  }, [myHealthInfo]);
+
+  useEffect(() => {
+    initializeData();
+  }, []);
+
+  const initializeData = async () => {
+    const x = await getExerciseValues();
+
+    if (!x || x.length === 0) {
+      await addInitialExerciseValues();
+      await getExerciseValues();
+    }
+  };
+
+  const addInitialExerciseValues = async () => {
+    await setDataToAsyncStorage("exerciseValues", initialExersiceValues);
+  };
+
+  const getExerciseValues = async () => {
+    const exersiceValues = await getDataFromAsyncStorage("exerciseValues");
+    setChartData(await convertToChartData(exersiceValues));
+    setExerciseValues(exersiceValues);
+    return exersiceValues;
   };
 
   const getMyHealthInfo = async () => {
@@ -80,15 +129,6 @@ const ExerciseRecommendContainer = () => {
     setRecommendedExercises(exercises);
   };
 
-  useEffect(() => {
-    fetchHealthInfo();
-    getRecommendedExercises(myHealthInfo);
-  }, []);
-
-  useEffect(() => {
-    console.log("recommendedExercises", recommendedExercises);
-  }, [recommendedExercises]);
-
   const generateColorsArray = (length: number) => {
     const colorsArray = [];
     for (let i = 0; i < length; i++) {
@@ -97,10 +137,27 @@ const ExerciseRecommendContainer = () => {
     return colorsArray;
   };
 
-  const sampleChartData = {
-    labels: ["Swim", "Bike", "Run", "Hike", "Ski", "Walk", "Gym"],
-    data: [0.4, 0.3, 0.3, 0.7, 0.8, 0.6, 0.8],
-    colors: generateColorsArray(7),
+  const convertToChartData = async (
+    input: ExerciseData[]
+  ): Promise<ChartData> => {
+    try {
+      const filteredData = input.filter((item) => item.value > 0);
+
+      const labels = filteredData.map((item) => item.exercise);
+      const data = filteredData.map((item) =>
+        parseFloat((item.value / 150).toFixed(2))
+      );
+
+      // Await colors if generateColorsArray returns a promise
+      const colors = await generateColorsArray(filteredData.length);
+
+      return { labels, data, colors };
+    } catch (error) {
+      console.error("Error generating chart data:", error);
+
+      // Return default data structure in case of error
+      return { labels: [], data: [], colors: [] };
+    }
   };
 
   const chartConfig = {
@@ -111,12 +168,36 @@ const ExerciseRecommendContainer = () => {
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     strokeWidth: 2,
-    barPercentage: 1,
+    barPercentage: 0.5,
     useShadowColorFromDataset: false,
   };
 
+  const weightageCalculator = (exerciseName: string, value: number) => {
+    const exercise = exerciseWeightages.find(
+      (item) => item.exercise === exerciseName
+    );
+
+    return exercise ? value * exercise.weightage : 0;
+  };
+
   const handleLogExercise = (exerciseName: string, loggedTime: string) => {
-    console.log("Exercise logged:", exerciseName, "for", loggedTime, "minutes");
+    const updatedExerciseValues = exerciseValues.map((item) => {
+      if (item.exercise === exerciseName) {
+        return {
+          exercise: item.exercise,
+          value:
+            item.value >= 1
+              ? item.value
+              : item.value +
+                weightageCalculator(exerciseName, parseInt(loggedTime)),
+        };
+      }
+      return item;
+    });
+
+    setDataToAsyncStorage("exerciseValues", updatedExerciseValues).then(() => {
+      getExerciseValues();
+    });
   };
 
   const exerciseFormik = useFormik({
@@ -131,6 +212,7 @@ const ExerciseRecommendContainer = () => {
         exerciseFormik.values.exerciseName,
         exerciseFormik.values.exerciseTime
       );
+      exerciseFormik.resetForm();
     },
   });
 
@@ -158,6 +240,10 @@ const ExerciseRecommendContainer = () => {
     },
   });
 
+  const navigateTo = () => {
+    navigation.navigate("RecommendHome");
+  };
+
   return (
     <>
       <View>
@@ -167,16 +253,20 @@ const ExerciseRecommendContainer = () => {
         />
         <Text style={styles.text}>Weekly Exercise Progress</Text>
         <View style={styles.card}>
-          <ProgressChart
-            data={sampleChartData}
-            width={screenWidth / 1.3}
-            height={220}
-            strokeWidth={12}
-            radius={24}
-            chartConfig={chartConfig}
-            hideLegend={false}
-            withCustomBarColorFromData
-          />
+          {chartData && (
+            <>
+              <ProgressChart
+                data={chartData}
+                width={screenWidth / 1.2}
+                height={220}
+                strokeWidth={12}
+                radius={24}
+                chartConfig={chartConfig}
+                hideLegend={false}
+                withCustomBarColorFromData
+              />
+            </>
+          )}
         </View>
         <Text style={styles.text}>Recommended Exercises</Text>
         <View style={styles.card}>
@@ -302,10 +392,7 @@ const ExerciseRecommendContainer = () => {
           }}
           options={exercisesData}
           labelStyle={styles.labelStyle}
-          error={
-            exerciseFormik.touched.exerciseName &&
-            exerciseFormik.errors.exerciseName
-          }
+          error={exerciseFormik.errors.exerciseName}
         />
 
         {/* Time Input Field */}

@@ -50,16 +50,16 @@ export const monthData = [
 ];
 
 export const exercisesData = [
-  { label: "Swimming", value: "swimming" },
-  { label: "Treadmill", value: "treadmill" },
-  { label: "Cycling", value: "cycling" },
-  { label: "Jogging", value: "jogging" },
-  { label: "Walking", value: "walking" },
-  { label: "Stretching", value: "stretching" },
-  { label: "Yoga", value: "yoga" },
-  { label: "Gym", value: "gym" },
-  { label: "Running", value: "running" },
-  { label: "Pacing", value: "pacing" },
+  { label: "Swimming", value: "Swimming" },
+  { label: "Treadmill", value: "Treadmill" },
+  { label: "Cycling", value: "Cycling" },
+  { label: "Jogging", value: "Jogging" },
+  { label: "Walking", value: "Walking" },
+  { label: "Stretching", value: "Stretching" },
+  { label: "Yoga", value: "Yoga" },
+  { label: "Gym", value: "Gym" },
+  { label: "Running", value: "Running" },
+  { label: "Pacing", value: "Pacing" },
 ];
 
 export const binaryAnswerData = [
