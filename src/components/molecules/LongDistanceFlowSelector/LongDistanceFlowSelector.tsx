@@ -17,6 +17,7 @@ import SpeechBubble from "../../organisms/VisionHomeScreenContainer/SpeachBubble
 import * as Animatable from "react-native-animatable";
 import Doctor1 from "../../../assets/doctorMain.png";
 import * as Speech from "expo-speech";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const LongDistanceFlowSelector = ({
   setSelectedFlow,
@@ -25,6 +26,7 @@ const LongDistanceFlowSelector = ({
   setSelectedFlow: React.Dispatch<React.SetStateAction<VisionTestFlowsActions>>;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
 }) => {
+  const isFocused = useIsFocused();
   const [selected, setSelected] = React.useState<number>(-1);
   const [modalVisible, setModalVisible] = useState(true);
   const onPress = (index: number) => {
@@ -46,7 +48,7 @@ const LongDistanceFlowSelector = ({
   };
 
   useEffect(() => {
-    if (modalVisible) {
+    if (modalVisible && isFocused) {
       narrateText(
         "You can perform the test by your self or with someone elses help!."
       );
@@ -105,7 +107,7 @@ const LongDistanceFlowSelector = ({
       </View>
 
       <Modal
-        visible={modalVisible}
+        visible={modalVisible && isFocused}
         transparent={true}
         animationType="fade"
         onRequestClose={handleCloseModal}

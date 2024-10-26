@@ -9,6 +9,7 @@ import {
   Animated,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
+import * as Brightness from "expo-brightness";
 import {
   TestTypes,
   VisionTestFlows,
@@ -31,6 +32,16 @@ import {
 import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 
 const SWIPE_THRESHOLD = 200;
+
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
 
 const LongDistanceVisionSwipableTest = ({
   selectedFlow,
@@ -115,13 +126,27 @@ const LongDistanceVisionSwipableTest = ({
   const [inRange, setInRange] = useState(true);
   const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
+  const previousInRangeState = useRef(inRange);
+
+  const debouncedInRangeHandler = useRef(
+    debounce((inRangeState) => {
+      if (previousInRangeState.current !== inRangeState) {
+        setInRange(inRangeState);
+        if (inRangeState) {
+          setShowNotInRangeModal(false);
+        } else {
+          setShowNotInRangeModal(true);
+        }
+        previousInRangeState.current = inRangeState;
+      }
+    }, 50)
+  ).current;
+
   const handleInRange = () => {
-    setInRange(true);
-    if (showNotInRangeModal) setShowNotInRangeModal(false);
+    if (previousInRangeState.current !== true) debouncedInRangeHandler(true);
   };
   const handleNotInRange = () => {
-    setInRange(false);
-    if (!showNotInRangeModal) setShowNotInRangeModal(true);
+    if (previousInRangeState.current !== false) debouncedInRangeHandler(false);
   };
   const letterInView = useRef<string>("E");
 
@@ -431,6 +456,18 @@ const LongDistanceVisionSwipableTest = ({
 
     return () => clearTimeout(timeout);
   }, [showEyeChangeModal]);
+
+  useEffect(() => {
+    const setMaxBrightness = async () => {
+      try {
+        await Brightness.setBrightnessAsync(1.0);
+      } catch (error) {
+        console.error("Error setting brightness:", error);
+      }
+    };
+
+    setMaxBrightness();
+  }, []);
 
   return (
     <Animated.View {...panResponder.panHandlers} style={styles.container}>

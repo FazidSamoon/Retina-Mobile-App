@@ -1,5 +1,5 @@
 import { Camera, CameraType } from "expo-camera";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button,
   Dimensions,
@@ -28,27 +28,32 @@ const FaceDetectorComponenet = ({
   handleNotInRange: () => void;
   handleInRange: () => void;
 }) => {
-
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.front);
   const cameraRef = useRef(null);
   const [faces, setFaces] = useState([]);
-
+  const [inrangee, setinrangee] = useState(false);
 
   const estimateDistance = (face) => {
-    const faceWidth = face.bounds.size.width;
-    const focalLength = 500;
-    const realFaceWidth = 0.16;
+    if (face) {
+      const faceWidth = face.bounds.size.width;
+      const focalLength = 500;
+      const realFaceWidth = 0.16;
+  
+      const distance = (realFaceWidth * focalLength) / faceWidth;
+      if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
+      else handleInRange();
+      return distance.toFixed(2);
+    } else {
+      handleNotInRange()
+      return 0
+    }
 
-    const distance = (realFaceWidth * focalLength) / faceWidth;
-    if (distance.toFixed(2) < distanceToMaintain.toFixed(2)) handleNotInRange();
-    else handleInRange();
-    return distance.toFixed(2);
   };
 
   const handleFacesDetected = debounce(({ faces }) => {
     setFaces(faces);
-  }, 500);
+  }, 1000);
 
   useEffect(() => {
     (async () => {
@@ -71,9 +76,7 @@ const FaceDetectorComponenet = ({
         width: fullScreenEnabled
           ? Dimensions.get("screen").width - 50
           : Dimensions.get("screen").width / 2 - 50,
-        height: fullScreenEnabled
-          ? Dimensions.get("screen").height - 50
-          : 250,
+        height: fullScreenEnabled ? Dimensions.get("screen").height - 50 : 250,
       }}
     >
       <Camera
@@ -94,10 +97,11 @@ const FaceDetectorComponenet = ({
           mode: FaceDetector.FaceDetectorMode.accurate,
           detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
           runClassifications: FaceDetector.FaceDetectorClassifications.none,
-          minDetectionInterval: 1000,
+          minDetectionInterval: fullScreenEnabled ? 1000 : 2000,
           tracking: true,
         }}
       >
+        {/* {fullScreenEnabled && ( */}
         <View style={styles.buttonContainer}>
           {faces.map((face, index) => (
             <View key={index} style={styles.faceInfo}>
@@ -105,7 +109,7 @@ const FaceDetectorComponenet = ({
                 style={{
                   fontSize: 20,
                   color: "white",
-                  marginBottom: 100
+                  marginBottom: 100,
                 }}
               >
                 Distance: {estimateDistance(face)} meters
@@ -113,6 +117,7 @@ const FaceDetectorComponenet = ({
             </View>
           ))}
         </View>
+        {/* )} */}
       </Camera>
     </View>
   );

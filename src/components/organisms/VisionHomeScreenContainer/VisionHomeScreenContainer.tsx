@@ -12,9 +12,11 @@ import * as Animatable from "react-native-animatable";
 import Doctor1 from "../../../assets/doctorMain.png";
 import SpeechBubble from "./SpeachBubble";
 import * as Speech from "expo-speech";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 const VisionHomeScreenContainer = () => {
   const [modalVisible, setModalVisible] = useState(true);
-
+  const navigation = useNavigation<any>();
+  const isFocused = useIsFocused();
   const narrateText = (message) => {
     Speech.speak(message, {
       voice: "en-in-x-ene-local",
@@ -24,7 +26,7 @@ const VisionHomeScreenContainer = () => {
   };
 
   useEffect(() => {
-    if (modalVisible) {
+    if (modalVisible && isFocused) {
       narrateText(
         "Hello, how are you doing today?. Let's do your daily vision test!"
       );
@@ -44,6 +46,11 @@ const VisionHomeScreenContainer = () => {
     checkAvailableVoices();
   }, []);
 
+  const navigateTo = () => {
+    navigation.goBack();
+    Speech.stop();
+    setModalVisible(false);
+  }
   return (
     <View>
       <VisionHomeScreenTopAppBar header={"Check Vision Task"} />
@@ -60,7 +67,7 @@ const VisionHomeScreenContainer = () => {
       })}
 
       <Modal
-        visible={modalVisible}
+        visible={modalVisible && isFocused}
         transparent={true}
         animationType="fade"
         onRequestClose={handleCloseModal}

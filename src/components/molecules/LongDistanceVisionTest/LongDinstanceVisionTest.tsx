@@ -29,13 +29,23 @@ import {
 import ForwardArrowHead from "../../../assets/ForwardArrowHead";
 import FaceDetectorComponenet from "../FaceDetector/FaceDetector";
 
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 const LongDinstanceVisionTest = ({
   selectedFlow,
   setSteps,
   setResults,
   testType,
   personalizedTestSize,
-  personalizedDistance
+  personalizedDistance,
 }: {
   selectedFlow: VisionTestFlowsActions;
   setSteps: React.Dispatch<React.SetStateAction<VisionTestFlows>>;
@@ -113,14 +123,29 @@ const LongDinstanceVisionTest = ({
   const [inRange, setInRange] = useState(true);
   const [showNotInRangeModal, setShowNotInRangeModal] = useState(false);
 
+  const previousInRangeState = useRef(inRange);
+
+  const debouncedInRangeHandler = useRef(
+    debounce((inRangeState) => {
+      if (previousInRangeState.current !== inRangeState) {
+        setInRange(inRangeState);
+        if (inRangeState) {
+          setShowNotInRangeModal(false);
+        } else {
+          setShowNotInRangeModal(true);
+        }
+        previousInRangeState.current = inRangeState;
+      }
+    }, 50)
+  ).current;
+
   const handleInRange = () => {
-    setInRange(true);
-    if (showNotInRangeModal) setShowNotInRangeModal(false);
+    if (previousInRangeState.current !== true) debouncedInRangeHandler(true);
   };
   const handleNotInRange = () => {
-    setInRange(false);
-    if (!showNotInRangeModal) setShowNotInRangeModal(true);
+    if (previousInRangeState.current !== false) debouncedInRangeHandler(false);
   };
+
   const setLongDistanceVisionTestStep = (step: LongDIstanceVisionTestSteps) => {
     switch (step) {
       case LongDIstanceVisionTestSteps.SIZE_202_6:
@@ -423,6 +448,18 @@ const LongDinstanceVisionTest = ({
       setSteps(VisionTestFlows.TEST_RESULT);
     }
   };
+
+  useEffect(() => {
+    const setMaxBrightness = async () => {
+      try {
+        await Brightness.setBrightnessAsync(1.0);
+      } catch (error) {
+        console.error("Error setting brightness:", error);
+      }
+    };
+
+    setMaxBrightness();
+  }, []);
 
   return (
     <View style={styles.container}>

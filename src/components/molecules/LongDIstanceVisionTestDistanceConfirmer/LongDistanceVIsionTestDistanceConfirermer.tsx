@@ -39,7 +39,6 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
   const [modalVisible, setModalVisible] = useState(true);
   const previousInRangeState = useRef(inRange);
 
-  // Debounced distance checker to avoid multiple rapid state changes
   const debouncedInRangeHandler = useRef(
     debounce((inRangeState) => {
       if (previousInRangeState.current !== inRangeState) {
