@@ -28,14 +28,32 @@ const MedicalSurveyForm = () => {
     retinopathyProbability: 0.0,
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    let errorMessage = "";
+    if (["systolicBP", "diastolicBP", "hbA1c", "estimatedAvgGlucose", "diagnosisYear"].includes(name)) {
+      if (isNaN(value) || value <= 0) {
+        errorMessage = "Please enter a valid positive number.";
+      }
+    }
+    setErrors({ ...errors, [name]: errorMessage });
   };
 
   const handleSubmit = async () => {
+    const hasErrors = Object.values(errors).some((error) => error !== "");
+    if (hasErrors) {
+      Alert.alert("Please fix the errors before submitting.");
+      return;
+    }
+
     try {
       Alert.alert("Submitting...");
-
       const response = await fetch(`http://155.248.225.224:8093/submit-data`, {
         method: "POST",
         headers: {
@@ -121,6 +139,7 @@ const MedicalSurveyForm = () => {
             value={String(formData.systolicBP)}
             onChangeText={(value) => handleChange("systolicBP", value)}
           />
+          {errors.systolicBP && <Text style={styles.errorText}>{errors.systolicBP}</Text>}
 
           {/* Diastolic BP */}
           <Text style={styles.label}>Diastolic BP</Text>
@@ -130,6 +149,7 @@ const MedicalSurveyForm = () => {
             value={String(formData.diastolicBP)}
             onChangeText={(value) => handleChange("diastolicBP", value)}
           />
+          {errors.diastolicBP && <Text style={styles.errorText}>{errors.diastolicBP}</Text>}
 
           {/* HbA1c */}
           <Text style={styles.label}>HbA1c (mmol/mol)</Text>
@@ -139,6 +159,7 @@ const MedicalSurveyForm = () => {
             value={String(formData.hbA1c)}
             onChangeText={(value) => handleChange("hbA1c", value)}
           />
+          {errors.hbA1c && <Text style={styles.errorText}>{errors.hbA1c}</Text>}
 
           {/* Estimated Avg Glucose */}
           <Text style={styles.label}>Estimated Avg Glucose (mg/dL)</Text>
@@ -148,6 +169,7 @@ const MedicalSurveyForm = () => {
             value={String(formData.estimatedAvgGlucose)}
             onChangeText={(value) => handleChange("estimatedAvgGlucose", value)}
           />
+          {errors.estimatedAvgGlucose && <Text style={styles.errorText}>{errors.estimatedAvgGlucose}</Text>}
 
           {/* Diagnosis Year */}
           <Text style={styles.label}>Diagnosis Year</Text>
@@ -157,6 +179,7 @@ const MedicalSurveyForm = () => {
             value={String(formData.diagnosisYear)}
             onChangeText={(value) => handleChange("diagnosisYear", value)}
           />
+          {errors.diagnosisYear && <Text style={styles.errorText}>{errors.diagnosisYear}</Text>}
 
           {/* Retinopathy Status Dropdown */}
           <Text style={styles.label}>Retinopathy Status</Text>
@@ -218,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#D1D5DB",
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   dropdown: {
     borderColor: "#D1D5DB",
@@ -227,19 +250,22 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 10,
   },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 8,
+  },
   button: {
     marginTop: 20,
     backgroundColor: "#109BE7",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
-    alignContent: "center",
-    borderRadius: 10,
-    height: 55,
+    paddingVertical: 12,
+    borderRadius: 5,
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 18,
+    color: "#FFF",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

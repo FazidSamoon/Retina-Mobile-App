@@ -122,23 +122,23 @@ const index = () => {
         <DrawerNav.Screen name="Review" component={ReviewSummary} />
         <DrawerNav.Screen name="MyChannelings" component={MyChannelings} />
 
-
-
-
-
-
-
         <DrawerNav.Screen name="Diabatic" component={Diabatic} />
         <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
         <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />
         <DrawerNav.Screen name="HealthTips" component={HealthTips} />
-        <DrawerNav.Screen name="RetinClinicLoc" component={OpenStreetMapComponent} />
+        <DrawerNav.Screen
+          name="RetinClinicLoc"
+          component={OpenStreetMapComponent}
+        />
         <DrawerNav.Screen
           name="RetinopathyResult"
           component={RetinopathyResult}
         />
         <DrawerNav.Screen name="RetinopathyInfo" component={RetinopathyInfo} />
-        <DrawerNav.Screen name="DiabetesPedigree" component={DiabetesRiskPrediction} />
+        <DrawerNav.Screen
+          name="DiabetesPedigree"
+          component={DiabetesRiskPrediction}
+        />
         <DrawerNav.Screen name="BMICalculator" component={BMICalculator} />
         <DrawerNav.Screen
           name="NextScreeningInterval"
@@ -152,17 +152,11 @@ const index = () => {
         <DrawerNav.Screen name="Hba1c" component={Hba1c} />
         <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
         <DrawerNav.Screen name="Survay" component={Survay} />
-        <DrawerNav.Screen name="MedicalSurveyForm" component={MedicalSurveyForm} />
+        <DrawerNav.Screen
+          name="MedicalSurveyForm"
+          component={MedicalSurveyForm}
+        />
 
-       
-        
-        
-        
-        
-        
-       
-
-      
         <DrawerNav.Screen
           name="SurvayPrediction"
           component={SurvayPrediction}
@@ -189,25 +183,6 @@ const index = () => {
           name="SkinThicknessComponent"
           component={SkinThicknessComponent}
         />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
       </DrawerNav.Navigator>
     </>
   );

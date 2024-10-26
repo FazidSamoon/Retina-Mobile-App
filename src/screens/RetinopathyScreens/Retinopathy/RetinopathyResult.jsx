@@ -89,7 +89,7 @@ export default function RetinopathyResult({ route, navigation }) {
                   <Text style={styles.paymentText}>Locations</Text>
                 </View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Locations")}
+                  onPress={() => navigation.navigate("RetinClinicLoc")}
                 >
                   <Text style={styles.changeText}>View Nearest Clinical</Text>
                 </TouchableOpacity>

@@ -18,7 +18,7 @@ export default function RetinopathyInfo() {
       title: "Step 1: Take the Clinical Report",
       image: require("../../../assets/1.gif"), // Replace with appropriate image
       instructions: [
-        "Make sure you have the clinical data report ready.",
+        "Please have the biochemistry report, monthly glucose test or UHID report, and recent blood pressure report ready.",
         "Place the report in good lighting for the next steps.",
       ],
     },
@@ -47,7 +47,7 @@ export default function RetinopathyInfo() {
       ],
     },
     {
-      title: "Step 5: Look for Error Messages",
+      title: "Step 5: Look for Warnings!",
       image: require("../../../assets/5.gif"), // Replace with appropriate image
       instructions: [
         "Check if there are any error messages or warnings on the form.",

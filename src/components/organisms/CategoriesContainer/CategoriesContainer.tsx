@@ -14,9 +14,17 @@ const cards: CategoriesCardType[] = [
   {
     title: "Recommendations",
     description: "Get personalized dietary and exersize recommendations.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    imageSrc: require("../../../assets/retImages/ret3.png"),
     ontapLink: "RecommendHome",
     backgroundColor: "#31d45c",
+  },
+  
+  {
+    title: "Predictions",
+    description: "Check your vision and diabtes .",
+    imageSrc: require("../../../assets/retImages/ret2.png"),
+    ontapLink: "PredictionMain",
+    backgroundColor: "#36C2CE",
   },
   {
     title: "Eye Exercise",
@@ -36,34 +44,18 @@ const cards: CategoriesCardType[] = [
 
 
   {
-    title: "Prediction",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/retdoctor.png"),
-    ontapLink: "PredictionMain",
-    backgroundColor: "#AAF0D1",
-  },
-  {
     title: "Community",
     description: "Help us improve our predictions",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+    imageSrc: require("../../../assets/retImages/ret1.png"),
     ontapLink: "Survay",
-    backgroundColor: "#AAF0D1",
-  },
-  {
-    title: "Find Nearby Clinics",
-    description: "Do some eye exercises to improve your vision.",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "RetinClinicLoc",
-    backgroundColor: "#AAF0D1",
+    backgroundColor: "#77E4C8",
   },
 
-  {
-    title: "Next Screening",
-    description: "Check your vision and complete the task.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
-    ontapLink: "NextScreeningInterval",
-    backgroundColor: "#AAF0D1",
-  },
+
+
+
+
+
 
 
 ];

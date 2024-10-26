@@ -22,7 +22,7 @@ const Survay = () => {
   return (
     <>
       <View style={styles.container}>
-        <RetinopathyHomeScreenTopAppBar header="Clinical Trials Main" />
+        <RetinopathyHomeScreenTopAppBar header="Community Main" />
 
         <View style={styles.cardsContainer}>
           <PrimaryRecommondationCard

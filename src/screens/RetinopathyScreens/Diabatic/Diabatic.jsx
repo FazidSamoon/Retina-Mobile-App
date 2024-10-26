@@ -245,7 +245,7 @@ export default function Diabatic({ navigation }) {
 
   return (
     <>
-      <RetinopathyHomeScreenTopAppBar0 header={"Current Diabetes Status"} />
+      <RetinopathyHomeScreenTopAppBar0 header={"Check Diabetes Status"} />
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.headerButtons}>
