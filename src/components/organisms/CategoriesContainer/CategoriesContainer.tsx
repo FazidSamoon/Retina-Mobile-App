@@ -14,17 +14,17 @@ const cards: CategoriesCardType[] = [
   {
     title: "Recommendations",
     description: "Get personalized dietary and exersize recommendations.",
-    imageSrc: require("../../../assets/visionTestcardImg.png"),
+    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
     ontapLink: "RecommendHome",
     backgroundColor: "#31d45c",
   },
-  {
-    title: "Eye Exercise",
-    description: "Do some eye exercise to improve your vision.",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "EyeExercisiseHome",
-    backgroundColor: "#FF9BE3",
-  },
+  // {
+  //   title: "Eye Exercise",
+  //   description: "Do some eye exercise to improve your vision.",
+  //   imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
+  //   ontapLink: "EyeExercisiseHome",
+  //   backgroundColor: "#FF9BE3",
+  // },
   {
     title: "Channel Doctors",
     description: "Consult with our doctors for better vision.",

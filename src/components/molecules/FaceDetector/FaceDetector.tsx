@@ -101,7 +101,6 @@ const FaceDetectorComponenet = ({
           tracking: true,
         }}
       >
-        {/* {fullScreenEnabled && ( */}
         <View style={styles.buttonContainer}>
           {faces.map((face, index) => (
             <View key={index} style={styles.faceInfo}>
@@ -117,7 +116,6 @@ const FaceDetectorComponenet = ({
             </View>
           ))}
         </View>
-        {/* )} */}
       </Camera>
     </View>
   );
