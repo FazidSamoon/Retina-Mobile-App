@@ -71,7 +71,7 @@ export const mealFormValidationSchema = Yup.object().shape({
 export const exerciseValidationSchema = Yup.object().shape({
   exerciseName: Yup.string().required("Exercise is required"),
   exerciseTime: Yup.string()
-    .required("Time is required")
+    .required("Time is required (mm)")
     .matches(/^\d+$/, "Time must be a valid number"),
 });
 

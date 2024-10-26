@@ -50,70 +50,16 @@ export const monthData = [
 ];
 
 export const exercisesData = [
-  {
-    label: "Jogging",
-    value: "Jogging",
-  },
-  {
-    label: "Swimming",
-    value: "Swimming",
-  },
-  {
-    label: "Push-ups",
-    value: "Push-ups",
-  },
-  {
-    label: "Squats",
-    value: "Squats",
-  },
-  {
-    label: "Cycling",
-    value: "Cycling",
-  },
-  {
-    label: "Walking",
-    value: "Walking",
-  },
-  {
-    label: "Running",
-    value: "Running",
-  },
-  {
-    label: "Jumping Jacks",
-    value: "Jumping Jacks",
-  },
-  {
-    label: "Plank",
-    value: "Plank",
-  },
-  {
-    label: "Mountain Climbers",
-    value: "Mountain Climbers",
-  },
-  {
-    label: "Burpees",
-    value: "Burpees",
-  },
-  {
-    label: "Lunges",
-    value: "Lunges",
-  },
-  {
-    label: "Leg Raises",
-    value: "Leg Raises",
-  },
-  {
-    label: "Crunches",
-    value: "Crunches",
-  },
-  {
-    label: "Bicycle Crunches",
-    value: "Bicycle Crunches",
-  },
-  {
-    label: "Russian Twists",
-    value: "Russian Twists",
-  },
+  { label: "Swimming", value: "Swimming" },
+  { label: "Treadmill", value: "Treadmill" },
+  { label: "Cycling", value: "Cycling" },
+  { label: "Jogging", value: "Jogging" },
+  { label: "Walking", value: "Walking" },
+  { label: "Stretching", value: "Stretching" },
+  { label: "Yoga", value: "Yoga" },
+  { label: "Gym", value: "Gym" },
+  { label: "Running", value: "Running" },
+  { label: "Pacing", value: "Pacing" },
 ];
 
 export const binaryAnswerData = [
