@@ -1,9 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image
-} from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { LinearProgress } from "@rneui/base";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
@@ -16,6 +11,8 @@ const LeaderBoardContainer = ({ level, leaderboard }) => {
       ?.map((word) => word[0]?.toUpperCase())
       ?.join("");
   };
+
+  console.log("level ", level);
   return (
     <View>
       <View style={styles.achivementCard}>
@@ -36,9 +33,17 @@ const LeaderBoardContainer = ({ level, leaderboard }) => {
           }}
         >
           <Image
-            source={require("../../../assets/achivement.png")}
+            source={
+              level.level < 3
+                ? require("../../../assets/level1.png")
+                : level.level < 6
+                ? require("../../../assets/level2.png")
+                : level.level < 9
+                ? require("../../../assets/level3.png")
+                : require("../../../assets/level4.png")
+            }
             style={{
-              height: 70,
+              height: 80,
               width: 70,
             }}
           />
@@ -75,7 +80,7 @@ const LeaderBoardContainer = ({ level, leaderboard }) => {
                   height: 10,
                   borderRadius: 5,
                   marginTop: 10,
-                  marginBottom: 5
+                  marginBottom: 5,
                 }}
               />
               <Text
