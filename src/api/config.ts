@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const isProd = false;
+export const isProd = true;
 
 export const API_URL = isProd
   ? "https://retina-mobile-app-bankend.vercel.app/api/v1"
