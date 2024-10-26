@@ -21,7 +21,7 @@ interface RecommondationState {
 }
 
 const initialState: RecommondationState = {
-  user_id: "I029",
+  user_id: "I025",
   userData: {
     mealPreference: "Vegetarian",
     weight: 40,
