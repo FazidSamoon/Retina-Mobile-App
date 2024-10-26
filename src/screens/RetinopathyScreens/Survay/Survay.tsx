@@ -21,29 +21,27 @@ const Survay = () => {
 
   return (
     <>
+      <View style={styles.container}>
+        <RetinopathyHomeScreenTopAppBar header="Clinical Trials Main" />
 
-    <View style={styles.container}>
-      
-    <RetinopathyHomeScreenTopAppBar header="Clinical Trials Main" />
+        <View style={styles.cardsContainer}>
+          <PrimaryRecommondationCard
+            title="Contribute Information"
+            onPress={navigateToSurvayContribution}
+            backgroundSrc={{
+              uri: "https://i.postimg.cc/pTgn4yFJ/value-2.png",
+            }}
+          />
 
-      <View style={styles.cardsContainer}>
-        <PrimaryRecommondationCard
-          title="Survay Prediction"
-          onPress={navigateToSurvayPrediction}
-          backgroundSrc={{
-            uri: "https://i.postimg.cc/Kvzr7SmZ/retinopathy.png",
-          }}
-        />
-
-        <PrimaryRecommondationCard
-          title="Survay Contribution"
-          onPress={navigateToSurvayContribution}
-          backgroundSrc={{
-            uri: "https://i.postimg.cc/pTgn4yFJ/value-2.png",
-          }}
-        />
+          <PrimaryRecommondationCard
+            title="View Prediction"
+            onPress={navigateToSurvayPrediction}
+            backgroundSrc={{
+              uri: "https://i.postimg.cc/Kvzr7SmZ/retinopathy.png",
+            }}
+          />
+        </View>
       </View>
-    </View>
     </>
   );
 };

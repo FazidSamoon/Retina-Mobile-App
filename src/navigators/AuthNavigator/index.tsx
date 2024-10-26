@@ -40,12 +40,12 @@ import Survay from "../../screens/RetinopathyScreens/Survay/Survay";
 import SurvayPrediction from "../../screens/RetinopathyScreens/Survay/SurvayPrediction";
 import PredictionMain from "../../screens/RetinopathyScreens/PredictionMain/PredictionMain";
 import GlucoseComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/GlucoseComponent";
-import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/BloodPressureComponent";
 import InsulinComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/InsulinComponent";
 import SkinThicknessComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/SkinThicknessComponent";
 import OpenStreetMapComponent from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
 import MedicalSurveyForm from "../../screens/RetinopathyScreens/Survay/SurvayContribution";
 import DiabetesRiskPrediction from "../../screens/RetinopathyScreens/Instruction/DiabetesPedigree";
+import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/BloodPressureComponent";
 
 const DrawerNav = createDrawerNavigator<any>();
 

@@ -20,7 +20,7 @@ import axios from "axios";
 import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 import DiabetesRiskPrediction from "../Instruction/DiabetesPedigree";
 import BMICalculator from "../Instruction/BMICalculator";
-import BloodPressureComponent from "./DiabaticVariables/BloodPressureComponent";
+
 import SkinThicknessComponent from "./DiabaticVariables/SkinThicknessComponent";
 import GlucoseComponent from "./DiabaticVariables/GlucoseComponent";
 import InsulinComponent from "./DiabaticVariables/InsulinComponent";
@@ -29,6 +29,7 @@ import TestLoadingScreen from "../Components/LoadingScreen";
 import TestLoadingDiabatic from "../Components/LoadingDiabatic";
 import styles from "../Diabatic/DiabaticStyles";
 import RetinopathyHomeScreenTopAppBar0 from "../TopBar/PredictHomeTopAppBar";
+import BloodPressureComponent from "./DiabaticVariables/BloodPressureComponent";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);

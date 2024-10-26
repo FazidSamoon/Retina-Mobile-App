@@ -185,7 +185,7 @@ const MedicalSurveyForm = () => {
           />
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Predict Retinopathy</Text>
+            <Text style={styles.buttonText}>Submit Data</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
