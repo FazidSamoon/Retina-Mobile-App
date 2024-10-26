@@ -22,6 +22,30 @@ import Packages from "../../screens/AuthScreens/Packages/Packages";
 import Payments from "../../screens/AuthScreens/Payments/Payments";
 import ReviewSummary from "../../screens/AuthScreens/ReviewSummary/ReviewSummary";
 import MyChannelings from "../../screens/AuthScreens/MyChannelings/MyChannelings";
+import Diabatic from "../../screens/RetinopathyScreens/Diabatic/Diabatic";
+import DiabaticResult from "../../screens/RetinopathyScreens/Diabatic/DiabaticResult";
+import Retinopathy from "../../screens/RetinopathyScreens/Retinopathy/Retinopathy";
+import HealthTips from "../../screens/RetinopathyScreens/AfterPrediction/HealthTips";
+import RetinopathyResult from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyResult";
+import RetinopathyInfo from "../../screens/RetinopathyScreens/Components/RetinopathyInfo";
+import BMICalculator from "../../screens/RetinopathyScreens/Instruction/BMICalculator";
+import NextScreeningInterval from "../../screens/RetinopathyScreens/AfterPrediction/NextScreeningPositive";
+import AvgGlucose from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/AvgGlucose";
+import DiabetesType from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/DiabetesType";
+import DiagnosisYear from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/DiagnosisYear";
+import DiastolicBp from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/DiastolicBp";
+import Hba1c from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/Hba1c";
+import SystolicBp from "../../screens/RetinopathyScreens/Retinopathy/RetinopathyVariables/SystolicBp";
+import Survay from "../../screens/RetinopathyScreens/Survay/Survay";
+import SurvayPrediction from "../../screens/RetinopathyScreens/Survay/SurvayPrediction";
+import PredictionMain from "../../screens/RetinopathyScreens/PredictionMain/PredictionMain";
+import GlucoseComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/GlucoseComponent";
+import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/BloodPressureComponent";
+import InsulinComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/InsulinComponent";
+import SkinThicknessComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/SkinThicknessComponent";
+import OpenStreetMapComponent from "../../screens/RetinopathyScreens/RetinopathyMaps/RetinClinicLoc";
+import MedicalSurveyForm from "../../screens/RetinopathyScreens/Survay/SurvayContribution";
+import DiabetesRiskPrediction from "../../screens/RetinopathyScreens/Instruction/DiabetesPedigree";
 
 const DrawerNav = createDrawerNavigator<any>();
 
@@ -97,6 +121,93 @@ const index = () => {
         <DrawerNav.Screen name="Payments" component={Payments} />
         <DrawerNav.Screen name="Review" component={ReviewSummary} />
         <DrawerNav.Screen name="MyChannelings" component={MyChannelings} />
+
+
+
+
+
+
+
+        <DrawerNav.Screen name="Diabatic" component={Diabatic} />
+        <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
+        <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />
+        <DrawerNav.Screen name="HealthTips" component={HealthTips} />
+        <DrawerNav.Screen name="RetinClinicLoc" component={OpenStreetMapComponent} />
+        <DrawerNav.Screen
+          name="RetinopathyResult"
+          component={RetinopathyResult}
+        />
+        <DrawerNav.Screen name="RetinopathyInfo" component={RetinopathyInfo} />
+        <DrawerNav.Screen name="DiabetesPedigree" component={DiabetesRiskPrediction} />
+        <DrawerNav.Screen name="BMICalculator" component={BMICalculator} />
+        <DrawerNav.Screen
+          name="NextScreeningInterval"
+          component={NextScreeningInterval}
+        />
+
+        <DrawerNav.Screen name="AvgGlucose" component={AvgGlucose} />
+        <DrawerNav.Screen name="DiabetesType" component={DiabetesType} />
+        <DrawerNav.Screen name="DiagnosisYear" component={DiagnosisYear} />
+        <DrawerNav.Screen name="DiastolicBp" component={DiastolicBp} />
+        <DrawerNav.Screen name="Hba1c" component={Hba1c} />
+        <DrawerNav.Screen name="SystolicBp" component={SystolicBp} />
+        <DrawerNav.Screen name="Survay" component={Survay} />
+        <DrawerNav.Screen name="MedicalSurveyForm" component={MedicalSurveyForm} />
+
+       
+        
+        
+        
+        
+        
+       
+
+      
+        <DrawerNav.Screen
+          name="SurvayPrediction"
+          component={SurvayPrediction}
+        />
+        {/* <DrawerNav.Screen
+          name="SurvayContribution"
+          component={SurvayContribution}
+        /> */}
+        <DrawerNav.Screen name="PredictionMain" component={PredictionMain} />
+
+        <DrawerNav.Screen
+          name="GlucoseComponent"
+          component={GlucoseComponent}
+        />
+        <DrawerNav.Screen
+          name="BloodPressureComponent"
+          component={BloodPressureComponent}
+        />
+        <DrawerNav.Screen
+          name="InsulinComponent"
+          component={InsulinComponent}
+        />
+        <DrawerNav.Screen
+          name="SkinThicknessComponent"
+          component={SkinThicknessComponent}
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
       </DrawerNav.Navigator>
     </>
   );
