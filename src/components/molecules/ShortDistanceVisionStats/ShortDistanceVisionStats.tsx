@@ -94,10 +94,9 @@ const ShortDistanceVisionStats = ({ user }: { user: UserType }) => {
       if (user?.data?.otherDetails?._id || userId) {
         const queryUrl = `${API_URL}/test-results/user-stats-near/${
           user?.data?.otherDetails?._id ?? userId
-        }?month=${month}&year=${year}&testType=NEAR_VISION`;
+        }?month=${month + 1}&year=${year}&testType=NEAR_VISION`;
         // const response = await axiosInstance.get(queryUrl);
         const response = await axios.get(queryUrl);
-        console.log("sss ", response.data);
         return response.data;
       }
     },
