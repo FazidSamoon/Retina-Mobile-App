@@ -135,7 +135,7 @@ const index = () => {
         <DrawerNav.Screen
           name="ChannelFromListReview"
           component={ChannelFromListReview}
-
+        />
         <DrawerNav.Screen name="Diabatic" component={Diabatic} />
         <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
         <DrawerNav.Screen name="Retinopathy" component={Retinopathy} />

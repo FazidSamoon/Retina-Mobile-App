@@ -98,7 +98,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
   useEffect(() => {
     if (modalVisible) {
       narrateText(
-        `Now keep your phone ${personalizedDistance} m away from you! And get ready! We are going to check your left eye first.`
+        `Now keep your phone ${personalizedDistance === 4 ? 2 : personalizedDistance} m away from you! And get ready! We are going to check your left eye first.`
       );
     }
   }, [modalVisible]);
@@ -116,7 +116,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
           fontWeight: "800",
         }}
       >
-        Maintain {personalizedDistance}m with device to continue with the test
+        Maintain {personalizedDistance === 4 ? 2 : personalizedDistance}m with device to continue with the test
       </Text>
       <View
         style={{
@@ -127,7 +127,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
         <FaceDetectorComponenet
           handleInRange={handleInRange}
           handleNotInRange={handleNotInRange}
-          distanceToMaintain={Number(personalizedDistance)}
+          distanceToMaintain={Number(personalizedDistance === 4 ? 2 : personalizedDistance)}
         />
       </View>
 
@@ -193,7 +193,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
         >
           <View style={styles.modalContent}>
             <SpeechBubble
-              message={`Now keep your phone ${personalizedDistance} m away from you! And get ready!`}
+              message={`Now keep your phone ${personalizedDistance === 4 ? 2 : personalizedDistance} m away from you! And get ready!`}
               position="left"
             />
             <Animatable.Image

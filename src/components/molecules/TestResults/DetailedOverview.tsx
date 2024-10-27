@@ -34,10 +34,10 @@ const DetailedOverview = ({
     if (logmar <= 0.1) {
       return "Normal";
     }
-    if (logmar <= 0.3) {
+    if (logmar <= 0.4) {
       return "Mild";
     }
-    if (logmar <= 0.5) {
+    if (logmar <= 0.6) {
       return "Moderate";
     }
     if (logmar <= 1) {
@@ -50,10 +50,10 @@ const DetailedOverview = ({
     if (logmar <= 0.1) {
       return "green";
     }
-    if (logmar <= 0.3) {
+    if (logmar <= 0.4) {
       return "lightblue";
     }
-    if (logmar <= 0.5) {
+    if (logmar <= 0.6) {
       return "yellow";
     }
     if (logmar <= 1) {
