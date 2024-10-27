@@ -567,7 +567,7 @@ const LongDistanceVisionSwipableTest = ({
               handleInRange={handleInRange}
               handleNotInRange={handleNotInRange}
               fullScreenEnabled={false}
-              distanceToMaintain={Number(personalizedDistance) * 2}
+              distanceToMaintain={Number(personalizedDistance === 4 ? 2 : personalizedDistance) * 2}
             />
           </View>
         </View>

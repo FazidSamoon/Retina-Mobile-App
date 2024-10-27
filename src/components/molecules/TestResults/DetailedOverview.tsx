@@ -34,10 +34,10 @@ const DetailedOverview = ({
     if (logmar <= 0.1) {
       return "Normal";
     }
-    if (logmar <= 0.3) {
+    if (logmar <= 0.4) {
       return "Mild";
     }
-    if (logmar <= 0.5) {
+    if (logmar <= 0.6) {
       return "Moderate";
     }
     if (logmar <= 1) {
@@ -50,10 +50,10 @@ const DetailedOverview = ({
     if (logmar <= 0.1) {
       return "green";
     }
-    if (logmar <= 0.3) {
+    if (logmar <= 0.4) {
       return "lightblue";
     }
-    if (logmar <= 0.5) {
+    if (logmar <= 0.6) {
       return "yellow";
     }
     if (logmar <= 1) {
@@ -81,7 +81,7 @@ const DetailedOverview = ({
       const message =
         parseFloat(leftEyeScore) <= 0.1
           ? "Your vision is really impressive! Keep it up!"
-          : parseFloat(leftEyeScore) <= 0.3
+          : parseFloat(leftEyeScore) <= 0.4
           ? "Your vision is quite good, but there's a slight reduction. Let's continue monitoring it."
           : parseFloat(leftEyeScore) <= 0.5
           ? "There's a noticeable reduction in your vision. We should discuss corrective measures like glasses."

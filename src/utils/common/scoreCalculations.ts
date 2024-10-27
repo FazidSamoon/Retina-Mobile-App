@@ -73,9 +73,9 @@ export const VisionTestIdentificationBaseScoreValueForEachLetterSize = {
 
 const getDistanceScore = (personalizedDistance: PersonalizedDistance) => {
   if (Number(personalizedDistance.toFixed(2)) === 4) return 0.0;
-  else if (Number(personalizedDistance.toFixed(2)) === 2) return 0.3;
-  else if (Number(personalizedDistance.toFixed(2)) === 1) return 0.6;
-  else if (Number(personalizedDistance.toFixed(2)) === 0.5) return 0.9;
+  else if (Number(personalizedDistance.toFixed(2)) === 2) return 0.0;
+  else if (Number(personalizedDistance.toFixed(2)) === 1) return 0.3;
+  else if (Number(personalizedDistance.toFixed(2)) === 0.5) return 0.6;
 };
 
 export const getLogmarValueForSize = (size: string) => {

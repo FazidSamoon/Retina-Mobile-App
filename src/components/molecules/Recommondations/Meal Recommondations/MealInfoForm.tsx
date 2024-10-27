@@ -49,7 +49,7 @@ const MealInfoForm = () => {
     exerciseLevel: string;
   }): number | null => {
     const weightFloat = parseFloat(weight.toString());
-    const heightFloat = parseFloat(height.toString()) / 100; // Assuming height is in cm, converting to meters
+    const heightFloat = parseFloat(height.toString()) / 100; //  height in cm, converting to meters
     const isVegetarian = mealPreference === "Vegetarian" ? 1 : 0;
     const exerciseLevelInt = exerciseLevel === "Low" ? 0 : 1;
     const mealTypeInt =

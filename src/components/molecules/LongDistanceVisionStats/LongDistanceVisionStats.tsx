@@ -215,7 +215,7 @@ const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
               backgroundColor: "#fff",
               backgroundGradientFrom: "#fff",
               backgroundGradientTo: "#fff",
-              decimalPlaces: 1,
+              decimalPlaces: 2,
               color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `#000`,
               style: {
