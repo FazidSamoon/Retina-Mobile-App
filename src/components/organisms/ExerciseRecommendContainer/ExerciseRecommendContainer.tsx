@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -44,17 +45,13 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const basicColors = [
-  "#f94144",
-  "#f8961e",
-  "#f9844a",
-  "#f3722c",
-  "#f9c74f",
-  "#90be6d",
-  "#43aa8b",
-  "#4d908e",
-  "#577590",
-  "#277da1",
-  "#6680B3",
+  "#90e0ef",
+  "#48cae4",
+  "#00a6fb",
+  "#00b4d8",
+  "#0096c7",
+  "#0077b6",
+  "#023e8a",
 ];
 
 type ExerciseData = { exercise: string; value: number };
@@ -144,18 +141,17 @@ const ExerciseRecommendContainer = () => {
       const filteredData = input.filter((item) => item.value > 0);
 
       const labels = filteredData.map((item) => item.exercise);
-      const data = filteredData.map((item) =>
-        parseFloat((item.value / 150).toFixed(2))
-      );
+      const data = filteredData.map((item) => {
+        const normalizedValue = parseFloat((item.value / 150).toFixed(2));
+        return normalizedValue > 0.99 ? 0.99 : normalizedValue;
+      });
 
-      // Await colors if generateColorsArray returns a promise
       const colors = await generateColorsArray(filteredData.length);
 
       return { labels, data, colors };
     } catch (error) {
       console.error("Error generating chart data:", error);
 
-      // Return default data structure in case of error
       return { labels: [], data: [], colors: [] };
     }
   };
@@ -186,10 +182,8 @@ const ExerciseRecommendContainer = () => {
         return {
           exercise: item.exercise,
           value:
-            item.value >= 1
-              ? item.value
-              : item.value +
-                weightageCalculator(exerciseName, parseInt(loggedTime)),
+            item.value +
+            weightageCalculator(exerciseName, parseInt(loggedTime)),
         };
       }
       return item;
@@ -251,7 +245,7 @@ const ExerciseRecommendContainer = () => {
 
   return (
     <>
-      <View>
+      <ScrollView>
         <VisionHomeScreenTopAppBar
           header="My Exercise"
           navigateTo={navigateTo}
@@ -307,7 +301,7 @@ const ExerciseRecommendContainer = () => {
             setLogExerciseModal(!logExerciseModal);
           }}
         />
-      </View>
+      </ScrollView>
 
       {/* Custom Modal for My Info */}
       <CustomModal
@@ -325,7 +319,9 @@ const ExerciseRecommendContainer = () => {
           options={binaryAnswerData}
           labelStyle={styles.labelStyle}
           error={
-            myInfoFormik.touched.retinopathy && myInfoFormik.errors.retinopathy
+            myInfoFormik.touched.retinopathy
+              ? myInfoFormik.errors.retinopathy
+              : ""
           }
         />
 
@@ -479,7 +475,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     paddingVertical: 10,
-    backgroundColor: BASIC_COLORS.LIGHT_BLUE,
+    backgroundColor: BASIC_COLORS.PRIMARY,
     borderWidth: 0,
     marginTop: 20,
   },
@@ -492,7 +488,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   customButtonTextStyle: {
-    color: BASIC_COLORS.BLACK,
+    color: BASIC_COLORS.WHITE,
     fontWeight: "500",
     fontSize: 16,
   },
@@ -511,7 +507,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   myInfoTouchable: {
-    color: "blue",
+    color: BASIC_COLORS.FONT_SECONDARY,
     alignSelf: "flex-end",
     paddingTop: 10,
     paddingEnd: 20,
