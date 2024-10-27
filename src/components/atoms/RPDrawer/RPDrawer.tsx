@@ -163,6 +163,88 @@ const RPDrawer: React.FC<Props> = ({ navigation }) => {
             </Pressable>
 
             <Pressable
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor:
+                  selected === "nextScreening"
+                    ? BASIC_COLORS.PRIMARY
+                    : BASIC_COLORS.WHITE,
+                padding: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                setSelected("nextScreening");
+                navigation.navigate("NextScreeningInterval");
+              }}
+            >
+              <Icon
+                name="calendar"
+                color={
+                  selected !== "nextScreening"
+                    ? BASIC_COLORS.FONT_PRIMARY
+                    : BASIC_COLORS.WHITE
+                }
+                size={20}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: "500",
+                  color:
+                    selected !== "nextScreening"
+                      ? BASIC_COLORS.FONT_PRIMARY
+                      : BASIC_COLORS.WHITE,
+                }}
+              >
+                Next Screening
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor:
+                  selected === "clinicals"
+                    ? BASIC_COLORS.PRIMARY
+                    : BASIC_COLORS.WHITE,
+                padding: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                setSelected("clinicals");
+                navigation.navigate("RetinClinicLoc");
+              }}
+            >
+              <Icon
+                name="location"
+                color={
+                  selected !== "clinicals"
+                    ? BASIC_COLORS.FONT_PRIMARY
+                    : BASIC_COLORS.WHITE
+                }
+                size={20}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: "500",
+                  color:
+                    selected !== "clinicals"
+                      ? BASIC_COLORS.FONT_PRIMARY
+                      : BASIC_COLORS.WHITE,
+                }}
+              >
+                Retino Clinicals
+              </Text>
+            </Pressable>
+
+
+
+            <Pressable
               onPress={() => {
                 setSelected("person");
               }}

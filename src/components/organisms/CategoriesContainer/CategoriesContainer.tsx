@@ -32,6 +32,22 @@ const cards: CategoriesCardType[] = [
     ontapLink: "ChannelDoctorsScreen",
     backgroundColor: "#FFBF9B",
   },
+  {
+    title: "Predictions",
+    description: "Check your vision and diabtes .",
+    imageSrc: require("../../../assets/retImages/ret2.png"),
+    ontapLink: "PredictionMain",
+    backgroundColor: "#36C2CE",
+  },
+
+
+  {
+    title: "Community",
+    description: "Help us improve our predictions",
+    imageSrc: require("../../../assets/retImages/ret1.png"),
+    ontapLink: "Survay",
+    backgroundColor: "#77E4C8",
+  },
 ];
 
 const CategoriesContainer = () => {
