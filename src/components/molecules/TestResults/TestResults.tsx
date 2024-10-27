@@ -161,8 +161,8 @@ const TestResults = ({
     onError: () => {},
   });
   const onNextButtonPressed = async () => {
-    mutate(user?.data?.otherDetails?._id);
-    const pendingLongDistanceTasksList = pendingChallenges.filter(
+    await mutate(user?.data?.otherDetails?._id);
+    const pendingLongDistanceTasksList = await pendingChallenges.filter(
       (challenge) =>
         challenge.identification.includes("LongDistanceVisionTest") &&
         challenge.status === "PENDING" &&
@@ -170,6 +170,7 @@ const TestResults = ({
           "SpeechIdentificationTest" || "gestureIdentificationTest"
         )
     );
+
     const listOfCompletedTasks = [];
     const sizes = [
       "202.6",
@@ -184,8 +185,7 @@ const TestResults = ({
       "12",
     ];
 
-
-    pendingLongDistanceTasksList.map((element, index) => {
+    pendingLongDistanceTasksList.map(async (element) => {
       const includesSize = sizes.some((size) =>
         element.identification.includes(size)
       );
@@ -196,16 +196,12 @@ const TestResults = ({
           element.identification.includes(size)
         );
 
-        const sortedResultsLeftEye: [string, number][] = Object.entries(
+        const sortedResultsLeftEye = Object.entries(
           visionTestResults.testResults.leftEye.result
-        ).sort((a, b) => {
-          return parseFloat(b[0]) - parseFloat(a[0]);
-        });
-        const sortedResultsRightEye: [string, number][] = Object.entries(
+        ).sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
+        const sortedResultsRightEye = Object.entries(
           visionTestResults.testResults.rightEye.result
-        ).sort((a, b) => {
-          return parseFloat(b[0]) - parseFloat(a[0]);
-        });
+        ).sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
 
         const leftEye = sortedResultsLeftEye.filter((item) => item[1] > 0);
         const rightEye = sortedResultsRightEye.filter((item) => item[1] > 0);
@@ -217,28 +213,32 @@ const TestResults = ({
         const filteredRightEyeResults = rightEye.filter(([key]) =>
           availableSizes.includes(key)
         );
+
+        console.log("b", filteredLeftEyeResults[0][1]);
+        console.log("c", filteredRightEyeResults[0][1]);
         if (
           filteredLeftEyeResults.length > 0 &&
           (filteredLeftEyeResults[0][1] >= Number(shouldIdentify) ||
             filteredRightEyeResults[0][1] >= Number(shouldIdentify))
         ) {
+          console.log("d", filteredRightEyeResults[0][1]);
           setCompletedTaskIds((prev) => [...prev, element._id]);
           listOfCompletedTasks.push(element._id);
-          setGainedPoints(gainedPoints + element.scorePoints);
-          setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
+          setGainedPoints((prev) => prev + element.scorePoints);
+          setGainedXP((prev) => calculateGainedXp(prev, element.dificulty));
         }
+        return;
       } else {
         setCompletedTaskIds((prev) => [...prev, element._id]);
         listOfCompletedTasks.push(element._id);
-        setGainedPoints(gainedPoints + element.scorePoints);
-        setGainedXP(calculateGainedXp(gainedXP, element.dificulty));
+        setGainedPoints((prev) => prev + element.scorePoints);
+        setGainedXP((prev) => calculateGainedXp(prev, element.dificulty));
+        return;
       }
     });
-
-    console.log("pendingLongDistanceTasksList ", pendingLongDistanceTasksList)
-    console.log("listOfCompletedTasks ", listOfCompletedTasks)
     if (listOfCompletedTasks.length > 0)
-      handleUploadCompletion(listOfCompletedTasks);
+      await handleUploadCompletion(listOfCompletedTasks);
+    else setShowModal(true);
   };
 
   const handleUploadCompletion = async (taskIds: string[]) => {
@@ -249,12 +249,21 @@ const TestResults = ({
 
     if (apiSuccess) {
       console.log(apiSuccess);
+      showToastWithGravityAndOffset(
+        "Successfully updated the Challenge completion"
+      );
+      setShowModal(true);
     } else if (apiError) {
       console.log(apiError);
+      showToastWithGravityAndOffset(
+        "Something went wrong with updating challenge completion"
+      );
+      setShowModal(true);
     }
   };
 
   const handleUploadExperience = async () => {
+    // console.log("gainedXP ", gainedXP);
     const { apiError, apiSuccess } = await updateUserLevels(
       user?.data?.otherDetails?._id,
       gainedXP
@@ -358,7 +367,7 @@ const TestResults = ({
               }}
             >
               <LinearProgress
-                value={1 / 100}
+                value={gainedXP / 100 / 100}
                 trackColor="#F4F6F9"
                 color={BASIC_COLORS.PRIMARY}
                 style={{

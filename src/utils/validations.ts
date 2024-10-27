@@ -59,11 +59,15 @@ export const mealFormValidationSchema = Yup.object().shape({
   weight: Yup.number()
     .required("Weight is required")
     .positive("Weight must be a positive number")
-    .typeError("Weight must be a valid number"),
+    .typeError("Weight must be a valid number")
+    .min(1,"Weight should be more than 1 Kg")
+    .max(700, "Weight should be less than 700 Kg"),
   height: Yup.number()
     .required("Height is required")
     .positive("Height must be a positive number")
-    .typeError("Height must be a valid number"),
+    .typeError("Height must be a valid number")
+    .min(1,"Height should be more than 1 cm")
+    .max(300, "Height should be less than 300 cm"),
   mealType: Yup.string().required("Please select a meal type"),
   exerciseLevel: Yup.string().required("Please select your exercise level"),
 });
@@ -72,7 +76,12 @@ export const exerciseValidationSchema = Yup.object().shape({
   exerciseName: Yup.string().required("Exercise is required"),
   exerciseTime: Yup.string()
     .required("Time is required (mm)")
-    .matches(/^\d+$/, "Time must be a valid number"),
+    .matches(/^\d+$/, "Time must be a valid number")
+    .test(
+      'is-less-than-120',
+      'Time must be less than 120 minutes',
+      (value) => parseInt(value, 10) < 120
+    ),
 });
 
 export const myInfoValidationSchema = Yup.object().shape({

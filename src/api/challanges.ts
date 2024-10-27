@@ -40,6 +40,8 @@ export const updateUserChallengesCompletion = async (
 ) => {
   let apiSuccess = null;
   let apiError = null;
+
+  console.log("challengesList ", challengesList)
   try {
     const response = await axios.patch(
       `${API_URL}/challanges/update-completion/${userId}`,
@@ -47,6 +49,8 @@ export const updateUserChallengesCompletion = async (
         challengesIds: challengesList,
       }
     );
+
+    console.log("updateUserChallengesCompletion ", JSON.stringify(response.data))
     apiSuccess = response.data;
   } catch (error) {
     apiError = error;

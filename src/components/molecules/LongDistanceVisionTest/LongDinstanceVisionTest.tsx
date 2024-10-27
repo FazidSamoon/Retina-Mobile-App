@@ -12,7 +12,6 @@ import {
   VisionTestLetters,
   VisionTestNumbers,
 } from "../../../utils/types/data";
-import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import Voice from "@react-native-voice/voice";
 import {
   getNextTextSize,
