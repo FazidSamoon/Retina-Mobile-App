@@ -1,14 +1,29 @@
 import { View, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { AuthScreensParamList } from "../../../navigators/RootNavigator/types";
 import VisionHomeScreenTopAppBar from "../../molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 import PrimaryRecommondationCard from "../../molecules/Recommondations/PrimaryRecommondationCard";
+import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
+import { useDispatch } from "react-redux";
+import { UserType } from "../../../utils/types/commonTypes";
+import { setUserId } from "../../../store/slices/recommondationSlice";
 
 const height = Dimensions.get("window").height;
 
 const RecommendHomeContainer = () => {
   const navigation = useNavigation<NavigationProp<AuthScreensParamList>>();
+
+  const dispatch = useDispatch();
+
+  const getUser = async () => {
+    const userObj = await getDataFromAsyncStorage("user");
+    dispatch(setUserId(userObj.data.otherDetails.username));
+  };
+
+  useEffect(() => {
+    void getUser();
+  }, []);
 
   const navigateToMealsScreen = () => {
     navigation.navigate("MealsRecommend");
