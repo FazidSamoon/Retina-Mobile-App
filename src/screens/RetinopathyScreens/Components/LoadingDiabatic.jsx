@@ -4,7 +4,7 @@ import { Circle } from "react-native-animated-spinkit";
 import CompletionIcon from "../../../assets/CompletionIcon";
 import styles from "./styles";
 
-// LoadingAnimation 
+// LoadingAnimation //
 const LoadingAnimation = ({ loading, showModal }) => {
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
