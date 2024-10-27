@@ -18,21 +18,6 @@ const cards: CategoriesCardType[] = [
     ontapLink: "RecommendHome",
     backgroundColor: "#31d45c",
   },
-  
-  {
-    title: "Predictions",
-    description: "Check your vision and diabtes .",
-    imageSrc: require("../../../assets/retImages/ret2.png"),
-    ontapLink: "PredictionMain",
-    backgroundColor: "#36C2CE",
-  },
-  {
-    title: "Eye Exercise",
-    description: "Do some eye exercise to improve your vision.",
-    imageSrc: require("../../../assets/eyeExerciseCardImg.png"),
-    ontapLink: "EyeExercisiseHome",
-    backgroundColor: "#FF9BE3",
-  },
   {
     title: "Channel Doctors",
     description: "Consult with our doctors for better vision.",
@@ -40,7 +25,13 @@ const cards: CategoriesCardType[] = [
     ontapLink: "ChannelDoctorsScreen",
     backgroundColor: "#FFBF9B",
   },
-
+  {
+    title: "Predictions",
+    description: "Check your vision and diabtes .",
+    imageSrc: require("../../../assets/retImages/ret2.png"),
+    ontapLink: "PredictionMain",
+    backgroundColor: "#36C2CE",
+  },
 
 
   {
@@ -50,14 +41,6 @@ const cards: CategoriesCardType[] = [
     ontapLink: "Survay",
     backgroundColor: "#77E4C8",
   },
-
-
-
-
-
-
-
-
 ];
 
 const CategoriesContainer = () => {
@@ -79,7 +62,7 @@ const CategoriesContainer = () => {
         }}
       >
         <ScrollView
-          
+
         // showsVerticalScrollIndicator={true}
         // scrollEnabled
         // alwaysBounceVertical
