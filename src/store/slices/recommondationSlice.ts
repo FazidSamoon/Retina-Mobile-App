@@ -21,7 +21,7 @@ interface RecommondationState {
 }
 
 const initialState: RecommondationState = {
-  user_id: "I025",
+  user_id: "",
   userData: {
     mealPreference: "Vegetarian",
     weight: 40,
@@ -40,6 +40,9 @@ const RecommondationSlice = createSlice({
   name: "recommondation",
   initialState,
   reducers: {
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.user_id = action.payload;
+    },
     updateUserData: (state, action: PayloadAction<UserData>) => {
       state.userData = { ...state.userData, ...action.payload };
     },
@@ -52,6 +55,6 @@ const RecommondationSlice = createSlice({
   },
 });
 
-export const { updateUserData, setRecommondedActions } =
+export const { updateUserData, setRecommondedActions, setUserId } =
   RecommondationSlice.actions;
 export default RecommondationSlice.reducer;
