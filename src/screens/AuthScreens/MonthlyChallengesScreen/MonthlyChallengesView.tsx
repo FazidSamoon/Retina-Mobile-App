@@ -7,12 +7,14 @@ import ChallengesListView from "../../../components/molecules/ChallengesListView
 import { checkChallangesAvailability, getMonthlyChallanges } from "../../../api/challanges";
 import { getDataFromAsyncStorage } from "../../../utils/common/commonUtil";
 import { UserType, VisionTestChallenge, VisionTestChallengesResponse } from "../../../utils/types/commonTypes";
+import { useIsFocused } from "@react-navigation/native";
 
 const MonthlyChallengesView = () => {
   const [user, setUser] = useState<UserType>();
   const [challanges, setChallanges] = useState<VisionTestChallenge[]>([]);
   const [totalTasks, setTotalTasks] = useState(0)
   const [completedTasks, setCompletedTasks] = useState(0)
+  const isFocused = useIsFocused();
   const getUser = async () => {
     const userObj = await getDataFromAsyncStorage("user");
     setUser(userObj);
@@ -31,7 +33,7 @@ const MonthlyChallengesView = () => {
 
   useEffect(() => {
     void getUser();
-  }, []);
+  }, [isFocused]);
   return (
     <View style={styles.container}>
       <VisionHomeScreenTopAppBar header={"Weekly Chalenges"} />

@@ -91,6 +91,7 @@ const ShortDistanceTestResults = ({
 
     if (listOfCompletedTasks.length > 0)
       handleUploadCompletion(listOfCompletedTasks);
+    else setShowModal(true)
   };
 
   const handleUploadCompletion = async (taskIds: string[]) => {
@@ -104,6 +105,8 @@ const ShortDistanceTestResults = ({
     } else if (apiError) {
       console.log(apiError);
     }
+
+    setShowModal(true)
   };
 
   const calculateLeftEyeLogmarScore = (): string => {

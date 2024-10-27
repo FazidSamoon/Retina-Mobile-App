@@ -36,6 +36,24 @@ export const getUserRewards = async (userId: string) => {
   return { apiSuccess, apiError };
 };
 
+export const redeemUserRewards = async (
+  userId: string,
+  changeValue: number
+) => {
+  let apiSuccess = null;
+  let apiError = null;
+  try {
+    const response = await axios.patch(`${API_URL}/reward/redeem/${userId}`, {
+      changeValue,
+    });
+    apiSuccess = response.data;
+  } catch (error) {
+    apiError = error;
+  }
+
+  return { apiSuccess, apiError };
+};
+
 export const addChanneling = async (payload) => {
   let apiSuccess = null;
   let apiError = null;

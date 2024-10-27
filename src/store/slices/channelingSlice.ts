@@ -12,6 +12,7 @@ interface ChannelingType {
   slot: SlotType;
   status: "PENDING" | "CANCELLED" | "COMPLETED" | "SCHEDULED";
   type: "IN-HOUSE" | "VIDEOCONFERENCE";
+  payment: "FREE"| "VISA"| "POINTS"
 }
 
 const initialState: ChannelingType = {
@@ -24,6 +25,7 @@ const initialState: ChannelingType = {
   },
   status: "PENDING",
   type: "IN-HOUSE",
+  payment: "FREE"
 };
 
 const ChannelingSlice = createSlice({

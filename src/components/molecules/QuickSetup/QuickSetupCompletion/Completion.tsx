@@ -24,7 +24,7 @@ import { RegisterUserRequest } from "../../../../utils/types/commonTypes";
 import { useFormik } from "formik";
 import { completionValidationSchema } from "../../../../utils/validations";
 import { ScrollView } from "react-native-gesture-handler";
-import { registerUser } from "../../../../api/auth";
+import { registerQTable, registerUser } from "../../../../api/auth";
 
 const override: CSSProperties = {
   display: "block",
@@ -97,7 +97,6 @@ const Completion = ({
   };
 
   const handleFormSubmit = async () => {
-    console.log("sss", registrationData);
     setRegistrationData((prev) => ({
       ...prev,
       phone: formattedValue,
@@ -110,7 +109,9 @@ const Completion = ({
       location: location,
       occupation: occupation,
     });
+
     if (apiSuccess) {
+      registerQTable(registrationData);
       setShowModal(true);
     } else {
       showToastWithGravityAndOffset(apiError);

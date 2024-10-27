@@ -9,24 +9,29 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { BASIC_COLORS } from "../../../utils/constants/styles";
 import RPPrimaryButton from "../../atoms/RPPrimaryButton/RPPrimaryButton";
 import RPInputField from "../../atoms/RPInputField/RPInputField";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { setDataToAsyncStorage } from "../../../utils/common/commonUtil";
 
 const AllDoctorsCard = () => {
   const navigation = useNavigation<any>();
   const [doctors, setDoctors] = useState([]);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading } = useQuery({
+  const isFocused = useIsFocused();
+  const { data, isLoading, refetch } = useQuery({
     queryFn: async () => {
       const url = `${API_URL}/doctor`;
       const response = await axios.get(url);
       return response.data;
     },
+    enabled: true,
     queryKey: ["allDoctors"],
   });
 
   useEffect(() => {
     if (data && !isLoading) {
       setDoctors(data.data);
+      setFilteredDoctors(data.data); // Initialize with the full list
     }
   }, [data, isLoading]);
 
@@ -37,6 +42,18 @@ const AllDoctorsCard = () => {
       ?.map((word) => word[0]?.toUpperCase())
       ?.join("");
   };
+
+  const handleSearch = (text: string) => {
+    setSearchTerm(text);
+    const filtered = doctors.filter((doctor) =>
+      doctor.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredDoctors(filtered);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [isFocused]);
 
   return (
     <View>
@@ -62,7 +79,7 @@ const AllDoctorsCard = () => {
             color: "#109BE7",
           }}
         >
-          Go To My Subscriptions
+          Go To My Subscription
         </Text>
         <Icon name="arrow-forward" color={"#109BE7"} size={30} />
       </Pressable>
@@ -95,16 +112,21 @@ const AllDoctorsCard = () => {
             color: BASIC_COLORS.FONT_SECONDARY,
             fontSize: 20,
           }}
-          onChangeText={() => {}}
+          onChangeText={handleSearch}
           editable={true}
           value={searchTerm}
         />
       </View>
-      <ScrollView>
-        {doctors.length > 0 &&
+      <ScrollView
+        style={{
+          height: "70%",
+        }}
+      >
+        {filteredDoctors.length > 0 &&
           !isLoading &&
-          doctors.map((doc) => (
+          filteredDoctors.map((doc) => (
             <View
+              key={doc.id}
               style={[
                 styles.container,
                 {
@@ -195,7 +217,12 @@ const AllDoctorsCard = () => {
                       }}
                     >
                       {[1, 2, 3, 4].map((rate) => (
-                        <Icon name="star" color={"#FCAF23"} size={20} />
+                        <Icon
+                          key={rate}
+                          name="star"
+                          color={"#FCAF23"}
+                          size={20}
+                        />
                       ))}
                     </View>
                   </View>
@@ -212,6 +239,11 @@ const AllDoctorsCard = () => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                onPress={async () => {
+                  console.log(doc);
+                  await setDataToAsyncStorage("channelDocFromList", doc);
+                  navigation.navigate("ChannelDocFromList");
+                }}
               >
                 <Text
                   style={{
@@ -223,10 +255,6 @@ const AllDoctorsCard = () => {
                   Subscribe
                 </Text>
               </Pressable>
-              {/* <RPPrimaryButton buttonTitle="Subscribe" buttonStyle={{
-                backgroundColor: "#DBEAFE",
-                color: BASIC_COLORS.PRIMARY
-              }}/> */}
             </View>
           ))}
       </ScrollView>

@@ -22,6 +22,9 @@ import Packages from "../../screens/AuthScreens/Packages/Packages";
 import Payments from "../../screens/AuthScreens/Payments/Payments";
 import ReviewSummary from "../../screens/AuthScreens/ReviewSummary/ReviewSummary";
 import MyChannelings from "../../screens/AuthScreens/MyChannelings/MyChannelings";
+import ChannelDocFromList from "../../screens/AuthScreens/ChannelDocFromList/ChannelDocFromList";
+import ChannelFromListPackageSelect from "../../screens/AuthScreens/ChannelFromListPackageSlect/ChannelFromListPackageSelect";
+import ChannelFromListReview from "../../screens/AuthScreens/ChannelFromListReview/ChannelFromListReview";
 import Diabatic from "../../screens/RetinopathyScreens/Diabatic/Diabatic";
 import DiabaticResult from "../../screens/RetinopathyScreens/Diabatic/DiabaticResult";
 import Retinopathy from "../../screens/RetinopathyScreens/Retinopathy/Retinopathy";
@@ -46,7 +49,6 @@ import OpenStreetMapComponent from "../../screens/RetinopathyScreens/Retinopathy
 import MedicalSurveyForm from "../../screens/RetinopathyScreens/Survay/SurvayContribution";
 import DiabetesRiskPrediction from "../../screens/RetinopathyScreens/Instruction/DiabetesPedigree";
 import BloodPressureComponent from "../../screens/RetinopathyScreens/Diabatic/DiabaticVariables/BloodPressureComponent";
-
 const DrawerNav = createDrawerNavigator<any>();
 
 interface DrawerProp {
@@ -121,6 +123,18 @@ const index = () => {
         <DrawerNav.Screen name="Payments" component={Payments} />
         <DrawerNav.Screen name="Review" component={ReviewSummary} />
         <DrawerNav.Screen name="MyChannelings" component={MyChannelings} />
+        <DrawerNav.Screen
+          name="ChannelDocFromList"
+          component={ChannelDocFromList}
+        />
+        <DrawerNav.Screen
+          name="ChannelFromListPackageSelect"
+          component={ChannelFromListPackageSelect}
+        />
+        <DrawerNav.Screen
+          name="ChannelFromListReview"
+          component={ChannelFromListReview}
+        />
 
         <DrawerNav.Screen name="Diabatic" component={Diabatic} />
         <DrawerNav.Screen name="ResultScreen" component={DiabaticResult} />
@@ -183,6 +197,7 @@ const index = () => {
           name="SkinThicknessComponent"
           component={SkinThicknessComponent}
         />
+     
       </DrawerNav.Navigator>
     </>
   );

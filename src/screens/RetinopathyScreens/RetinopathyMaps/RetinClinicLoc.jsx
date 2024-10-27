@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import axios from "axios";
 import GetLocation from "./GetLocation"; // Your component for getting location
@@ -40,9 +40,23 @@ const OpenStreetMapComponent = () => {
     fetchEyeHospitals(location.latitude, location.longitude);
   };
 
+
+
+  // container: {
+  //   paddingHorizontal: 30,
+  //   paddingVertical: 40,
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   height: "100%",
+  //   backgroundColor: "white",
+  // },
   return (
     <>
-      <NearestRetinoClinicals />
+
+    <View style={styles.container}>
+    <NearestRetinoClinicals />
+    </View>
+   
       <View style={{ flex: 1 }}>
         <GetLocation onLocationFound={handleLocationFound} />
         <MapView
@@ -79,3 +93,13 @@ const OpenStreetMapComponent = () => {
 };
 
 export default OpenStreetMapComponent;
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    display: "flex",
+    flexDirection: "column",
+   
+    backgroundColor: "white",
+  },
+});

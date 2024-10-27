@@ -101,7 +101,7 @@ const LongDistanceVisionStats = ({ user }: { user: UserType }) => {
       if (user?.data?.otherDetails?._id || userId) {
         const queryUrl = `${API_URL}/test-results/user-stats/${
           user?.data?.otherDetails?._id ?? userId
-        }?month=${month}&year=${year}`;
+        }?month=${month + 1}&year=${year}`;
         // const response = await axiosInstance.get(queryUrl);
         const response = await axios.get(queryUrl);
         return response.data;

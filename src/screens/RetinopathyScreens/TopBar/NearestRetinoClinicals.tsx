@@ -14,12 +14,12 @@ const NearestRetinoClinicals = ({
   navigateTo?: () => void;
 }) => {
   const navigation = useNavigation<any>();
-//PredictionMain
+  //PredictionMain
   const handleNavigation = () => {
     if (navigateTo) {
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     } else {
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }
   };
   return (
@@ -31,7 +31,7 @@ const NearestRetinoClinicals = ({
         alignItems: "center",
         backgroundColor: "white",
 
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
       }}
     >
       <TouchableOpacity style={styles.menuContainer} onPress={handleNavigation}>

@@ -220,6 +220,7 @@ const MealInfoForm = () => {
         value={formik.values.weight.toString()}
         error={formik.errors.weight ? true : false}
         errorMessage={formik.errors.weight}
+        keyboardType="numeric" 
       />
 
       {/* Height Input */}
@@ -233,6 +234,7 @@ const MealInfoForm = () => {
         value={formik.values.height.toString()}
         error={formik.errors.height ? true : false}
         errorMessage={formik.errors.height}
+        keyboardType="numeric" 
       />
 
       {/* Meal Type Dropdown */}
