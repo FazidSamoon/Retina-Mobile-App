@@ -161,7 +161,7 @@ const TestResults = ({
     onError: () => {},
   });
   const onNextButtonPressed = async () => {
-    mutate(user?.data?.otherDetails?._id);
+    await mutate(user?.data?.otherDetails?._id);
     const pendingLongDistanceTasksList = await pendingChallenges.filter(
       (challenge) =>
         challenge.identification.includes("LongDistanceVisionTest") &&
@@ -236,7 +236,6 @@ const TestResults = ({
         return;
       }
     });
-
     if (listOfCompletedTasks.length > 0)
       await handleUploadCompletion(listOfCompletedTasks);
     else setShowModal(true);
@@ -249,22 +248,22 @@ const TestResults = ({
     );
 
     if (apiSuccess) {
+      console.log(apiSuccess);
       showToastWithGravityAndOffset(
         "Successfully updated the Challenge completion"
       );
-      console.log(apiSuccess);
+      setShowModal(true);
     } else if (apiError) {
       console.log(apiError);
       showToastWithGravityAndOffset(
         "Something went wrong with updating challenge completion"
       );
+      setShowModal(true);
     }
-
-    setShowModal(true);
   };
 
   const handleUploadExperience = async () => {
-    console.log("gainedXP ", gainedXP);
+    // console.log("gainedXP ", gainedXP);
     const { apiError, apiSuccess } = await updateUserLevels(
       user?.data?.otherDetails?._id,
       gainedXP
@@ -368,7 +367,7 @@ const TestResults = ({
               }}
             >
               <LinearProgress
-                value={1 / 100}
+                value={gainedXP / 100 / 100}
                 trackColor="#F4F6F9"
                 color={BASIC_COLORS.PRIMARY}
                 style={{
