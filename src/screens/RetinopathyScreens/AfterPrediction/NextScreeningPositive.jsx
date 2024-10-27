@@ -4,6 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 import RetinopathyHomeScreenTopAppBar from "../TopBar/RetinopathyHomeScreenTopAppBar";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
+import { SafeAreaView } from "react-native";
 
 const NextScreeningInterval = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -79,60 +81,66 @@ const NextScreeningInterval = () => {
   const { days, hours, minutes, secs } = formatTimeLeft(timeLeft);
 
   return (
-    <>
-    
-              <RetinopathyHomeScreenTopAppBar header={"Next Screening Date"} />
+    <SafeAreaView style={styles.container}>
+      <VisionHomeScreenTopAppBar header={"Next Screening Date"} />
 
-    <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Next Screening Interval</Text>
-        <Text style={styles.title}>For Mild to Moderate</Text>
-      </View>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Next Screening Interval</Text>
+          <Text style={styles.title}>For Mild to Moderate</Text>
+        </View>
 
-      {/* Display the screening date */}
-      {screeningDate && (
+        {/* Display the screening date */}
+        {screeningDate && (
+          <Text style={styles.subtitle}>
+            Next Screening Date: {screeningDate.format("MMMM Do, YYYY")}
+          </Text>
+        )}
+
         <Text style={styles.subtitle}>
-          Next Screening Date: {screeningDate.format("MMMM Do, YYYY")}
+          For patients with mild or moderate NPDR, the follow-up interval may
+          vary, but it's usually between 6 months depending on the progression
+          of the disease.
         </Text>
-      )}
 
-     
-      <Text style={styles.subtitle}>
-        For patients with mild or moderate NPDR, the follow-up interval may
-        vary, but it's usually between 6 months depending on the
-        progression of the disease.
-      </Text>
+        {/* Custom Countdown Display */}
+        <View style={styles.countdownContainer}>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{days}</Text>
+            <Text style={styles.countdownLabel}>Days</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{hours}</Text>
+            <Text style={styles.countdownLabel}>Hours</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{minutes}</Text>
+            <Text style={styles.countdownLabel}>Minutes</Text>
+          </View>
+          <View style={styles.countdownItem}>
+            <Text style={styles.countdownDigit}>{secs}</Text>
+            <Text style={styles.countdownLabel}>Seconds</Text>
+          </View>
+        </View>
 
-      {/* Custom Countdown Display */}
-      <View style={styles.countdownContainer}>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{days}</Text>
-          <Text style={styles.countdownLabel}>Days</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{hours}</Text>
-          <Text style={styles.countdownLabel}>Hours</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{minutes}</Text>
-          <Text style={styles.countdownLabel}>Minutes</Text>
-        </View>
-        <View style={styles.countdownItem}>
-          <Text style={styles.countdownDigit}>{secs}</Text>
-          <Text style={styles.countdownLabel}>Seconds</Text>
-        </View>
+        {/* Custom Done Button */}
+        <TouchableOpacity style={styles.button} onPress={handleDonePress}>
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Custom Done Button */}
-      <TouchableOpacity style={styles.button} onPress={handleDonePress}>
-        <Text style={styles.buttonText}>Done</Text>
-      </TouchableOpacity>
-    </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    backgroundColor: "white",
+  },
   card: {
     width: "100%",
     height: 550,

@@ -215,7 +215,7 @@ const RPDrawer: React.FC<Props> = ({ navigation }) => {
               }}
               onPress={() => {
                 setSelected("clinicals");
-                navigation.navigate("RetinClinicLoc");
+                // navigation.navigate("RetinClinicLoc");
               }}
             >
               <Icon

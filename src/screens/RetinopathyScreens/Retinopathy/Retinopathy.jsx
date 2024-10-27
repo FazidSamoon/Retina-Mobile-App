@@ -9,6 +9,7 @@ import {
   Modal,
   ScrollView,
   Vibration,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +28,7 @@ import TestLoadingRetinopathy from "../Components/LoadingRetinopathy";
 import styles from "../Retinopathy/RetinopathyStyles";
 import RetinopathyHomeScreenTopAppBar0 from "../TopBar/PredictHomeTopAppBar";
 import { Dropdown } from "react-native-element-dropdown";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 
 export default function Retinopathy() {
   const navigation = useNavigation();
@@ -242,13 +244,12 @@ export default function Retinopathy() {
     { label: "Type 2", value: "Type 2" },
   ];
   return (
-    <>
-      <RetinopathyHomeScreenTopAppBar0 header={"Check For Retinopathy"} />
-
+    <SafeAreaView style={styles.container}>
+      <VisionHomeScreenTopAppBar header={"Check For Retinopathy"} />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <RetinopathyInfo />
 
-        <View style={styles.container}>
+        <View>
           {/* Image Picker UI */}
           <TouchableOpacity
             style={styles.imagePicker}
@@ -270,7 +271,13 @@ export default function Retinopathy() {
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.orText}>or</Text>
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.orText}>or</Text>
+          </View>
 
           <TouchableOpacity
             style={styles.cameraButton}
@@ -478,6 +485,6 @@ export default function Retinopathy() {
         </View> */}
         </View>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 }

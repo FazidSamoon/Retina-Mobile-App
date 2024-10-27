@@ -116,7 +116,7 @@ const LongDistanceVIsionTestDistanceConfirermer = ({
           fontWeight: "800",
         }}
       >
-        Maintain ${personalizedDistance === 4 ? 2 : personalizedDistance}m with device to continue with the test
+        Maintain {personalizedDistance === 4 ? 2 : personalizedDistance}m with device to continue with the test
       </Text>
       <View
         style={{

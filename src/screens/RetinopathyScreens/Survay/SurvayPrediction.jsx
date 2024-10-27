@@ -15,6 +15,7 @@ import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 import LoadingSpinner from "../../../components/atoms/LoadingSpinner/LoadingSpinner";
 import TestLoadingRetinopathy from "../Components/LoadingRetinopathy";
 import ClinicalTrailHome from "../TopBar/ClinicalTrailHome";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 
 const server_name = "http://155.248.225.224:8093";
 
@@ -95,7 +96,7 @@ const SurvayPrediction = () => {
 
   return (
     <View style={styles.container}>
-      <ClinicalTrailHome header={"Public Retinopathy model"} />
+      <VisionHomeScreenTopAppBar header={"Public Retinopathy model"} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.form}>
           <Text style={styles.label}>Gender</Text>
@@ -192,11 +193,15 @@ const SurvayPrediction = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
     backgroundColor: "white",
   },
   scrollViewContent: {
-    padding: 20,
+
     paddingBottom: 100,
   },
   label: {

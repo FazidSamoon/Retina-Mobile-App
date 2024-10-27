@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 
 const NextScreeningIntervalNeg = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -80,7 +81,7 @@ const NextScreeningIntervalNeg = () => {
 
   return (
     <>
-      <RetinopathyHomeScreenTopAppBar header={"Prediction"} />
+      <VisionHomeScreenTopAppBar header={"Predictions"} />
 
       <View style={styles.card}>
         <View style={styles.header}>

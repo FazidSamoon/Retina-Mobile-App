@@ -2,11 +2,12 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#fff",
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    backgroundColor: "white",
   },
   headerButtons: {
     flexDirection: "row",
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   imagePicker: {
-    width: "85%",
+    width: "100%",
     height: 145,
     borderRadius: 15,
     borderColor: "#ccc",
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   cameraButton: {
-    width: "80%",
+    width: "100%",
     paddingVertical: 15,
     borderRadius: 15,
     backgroundColor: "#F0F8FF",

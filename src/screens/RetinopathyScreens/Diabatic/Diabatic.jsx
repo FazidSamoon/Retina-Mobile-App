@@ -30,6 +30,7 @@ import TestLoadingDiabatic from "../Components/LoadingDiabatic";
 import styles from "../Diabatic/DiabaticStyles";
 import RetinopathyHomeScreenTopAppBar0 from "../TopBar/PredictHomeTopAppBar";
 import BloodPressureComponent from "./DiabaticVariables/BloodPressureComponent";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 
 export default function Diabatic({ navigation }) {
   const [image, setImage] = useState(null);
@@ -244,10 +245,11 @@ export default function Diabatic({ navigation }) {
   };
 
   return (
-    <>
-      <RetinopathyHomeScreenTopAppBar0 header={"Check Diabetes Status"} />
+    <SafeAreaView style={styles.container}>
+      <VisionHomeScreenTopAppBar header={"Check Diabetes Status"} />
+      {/* <RetinopathyHomeScreenTopAppBar0 header={"Check Diabetes Status"} /> */}
       <ScrollView>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
           <View style={styles.headerButtons}>
             {/* Skip Button */}
             <TouchableOpacity
@@ -288,7 +290,13 @@ export default function Diabatic({ navigation }) {
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.orText}>or</Text>
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.orText}>or</Text>
+          </View>
 
           <TouchableOpacity
             style={styles.cameraButton}
@@ -343,7 +351,7 @@ export default function Diabatic({ navigation }) {
           </Modal>
 
           <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={styles.container}>
+            <View>
               {loading && (
                 <View style={styles.progressContainer}>
                   <TestLoadingDiabatic />
@@ -351,7 +359,7 @@ export default function Diabatic({ navigation }) {
               )}
 
               <ScrollView>
-                <View style={styles.container}>
+                <View>
                   <View style={styles.inputContainer}>
                     <View style={styles.row}>
                       <View style={styles.inputGroup}>
@@ -536,6 +544,6 @@ export default function Diabatic({ navigation }) {
           <StatusBar style="auto" />
         </SafeAreaView>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 }

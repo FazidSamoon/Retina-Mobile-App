@@ -24,11 +24,11 @@ const PredictionMain = () => {
     <>
       <View style={styles.container}>
         
-
+      <VisionHomeScreenTopAppBar header={"Prediction Main"} />
 
 
         
-        <PredictionHome header="Prediction Main" />
+        {/* <PredictionHome header="Prediction Main" /> */}
 
         <View style={styles.cardsContainer}>
           <PrimaryRecommondationCard

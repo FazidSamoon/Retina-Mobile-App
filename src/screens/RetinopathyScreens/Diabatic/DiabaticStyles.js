@@ -2,36 +2,33 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff",
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    backgroundColor: "white",
   },
   headerButtons: {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
     width: "100%",
-    paddingRight: 20,
     paddingTop: 10,
     position: "absolute",
-    top: 0,
-    right: 0,
+
     zIndex: 1,
   },
   topButton: {
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 10,
-    padding: 5,
     backgroundColor: "transparent",
   },
   skipText: {
     color: "#5bc3fc",
     fontSize: 16,
     fontWeight: "bold",
-    marginLeft: 5,
   },
   title: {
     fontSize: 24,
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
   },
   imagePicker: {
     marginTop: 60,
-    width: "80%",
+    width: "100%",
     height: 150,
     borderRadius: 10,
     borderColor: "#ccc",
@@ -94,9 +91,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999",
     marginVertical: 10,
+    alignContent: "center"
   },
   cameraButton: {
-    width: "80%",
+    width: "100%",
     paddingVertical: 15,
     borderRadius: 15,
     backgroundColor: "#F0F8FF",

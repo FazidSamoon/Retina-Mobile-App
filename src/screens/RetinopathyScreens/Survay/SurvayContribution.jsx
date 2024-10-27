@@ -12,6 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Dropdown } from "react-native-element-dropdown";
 import RetinopathyHomeScreenTopAppBar from "../TopBar/PredictHomeTopAppBar";
 import ClinicalTrailHome from "../TopBar/ClinicalTrailHome";
+import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
+import { SafeAreaView } from "react-native";
 
 const MedicalSurveyForm = () => {
   const navigation = useNavigation();
@@ -37,7 +39,15 @@ const MedicalSurveyForm = () => {
 
   const validateField = (name, value) => {
     let errorMessage = "";
-    if (["systolicBP", "diastolicBP", "hbA1c", "estimatedAvgGlucose", "diagnosisYear"].includes(name)) {
+    if (
+      [
+        "systolicBP",
+        "diastolicBP",
+        "hbA1c",
+        "estimatedAvgGlucose",
+        "diagnosisYear",
+      ].includes(name)
+    ) {
       if (isNaN(value) || value <= 0) {
         errorMessage = "Please enter a valid positive number.";
       }
@@ -103,9 +113,10 @@ const MedicalSurveyForm = () => {
   ];
 
   return (
-    <>
-      <ClinicalTrailHome header={"Medical Survey Form"} />
-      <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <VisionHomeScreenTopAppBar header={"Medical Survey Form"} />
+      {/* <ClinicalTrailHome header={"Medical Survey Form"} /> */}
+      <ScrollView>
         <View style={styles.form}>
           {/* Gender Dropdown */}
           <Text style={styles.label}>Gender</Text>
@@ -139,7 +150,9 @@ const MedicalSurveyForm = () => {
             value={String(formData.systolicBP)}
             onChangeText={(value) => handleChange("systolicBP", value)}
           />
-          {errors.systolicBP && <Text style={styles.errorText}>{errors.systolicBP}</Text>}
+          {errors.systolicBP && (
+            <Text style={styles.errorText}>{errors.systolicBP}</Text>
+          )}
 
           {/* Diastolic BP */}
           <Text style={styles.label}>Diastolic BP</Text>
@@ -149,7 +162,9 @@ const MedicalSurveyForm = () => {
             value={String(formData.diastolicBP)}
             onChangeText={(value) => handleChange("diastolicBP", value)}
           />
-          {errors.diastolicBP && <Text style={styles.errorText}>{errors.diastolicBP}</Text>}
+          {errors.diastolicBP && (
+            <Text style={styles.errorText}>{errors.diastolicBP}</Text>
+          )}
 
           {/* HbA1c */}
           <Text style={styles.label}>HbA1c (mmol/mol)</Text>
@@ -169,7 +184,9 @@ const MedicalSurveyForm = () => {
             value={String(formData.estimatedAvgGlucose)}
             onChangeText={(value) => handleChange("estimatedAvgGlucose", value)}
           />
-          {errors.estimatedAvgGlucose && <Text style={styles.errorText}>{errors.estimatedAvgGlucose}</Text>}
+          {errors.estimatedAvgGlucose && (
+            <Text style={styles.errorText}>{errors.estimatedAvgGlucose}</Text>
+          )}
 
           {/* Diagnosis Year */}
           <Text style={styles.label}>Diagnosis Year</Text>
@@ -179,7 +196,9 @@ const MedicalSurveyForm = () => {
             value={String(formData.diagnosisYear)}
             onChangeText={(value) => handleChange("diagnosisYear", value)}
           />
-          {errors.diagnosisYear && <Text style={styles.errorText}>{errors.diagnosisYear}</Text>}
+          {errors.diagnosisYear && (
+            <Text style={styles.errorText}>{errors.diagnosisYear}</Text>
+          )}
 
           {/* Retinopathy Status Dropdown */}
           <Text style={styles.label}>Retinopathy Status</Text>
@@ -212,14 +231,17 @@ const MedicalSurveyForm = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
     backgroundColor: "white",
   },
   form: {
