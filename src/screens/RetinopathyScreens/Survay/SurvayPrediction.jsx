@@ -17,7 +17,7 @@ import TestLoadingRetinopathy from "../Components/LoadingRetinopathy";
 import ClinicalTrailHome from "../TopBar/ClinicalTrailHome";
 import VisionHomeScreenTopAppBar from "../../../components/molecules/VisionHomeScreenTopAppBar/VisionHomeScreenTopAppBar";
 
-const server_name = "http://155.248.225.224:8093";
+const server_name = "https://retina-thushan-6c14d6085bfd.herokuapp.com";
 
 const SurvayPrediction = () => {
   const [formData, setFormData] = useState({

@@ -64,7 +64,7 @@ const MedicalSurveyForm = () => {
 
     try {
       Alert.alert("Submitting...");
-      const response = await fetch(`http://155.248.225.224:8093/submit-data`, {
+      const response = await fetch(`https://retina-thushan-6c14d6085bfd.herokuapp.com/submit-data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

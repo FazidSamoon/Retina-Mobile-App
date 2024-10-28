@@ -25,7 +25,12 @@
       "package": "com.anonymous.RetinaMobileApp",
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDS9tdMKzM6HGai6RPsqAjXOBGLPBCZe10"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
